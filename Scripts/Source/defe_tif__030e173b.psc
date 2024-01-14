@@ -8,7 +8,7 @@ Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
 Defeat.QSTStage = 15
 PlayerScr.SetSurrenderSpeaker((PlayerScr.AliasTheNext.GetReference() As Actor))
-PlayerScr.SetState("ForceGreetWait")
+PlayerScr.GotoState("ForceGreetWait")
 ;END CODE
 EndFunction
 ;END FRAGMENT

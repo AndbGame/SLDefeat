@@ -59,6 +59,7 @@ Event DARecoverSequence(string eventName, string strArg, float numArg, Form send
 EndEvent
 
 Function PickEvent()
+	actor SelectedAggrressor
 	Blackout = True
 	If (PlayerScr.ForcedScene == "")
 		If (Defeat.LastSceneTheLast && Defeat.LastSceneTheLast.IsDead()) ; Check if the last aggressor is dead in case of double ko or something and then triggers a simple escape
@@ -125,25 +126,102 @@ Function PickEvent()
 
 	;	If !ForbiddenLoc(Me.GetCurrentLocation())
 		; Register misc events
-		If (Chance(0) && OnlyEnemy(0, EvilFaction != "") && OnlyRaped(0, Defeat.LastSceneRaped)) ; LeftForDeadQST
+		If (Chance(0) && OnlyEnemy(0, EvilFaction != "") && OnlyRaped(0, Defeat.LastSceneRaped)) && CheckCompatability("Left For Dead") ; LeftForDeadQST
 			n += 1
 			i = Events.Find("")
 			Events[i] = "Left For Dead"
 		Endif
-		If (Chance(1) && OnlyEnemy(1, EvilFaction != "") && OnlyRaped(1, Defeat.LastSceneRaped)) ; DefeatedQST
+		If (Chance(1) && OnlyEnemy(1, EvilFaction != "") && OnlyRaped(1, Defeat.LastSceneRaped)) && CheckCompatability("Defeated") ; DefeatedQST
 			n += 1
 			i = Events.Find("")
 			Events[i] = "Defeated"
 		Endif
-		If (Defeat.SimpleSlaveryon && Chance(2) && OnlyEnemy(2, EvilFaction != "") && OnlyRaped(2, Defeat.LastSceneRaped)) ; Simple slavery
+		If (Defeat.SimpleSlaveryon && Chance(2) && OnlyEnemy(2, EvilFaction != "") && OnlyRaped(2, Defeat.LastSceneRaped)) && CheckCompatability("Simple Slavery") ; Simple slavery
 			n += 1
 			i = Events.Find("")
 			Events[i] = "SSLV Entry"
 		Endif
 
+		if Defeat.SanguinesDebaucheryON && Chance(3) && CheckCompatability("SD+")
+			if (StorageUtil.GetIntValue(Player, "_SD_iSanguineBlessings") > 0)  && (StorageUtil.GetIntValue(Player, "_SD_iEnslaved")==0)
+				n += 1
+				i = Events.Find("")
+				Events[i] = "SDDreamworldPull"
+			endif
+		endif
+		
+		if Defeat.SanguinesDebaucheryON && Chance(4) && CheckCompatability("SD+")
+			if !Defeat.LastSceneTheLast
+				if Defeat.LastSceneAggressors.Length > 0
+					int ListLength = Defeat.LastSceneAggressors.Length
+					while ListLength > 0
+						ListLength -= 1
+						if Defeat.LastSceneAggressors[ListLength] && !Defeat.LastSceneAggressors[ListLength].IsDead()
+							SelectedAggrressor = Defeat.LastSceneAggressors[ListLength]
+							ListLength = 0
+						endif
+					endwhile
+				endif
+			else
+				SelectedAggrressor = Defeat.LastSceneTheLast
+			endif
+			DefeatUtil2.SD_CheckIfSlaver(SelectedAggrressor)
+			DefeatUtil2.SD_CheckIfSlaverCreature(SelectedAggrressor)
+			DefeatConfig.Log("Sequence On: " + StorageUtil.GetIntValue(Player, "_SD_iEnslavementInitSequenceOn") + " is humanoid:  " + StorageUtil.GetIntValue( SelectedAggrressor, "_SD_bIsSlaverHumanoid"))
+			if (Utility.RandomInt(1,100)<=StorageUtil.GetIntValue(Player, "_SD_iChanceEnslavement")) && (StorageUtil.GetIntValue(Player, "_SD_iEnslavementInitSequenceOn")!=1) && (StorageUtil.GetIntValue( SelectedAggrressor, "_SD_bIsSlaverHumanoid") == 1)
+				n += 1
+				i = Events.Find("")
+				Events[i] = "PCSubEnslave"
+			elseif (Utility.RandomInt(1,100)<=StorageUtil.GetIntValue(Player, "_SD_iChanceEnslavement")) && (StorageUtil.GetIntValue(Player, "_SD_iEnslavementInitSequenceOn")!=1) && (StorageUtil.GetIntValue( SelectedAggrressor, "_SD_bIsSlaverFalmer") == 1)
+				n += 1
+				i = Events.Find("")
+				Events[i] = "PCSubEnslave"
+			elseif (Utility.RandomInt(1,100)<=StorageUtil.GetIntValue(Player, "_SD_iChanceSprigganInfection")) && (StorageUtil.GetIntValue(Player, "_SD_iEnslavementInitSequenceOn")!=1) && (StorageUtil.GetIntValue( SelectedAggrressor, "_SD_bIsSpriggan") == 1)
+				n += 1
+				i = Events.Find("")
+				Events[i] = "SDSprigganEnslave"
+			elseif (Utility.RandomInt(1,100)<=StorageUtil.GetIntValue(Player, "_SD_iChanceEnslavement")) && (StorageUtil.GetIntValue(Player, "_SD_iEnslavementInitSequenceOn")!=1) && (StorageUtil.GetIntValue( SelectedAggrressor, "_SD_bIsSlaverCreature") == 1)
+				n += 1
+				i = Events.Find("")
+				Events[i] = "PCSubEnslave"
+			endif
+		endif
+		
+		if Defeat.LeashGameON && Chance(5) && CheckCompatability("LeashGame - SimpleSlavery")
+			if !Defeat.LastSceneTheLast
+				if Defeat.LastSceneAggressors.Length > 0
+					int ListLength = Defeat.LastSceneAggressors.Length
+					while ListLength > 0
+						ListLength -= 1
+						if Defeat.LastSceneAggressors[ListLength] && !Defeat.LastSceneAggressors[ListLength].IsDead()
+							SelectedAggrressor = Defeat.LastSceneAggressors[ListLength]
+							ListLength = 0
+						endif
+					endwhile
+				endif
+			else
+				SelectedAggrressor = Defeat.LastSceneTheLast
+			endif
+			n += 1
+			i = Events.Find("")
+			Events[i] = "LeashGame - SimpleSlavery"
+		endif
+		
+		if Defeat.DeviouslyCursedLootON && Chance(6) && CheckCompatability("Cursed Loot Equip Devices")
+			n += 1
+			i = Events.Find("")
+			Events[i] = "CursedLootEquipDevices"
+		endif
+		
+		if Defeat.DDON && Chance(7) && CheckCompatability("Devious Devices Equip Devices")
+			n += 1
+			i = Events.Find("")
+			Events[i] = "DDEquipDevices"
+		endif
+		
 		DefeatConfig.Log("Events array // 1 - "+Events[0]+" / 2 - "+Events[1]+" / 3 - "+Events[2]+" / 4 - "+Events[3]+" / 5 - "+Events[4]+" / 6 - "+Events[5]+" / 7 - "+Events[6]+" / 8 - "+Events[7]+" / 9 - "+Events[8]+" / 10 - "+Events[9])
 		If (n != -1) ; Nothing in the array to choose from
-			TriggerEvent(Events, n)
+			TriggerEvent(Events, n, SelectedActor = SelectedAggrressor)
 		Else
 			Escape()
 		Endif
@@ -186,7 +264,7 @@ Function PickSecondEvent() ; Triggers a second event for events that allows it.
 		TriggerEvent(Events, n, Blackout = False, Restored = False)
 	Endif
 EndFunction
-Function TriggerEvent(String[] Events = None, Int n = 0, String ForceEvent = "", Quest TheEvent = None, Bool Blackout = True, Bool Restored = True)
+Function TriggerEvent(String[] Events = None, Int n = 0, String ForceEvent = "", Quest TheEvent = None, Bool Blackout = True, Bool Restored = True, Actor SelectedActor = None)
 	Bool DoEvent = False
 	If (!TheEvent && (ForceEvent == ""))
 		Int Rand = RandomInt(0, n)
@@ -226,6 +304,292 @@ Function TriggerEvent(String[] Events = None, Int n = 0, String ForceEvent = "",
 			PostRScr.BeginQuest()
 		Else
 			Defeat.FadeIn()
+			if CustomEvent == "PCSubEnslave"
+				string str1 = SelectedActor.GetDisplayName()
+				StorageUtil.SetIntValue(SelectedActor, "_SD_iForcedSlavery", 1)
+				StorageUtil.SetIntValue(SelectedActor, "_SD_iSpeakingNPC", 1)
+				SelectedActor.SendModEvent(CustomEvent)
+				If Restored
+					utility.wait(20)
+					PlayerScr.Restored()
+					SelectedActor.PushActorAway(Player, 1)
+				Endif
+				return
+			elseif CustomEvent == "SDSprigganEnslave"
+				SelectedActor.SendModEvent(CustomEvent)
+				If Restored
+					utility.wait(20)
+					PlayerScr.Restored()
+					SelectedActor.PushActorAway(Player, 1)
+				Endif
+				return
+			elseif CustomEvent == "LeashGame - SimpleSlavery"
+				Bool Continue = False
+				Actor TempActor = StorageUtil.GetFormValue(none, "LeashFramework_CurrentMaster") as Actor
+					if TempActor && !TempActor.IsDead() && TempActor.GetDistance(Player) < 3000
+						SelectedActor = TempActor
+						Continue = True
+					else
+						Actor TempActor2 = StorageUtil.GetFormValue(none, "LeashFramework_SavedMaster") as Actor
+						if TempActor2 && !TempActor2.IsDead() && TempActor2.GetDistance(Player) < 3000
+							SelectedActor = TempActor2
+							Continue = True
+						endif
+					endif
+				int iii = ModEvent.Create("Start_LeashGame_SimpleSlavery")
+				ModEvent.PushForm(iii, SelectedActor as form)
+				ModEvent.PushBool(iii, Continue)
+				ModEvent.Send(iii)
+				If Restored
+					utility.wait(4)
+					PlayerScr.Restored()
+					SelectedActor.PushActorAway(Player, 1)
+				Endif
+				return
+			elseif CustomEvent == "CursedLootEquipDevices"
+				int NumberOfDevices = Utility.RandomInt(McmConfig.CursedLootMinDevices, McmConfig.CursedLootMaxDevices)
+				Int DCUR_DeviceTheme = DefeatUtil2.DCUR_GetDeviceTheme()
+				while NumberOfDevices > 0
+					NumberOfDevices -= 1
+					DefeatUtil2.DCUR_EquipRandomItem(Player, DCUR_DeviceTheme)
+				endwhile
+				Escape()
+				return
+			elseif CustomEvent == "DDEquipDevices"
+				StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip")
+				StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip")
+				StorageUtil.FormListClear(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords")
+				StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip")
+				StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip")
+				Keyword TempDDKeywordHeavyBondage = Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword ; HeavyBondage
+				if !Player.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage)
+					if McmConfig.DDPaUseArmbinder == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Armbinder")
+					elseif McmConfig.DDPaUseArmbinder == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Armbinder")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage, False)
+				endif
+				Keyword TempDDKeywordGag = Game.GetFormFromFile(0x7EB8, "Devious Devices - Assets.esm") as Keyword ; Gag
+				if !Player.WornHasKeyword(TempDDKeywordGag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGag)
+					if McmConfig.DDPaUseGag == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Gag")
+					elseif McmConfig.DDPaUseGag == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Gag")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGag, False)
+				endif
+				Keyword TempDDKeywordSuit = Game.GetFormFromFile(0x2AFA3, "Devious Devices - Assets.esm") as Keyword ; Suit
+				if !Player.WornHasKeyword(TempDDKeywordSuit) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordSuit)
+					if McmConfig.DDPaUseSuit == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Suit")
+					elseif McmConfig.DDPaUseSuit == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Suit")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordSuit, False)
+				endif
+				Keyword TempDDKeywordHood = Game.GetFormFromFile(0x2AFA2, "Devious Devices - Assets.esm") as Keyword ; Hood
+				if !Player.WornHasKeyword(TempDDKeywordHood) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHood)
+					if McmConfig.DDPaUseHood == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Hood")
+					elseif McmConfig.DDPaUseHood == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Hood")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHood, False)
+				endif
+				Keyword TempDDKeywordBelt = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+				if !Player.WornHasKeyword(TempDDKeywordBelt) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBelt)
+					if McmConfig.DDPaUseChastityBelt == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Belt")
+					elseif McmConfig.DDPaUseChastityBelt == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Belt")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBelt, False)
+				endif
+				Keyword TempDDKeywordBra = Game.GetFormFromFile(0x3DFA, "Devious Devices - Assets.esm") as Keyword ; Bra
+				if !Player.WornHasKeyword(TempDDKeywordBra) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBra)
+					if McmConfig.DDPaUseChastityBra == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Bra")
+					elseif McmConfig.DDPaUseChastityBra == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Bra")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBra, False)
+				endif
+				Keyword TempDDKeywordHarness = Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword ; Harness
+				if !Player.WornHasKeyword(TempDDKeywordHarness) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHarness)
+					if McmConfig.DDPaUseHarness == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Harness")
+					elseif McmConfig.DDPaUseHarness == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Harness")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHarness, False)
+				endif
+				Keyword TempDDKeywordCorset = Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword ; Corset
+				if !Player.WornHasKeyword(TempDDKeywordCorset) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCorset)
+					if McmConfig.DDPaUseCorset == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Corset")
+					elseif McmConfig.DDPaUseCorset == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Corset")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCorset, False)
+				endif
+				Keyword TempDDKeywordCollar = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
+				if !Player.WornHasKeyword(TempDDKeywordCollar) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCollar)
+					if McmConfig.DDPaUseCollar == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Collar")
+					elseif McmConfig.DDPaUseCollar == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Collar")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCollar, False)
+				endif
+				Keyword TempDDKeywordPlugVag = Game.GetFormFromFile(0x1DD7C, "Devious Devices - Assets.esm") as Keyword ; PlugVaginal
+				if !Player.WornHasKeyword(TempDDKeywordPlugVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugVag)
+					if McmConfig.DDPaUsePlugVaginal == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugVaginal")
+					elseif McmConfig.DDPaUsePlugVaginal == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugVaginal")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugVag, False)
+				endif
+				Keyword TempDDKeywordPlugAnal = Game.GetFormFromFile(0x1DD7D, "Devious Devices - Assets.esm") as Keyword ; PlugAnal
+				if !Player.WornHasKeyword(TempDDKeywordPlugAnal) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugAnal)
+					if McmConfig.DDPaUsePlugAnal == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugAnal")
+					elseif McmConfig.DDPaUsePlugAnal == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugAnal")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugAnal, False)
+				endif
+				Keyword TempDDKeywordPiercingVag = Game.GetFormFromFile(0x23E70, "Devious Devices - Assets.esm") as Keyword ; PiercingVaginal
+				if !Player.WornHasKeyword(TempDDKeywordPiercingVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingVag)
+					if McmConfig.DDPaUsePiercingVaginal == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PiercingVaginal")
+					elseif McmConfig.DDPaUsePiercingVaginal == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PiercingVaginal")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingVag, False)
+				endif
+				Keyword TempDDKeywordPiercingNipp = Game.GetFormFromFile(0xCA39, "Devious Devices - Assets.esm") as Keyword ; PiercingNipple
+				if !Player.WornHasKeyword(TempDDKeywordPiercingNipp) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingNipp)
+					if McmConfig.DDPaUsePiercingNipple == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PiercingNipple")
+					elseif McmConfig.DDPaUsePiercingNipple == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PiercingNipple")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingNipp, False)
+				endif
+				Keyword TempDDKeywordBoots = Game.GetFormFromFile(0x27F29, "Devious Devices - Assets.esm") as Keyword ; Boots
+				if !Player.WornHasKeyword(TempDDKeywordBoots) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBoots)
+					if McmConfig.DDPaUseBoots == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Boots")
+					elseif McmConfig.DDPaUseBoots == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Boots")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBoots, False)
+				endif
+				Keyword TempDDKeywordGloves = Game.GetFormFromFile(0x2AFA1, "Devious Devices - Assets.esm") as Keyword ; Gloves
+				if !Player.WornHasKeyword(TempDDKeywordGloves) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves)
+					if McmConfig.DDPaUseGloves == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Gloves")
+					elseif McmConfig.DDPaUseGloves == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Gloves")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves, False)
+				endif
+				Keyword TempDDKeywordArmCuffs = Game.GetFormFromFile(0x3DF9, "Devious Devices - Assets.esm") as Keyword ; ArmCuffs
+				if !Player.WornHasKeyword(TempDDKeywordArmCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordArmCuffs)
+					if McmConfig.DDPaUseArmCuffs == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "ArmCuffs")
+					elseif McmConfig.DDPaUseArmCuffs == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "ArmCuffs")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordArmCuffs, False)
+				endif
+				Keyword TempDDKeywordLegCuffs = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
+				if !Player.WornHasKeyword(TempDDKeywordLegCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordLegCuffs)
+					if McmConfig.DDPaUseLegCuffs == 1
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "LegCuffs")
+					elseif McmConfig.DDPaUseLegCuffs == 2
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "LegCuffs")
+					endif
+				else
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordLegCuffs, False)
+				endif
+				if McmConfig.DDPaArmAndLegShacklesChance > Utility.RandomInt(0, 100)
+					if !Player.WornHasKeyword(TempDDKeywordHeavyBondage)
+						if !Player.WornHasKeyword(TempDDKeywordLegCuffs) && !Player.WornHasKeyword(TempDDKeywordCollar)
+							StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", "ArmLegShackles")
+						elseif !Player.WornHasKeyword(TempDDKeywordLegCuffs)
+							StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", "ArmShackles")
+							StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", "LegShackles")
+						endif
+					endif
+				endif
+				if McmConfig.DDPaConsistantStyle
+					BuildConsistantData()
+				endif
+				Int NumberOfDevicesEquipped = 0
+				Int NumberOfDevicesTotal = Utility.RandomInt(McmConfig.DDMinDevices, McmConfig.DDMaxDevices)
+				While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip") > 0
+					if EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", 0, ""))
+					endif
+				endwhile
+				While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip") > 0
+					Int TempListIndex = Utility.RandomInt(0, StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip") - 1)
+					if StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", TempListIndex) == "PlugVaginal" && McmConfig.DDPaPlugsWithBelt
+						StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugVaginal")
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugVaginal")
+					elseif StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", TempListIndex) == "PlugAnal" && McmConfig.DDPaPlugsWithBelt
+						StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugAnal")
+						StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugAnal")
+					else
+						if EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", TempListIndex, ""))
+							NumberOfDevicesEquipped += 1
+						endif
+					endif
+				endwhile
+				While NumberOfDevicesEquipped < NumberOfDevicesTotal
+					if StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip") > 0
+						Int TempListIndex = Utility.RandomInt(0, StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip") - 1)
+						if StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", TempListIndex) == "PlugVaginal" && McmConfig.DDPaPlugsWithBelt
+							StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugVaginal")
+							StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugVaginal")
+						elseif StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", TempListIndex) == "PlugAnal" && McmConfig.DDPaPlugsWithBelt
+							StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugAnal")
+							StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugAnal")
+						else
+							if EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", TempListIndex, ""))
+								NumberOfDevicesEquipped += 1
+							else
+							endif
+						endif
+					else
+						NumberOfDevicesEquipped = NumberOfDevicesTotal
+					endif
+				endwhile
+				While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip") > 0
+					if EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", 0, ""))
+					endif
+				endwhile
+				Escape()
+				return
+			endif
 			SendModEvent(CustomEvent)
 		Endif
 		If Restored
@@ -290,3 +654,1476 @@ Event OnUpdate()
 		PlayerScr.Restored()
 	Endif
 EndEvent
+Faction Property FalmerFaction Auto
+Faction Property CreatureFaction Auto
+
+Bool Function CheckCompatability(string EventName)
+	; Defeated
+	; Left For Dead
+	; Simple Slavery
+	; SD+
+	; LeashGame - SimpleSlavery
+	PlayerScr.DefeatLog("[Defeat] - CheckCompatability for " + EventName)
+	Faction ZbfSlaveStateFaction = None
+	if Game.GetModByName("ZaZAnimationPack.esm") != 255
+		ZbfSlaveStateFaction = (Game.GetFormFromFile(0x96b1, "ZaZAnimationPack.esm") As Faction)
+	endif
+	if EventName == "Defeated"
+		if StorageUtil.GetIntValue(PLayer, "_SD_iEnslaved") == 1
+			PlayerScr.DefeatLog("[Defeat] - Defeated not allowed(SD Enslaved)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_CurrentMaster")
+			PlayerScr.DefeatLog("[Defeat] - Defeated not allowed(Leash Framework - Current Master)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_SavedMaster")
+			PlayerScr.DefeatLog("[Defeat] - Defeated not allowed(Leash Framework - Saved Master)")
+			return False
+		elseif Defeat.Zazon == True
+			if Player.GetFactionRank(ZbfSlaveStateFaction) >= 0
+				PlayerScr.DefeatLog("[Defeat] - Defeated not allowed(ZBF Enslaved)")
+				return False
+			endif
+		endif
+	elseif EventName == "Left For Dead"
+		if StorageUtil.GetIntValue(PLayer, "_SD_iEnslaved") == 1
+			PlayerScr.DefeatLog("[Defeat] - Left For Dead not allowed(SD Enslaved)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_CurrentMaster")
+			PlayerScr.DefeatLog("[Defeat] - Left For Dead not allowed(Leash Framework - Current Master)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_SavedMaster")
+			PlayerScr.DefeatLog("[Defeat] - Left For Dead not allowed(Leash Framework - Saved Master)")
+			return False
+		elseif Defeat.Zazon == True
+			if Player.GetFactionRank(ZbfSlaveStateFaction) >= 0
+				PlayerScr.DefeatLog("[Defeat] - Left For Dead not allowed(ZBF Enslaved)")
+				return False
+			endif
+		endif
+	elseif EventName == "Simple Slavery"
+		if StorageUtil.GetIntValue(PLayer, "_SD_iEnslaved") == 1
+			PlayerScr.DefeatLog("[Defeat] - Simple Slavery not allowed(SD Enslaved)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_CurrentMaster")
+			PlayerScr.DefeatLog("[Defeat] - Simple Slavery not allowed(Leash Framework - Current Master)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_SavedMaster")
+			PlayerScr.DefeatLog("[Defeat] - Simple Slavery not allowed(Leash Framework - Saved Master)")
+			return False
+		elseif McmConfig.AllowCreaturePostAssaultSelection != 0
+			if Defeat.LastSceneTheLast
+				if Defeat.LastSceneTheLast.IsInFaction(CreatureFaction)
+					if McmConfig.AllowCreaturePostAssaultSelection == 2
+						PlayerScr.DefeatLog("[Defeat] - Simple Slavery not allowed(No Creatures)")
+						return False
+					elseif McmConfig.AllowCreaturePostAssaultSelection == 1 && !Defeat.LastSceneTheLast.IsInFaction(FalmerFaction)
+						PlayerScr.DefeatLog("[Defeat] - Simple Slavery not allowed(Falmer Only)")
+						return False
+					endif
+				endif
+			endif
+		elseif Defeat.Zazon == True
+			if Player.GetFactionRank(ZbfSlaveStateFaction) >= 0
+				PlayerScr.DefeatLog("[Defeat] - Simple Slavery not allowed(ZBF Enslaved)")
+				return False
+			endif
+		endif
+	elseif EventName == "SD+"
+		if StorageUtil.GetFormValue(none, "LeashFramework_CurrentMaster")
+			PlayerScr.DefeatLog("[Defeat] - SD+ not allowed(Leash Framework - Current Master)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_SavedMaster")
+			PlayerScr.DefeatLog("[Defeat] - SD+ not allowed(Leash Framework - Saved Master)")
+			return False
+		endif
+	elseif EventName == "LeashGame - SimpleSlavery"
+		if StorageUtil.GetIntValue(PLayer, "_SD_iEnslaved") == 1
+			PlayerScr.DefeatLog("[Defeat] - Leash Game - SimpleSlavery not allowed(SD Enslaved)")
+			return False
+		elseif McmConfig.AllowCreaturePostAssaultSelection != 0
+			if Defeat.LastSceneTheLast
+				if Defeat.LastSceneTheLast.IsInFaction(CreatureFaction)
+					if McmConfig.AllowCreaturePostAssaultSelection == 2
+						PlayerScr.DefeatLog("[Defeat] - Leash Game - SimpleSlavery not allowed(No Creatures)")
+						return False
+					elseif McmConfig.AllowCreaturePostAssaultSelection == 1 && !Defeat.LastSceneTheLast.IsInFaction(FalmerFaction)
+						PlayerScr.DefeatLog("[Defeat] - Leash Game - SimpleSlavery not allowed(Falmer Only)")
+						return False
+					endif
+				endif
+			endif
+		elseif Defeat.Zazon == True
+			if Player.GetFactionRank(ZbfSlaveStateFaction) >= 0
+				PlayerScr.DefeatLog("[Defeat] - Leash Game - SimpleSlavery not allowed(ZBF Enslaved)")
+				return False
+			endif
+		endif
+	elseif EventName == "Cursed Loot Equip Devices"
+		if StorageUtil.GetIntValue(PLayer, "_SD_iEnslaved") == 1
+			PlayerScr.DefeatLog("[Defeat] - Cursed Loot Equip Devices not allowed(SD Enslaved)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_CurrentMaster")
+			PlayerScr.DefeatLog("[Defeat] - Cursed Loot Equip Devices not allowed(Leash Framework - Current Master)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_SavedMaster")
+			PlayerScr.DefeatLog("[Defeat] - Cursed Loot Equip Devices not allowed(Leash Framework - Saved Master)")
+			return False
+		elseif McmConfig.AllowCreaturePostAssaultSelection != 0
+			if Defeat.LastSceneTheLast
+				if Defeat.LastSceneTheLast.IsInFaction(CreatureFaction)
+					if McmConfig.AllowCreaturePostAssaultSelection == 2
+						PlayerScr.DefeatLog("[Defeat] - Cursed Loot Equip Devices not allowed(No Creatures)")
+						return False
+					elseif McmConfig.AllowCreaturePostAssaultSelection == 1 && !Defeat.LastSceneTheLast.IsInFaction(FalmerFaction)
+						PlayerScr.DefeatLog("[Defeat] - Cursed Loot Equip Devices not allowed(Falmer Only)")
+						return False
+					endif
+				endif
+			endif
+		elseif Defeat.Zazon == True
+			if Player.GetFactionRank(ZbfSlaveStateFaction) >= 0
+				PlayerScr.DefeatLog("[Defeat] - Cursed Loot Equip Devices not allowed(ZBF Enslaved)")
+				return False
+			endif
+		endif
+	elseif EventName == "Devious Devices Equip Devices"
+		if StorageUtil.GetIntValue(PLayer, "_SD_iEnslaved") == 1
+			PlayerScr.DefeatLog("[Defeat] - Devious Devices Equip Devices not allowed(SD Enslaved)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_CurrentMaster")
+			PlayerScr.DefeatLog("[Defeat] - Devious Devices Equip Devices not allowed(Leash Framework - Current Master)")
+			return False
+		elseif StorageUtil.GetFormValue(none, "LeashFramework_SavedMaster")
+			PlayerScr.DefeatLog("[Defeat] - Devious Devices Equip Devices not allowed(Leash Framework - Saved Master)")
+			return False
+		elseif McmConfig.AllowCreaturePostAssaultSelection != 0
+			if Defeat.LastSceneTheLast
+				if Defeat.LastSceneTheLast.IsInFaction(CreatureFaction)
+					if McmConfig.AllowCreaturePostAssaultSelection == 2
+						PlayerScr.DefeatLog("[Defeat] - Devious Devices Equip Devices not allowed(No Creatures)")
+						return False
+					elseif McmConfig.AllowCreaturePostAssaultSelection == 1 && !Defeat.LastSceneTheLast.IsInFaction(FalmerFaction)
+						PlayerScr.DefeatLog("[Defeat] - Devious Devices Equip Devices not allowed(Falmer Only)")
+						return False
+					endif
+				endif
+			endif
+		elseif Defeat.Zazon == True
+			if Player.GetFactionRank(ZbfSlaveStateFaction) >= 0
+				PlayerScr.DefeatLog("[Defeat] - Devious Devices Equip Devices not allowed(ZBF Enslaved)")
+				return False
+			endif
+		endif
+	endif
+	PlayerScr.DefeatLog("[Defeat] - " + EventName + " Allowed")
+	return True
+EndFunction
+
+bool Function EquipPreferedDevice(String DeviceName)
+	PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceName: " + DeviceName)
+	String DeviceStyle
+	String DeviceColour
+	if DeviceName == "Armbinder"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword ; HeavyBondage
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaArmbinderStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaArmbinderStyle
+			endif
+			if McmConfig.DDPaArmbinderColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaArmbinderColour
+			endif
+			Armor DeviceInventory = DefeatUtil2.GetDDArmbinder(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			return True
+		endif
+	elseif DeviceName == "Gag"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x7EB8, "Devious Devices - Assets.esm") as Keyword ; Gag
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaGagStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaGagStyle
+			endif
+			if McmConfig.DDPaGagColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaGagColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory = DefeatUtil2.GetDDGag(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			return True
+		endif
+	elseif DeviceName == "Suit"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x2AFA3, "Devious Devices - Assets.esm") as Keyword ; Suit
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword ; HeavyBondage
+		Keyword TempDDKeyword3 = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaSuitStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaSuitStyle
+			endif
+			if McmConfig.DDPaSuitColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaSuitColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory = DefeatUtil2.GetDDSuit(DeviceStyle, DeviceColour)
+			Armor DeviceRendered = DefeatUtil2.GetRenderedDevice(DeviceInventory)
+			if  ((DeviceRendered.HasKeyword(TempDDKeyword2) && !Player.WornHasKeyword(TempDDKeyword2) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword2)) || !DeviceRendered.HasKeyword(TempDDKeyword2)) && \
+				((DeviceRendered.HasKeyword(TempDDKeyword3) && !Player.WornHasKeyword(TempDDKeyword3) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword3)) || !DeviceRendered.HasKeyword(TempDDKeyword3))
+				StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+				DefeatUtil2.LockDevice(Player, DeviceInventory)
+				StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x2AFA3, "Devious Devices - Assets.esm") as Keyword)
+				if DeviceRendered.HasKeyword(Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword)
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword)
+				endif
+				return True
+			endif
+		endif
+	elseif DeviceName == "Hood"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x2AFA2, "Devious Devices - Assets.esm") as Keyword ; Hood
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaHoodStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaHoodStyle
+			endif
+			if McmConfig.DDPaHoodColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaHoodColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory = DefeatUtil2.GetDDHood(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			return True
+		endif
+	elseif DeviceName == "Belt"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaChastityBeltStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Belt", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Belt")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Belt", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Belt")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Belt", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaChastityBeltStyle
+			endif
+			DeviceStyle = "Any"
+			if McmConfig.DDPaChastityBeltColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaChastityBeltColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory = DefeatUtil2.GetDDChastityBelt(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			return True
+		endif
+	elseif DeviceName == "Bra"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x3DFA, "Devious Devices - Assets.esm") as Keyword ; Bra
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaChastityBraStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaChastityBraStyle
+			endif
+			DeviceStyle = "Any"
+			if McmConfig.DDPaChastityBraColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaChastityBraColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory = DefeatUtil2.GetDDChastityBra(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			return True
+		endif
+	elseif DeviceName == "Harness"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword ; Harness
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword ; Corset
+		Keyword TempDDKeyword3 = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
+		Keyword TempDDKeyword4 = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+		if  !Player.WornHasKeyword(TempDDKeyword) && !Player.WornHasKeyword(TempDDKeyword2) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword2)
+			if McmConfig.DDPaHarnessStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaHarnessStyle
+			endif
+			if McmConfig.DDPaHarnessColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaHarnessColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			if StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword4)
+				if StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x3DF7, "Devious Devices - Integration.esm") as Keyword)
+					DeviceInventory = DefeatUtil2.GetDDHarnessNoBeltNoCollar(DeviceStyle, DeviceColour)
+				else
+					DeviceInventory = DefeatUtil2.GetDDHarnessNoBelt(DeviceStyle, DeviceColour)
+				endif
+			elseif StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x3DF7, "Devious Devices - Integration.esm") as Keyword)
+				DeviceInventory = DefeatUtil2.GetDDHarnessNoCollar(DeviceStyle, DeviceColour)
+			else
+				DeviceInventory = DefeatUtil2.GetDDHarness(DeviceStyle, DeviceColour)
+			endif
+			;we cant wear both harness or corset (same slot). Adding both keywords
+			Armor DeviceRendered = DefeatUtil2.GetRenderedDevice(DeviceInventory)
+			if  ((DeviceRendered.HasKeyword(TempDDKeyword3) && !Player.WornHasKeyword(TempDDKeyword3)) || !DeviceRendered.HasKeyword(TempDDKeyword3)) && \
+				((DeviceRendered.HasKeyword(TempDDKeyword4) && !Player.WornHasKeyword(TempDDKeyword4)) || !DeviceRendered.HasKeyword(TempDDKeyword4))
+				StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+				DefeatUtil2.LockDevice(Player, DeviceInventory)
+				StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword) ; harness
+				StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword) ; corset
+				if DeviceRendered.HasKeyword(TempDDKeyword4)
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword4)
+				endif
+				if DeviceRendered.HasKeyword(Game.GetFormFromFile(0x3DF7, "Devious Devices - Integration.esm") as Keyword)
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x3DF7, "Devious Devices - Integration.esm") as Keyword)
+				endif
+				return True
+			endif
+		endif
+	elseif DeviceName == "Corset"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword ; Harness
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword ; Corset
+		Keyword TempDDKeyword3 = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
+		Keyword TempDDKeyword4 = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+		if  !Player.WornHasKeyword(TempDDKeyword) && !Player.WornHasKeyword(TempDDKeyword2) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword2)
+			if McmConfig.DDPaCorsetStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaCorsetStyle
+			endif
+			if McmConfig.DDPaCorsetColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaCorsetColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			if StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword4)
+				DeviceInventory = DefeatUtil2.GetDDCorsetNoBelt(DeviceStyle, DeviceColour)
+			else
+				DeviceInventory = DefeatUtil2.GetDDCorset(DeviceStyle, DeviceColour)
+			endif
+			;we cant wear both harness or corset (same slot). Adding both keywords
+			Armor DeviceRendered = DefeatUtil2.GetRenderedDevice(DeviceInventory)
+			if  ((DeviceRendered.HasKeyword(TempDDKeyword3) && !Player.WornHasKeyword(TempDDKeyword3)) || !DeviceRendered.HasKeyword(TempDDKeyword3)) && \
+				((DeviceRendered.HasKeyword(TempDDKeyword4) && !Player.WornHasKeyword(TempDDKeyword4)) || !DeviceRendered.HasKeyword(TempDDKeyword4))
+				StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+				DefeatUtil2.LockDevice(Player, DeviceInventory)
+				StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword) ; corset
+				StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword) ; harness
+				if DeviceRendered.HasKeyword(TempDDKeyword4)
+					StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword4)
+				endif
+				return True
+			endif
+		endif
+	elseif DeviceName == "Collar"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaCollarStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaCollarStyle
+			endif
+			if McmConfig.DDPaCollarColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaCollarColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDCollar(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; Collar
+			return True
+		endif
+	elseif DeviceName == "PlugVaginal"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x1DD7C, "Devious Devices - Assets.esm") as Keyword ; PlugVaginal
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+		if  !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) && \
+			(McmConfig.DDPaPlugsWithBelt == False || (McmConfig.DDPaPlugsWithBelt == True && (Player.WornHasKeyword(TempDDKeyword2) || StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword2))))
+			if McmConfig.DDPaPlugVaginalStyle == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal")
+				DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceStyle = McmConfig.DDPaPlugVaginalStyle
+			endif
+			if McmConfig.DDPaPlugVaginalColour == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + DeviceStyle)
+				DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceColour = McmConfig.DDPaPlugVaginalColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDPlugVaginal(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; PlugVaginal
+			return True
+		endif
+	elseif DeviceName == "PlugAnal"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x1DD7D, "Devious Devices - Assets.esm") as Keyword ; PlugAnal
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) && \
+			(McmConfig.DDPaPlugsWithBelt == False || (McmConfig.DDPaPlugsWithBelt == True && (Player.WornHasKeyword(TempDDKeyword2) || StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword2))))
+			if McmConfig.DDPaPlugAnalStyle == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal")
+				DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceStyle = McmConfig.DDPaPlugAnalStyle
+			endif
+			if McmConfig.DDPaPlugAnalColour == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + DeviceStyle)
+				DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceColour = McmConfig.DDPaPlugAnalColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDPlugAnal(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; PlugAnal
+			return True
+		endif
+	elseif DeviceName == "PiercingVaginal"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x23E70, "Devious Devices - Assets.esm") as Keyword ; PiercingVaginal
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaPiercingVaginalStyle == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingVaginal")
+				DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingVaginal", Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceStyle = McmConfig.DDPaPiercingVaginalStyle
+			endif
+			if McmConfig.DDPaPiercingVaginalColour == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingVaginal_" + DeviceStyle)
+				DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingVaginal_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceColour = McmConfig.DDPaPiercingVaginalColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDPiercingVaginal(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; PiercingVaginal
+			return True
+		endif
+	elseif DeviceName == "PiercingNipple"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0xCA39, "Devious Devices - Assets.esm") as Keyword ; PiercingNipple
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaPiercingNippleStyle == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingNipple")
+				DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingNipple", Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceStyle = McmConfig.DDPaPiercingNippleStyle
+			endif
+			if McmConfig.DDPaPiercingNippleColour == "Any"
+				Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingNipple_" + DeviceStyle)
+				DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingNipple_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+			else
+				DeviceColour = McmConfig.DDPaPiercingNippleColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDPiercingNipple(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; PiercingNipple
+			return True
+		endif
+	elseif DeviceName == "Boots"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x27F29, "Devious Devices - Assets.esm") as Keyword ; Boots
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaBootsStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaBootsStyle
+			endif
+			if McmConfig.DDPaBootsColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaBootsColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDBoots(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; Boots
+			return True
+		endif
+	elseif DeviceName == "Gloves"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x2AFA1, "Devious Devices - Assets.esm") as Keyword ; Gloves
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaGlovesStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaGlovesStyle
+			endif
+			if McmConfig.DDPaGlovesColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaGlovesColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDGloves(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; Gloves
+			return True
+		endif
+	elseif DeviceName == "ArmCuffs"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x3DF9, "Devious Devices - Assets.esm") as Keyword ; ArmCuffs
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaArmCuffsStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaArmCuffsStyle
+			endif
+			if McmConfig.DDPaArmCuffsColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaArmCuffsColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDArmCuffs(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; ArmCuffs
+			return True
+		endif
+	elseif DeviceName == "LegCuffs"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			if McmConfig.DDPaLegCuffsStyle == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle"))
+						DeviceStyle = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs")
+						DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs")
+					DeviceStyle = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceStyle = McmConfig.DDPaLegCuffsStyle
+			endif
+			if McmConfig.DDPaLegCuffsColour == "Any"
+				if McmConfig.DDPaConsistantStyle
+					if StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + DeviceStyle, StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour"))
+						DeviceColour = StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+					else
+						Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + DeviceStyle)
+						DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+					endif
+				else
+					Int TempInt = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + DeviceStyle)
+					DeviceColour = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + DeviceStyle, Utility.RandomInt(1, TempInt - 1))
+				endif
+			else
+				DeviceColour = McmConfig.DDPaLegCuffsColour
+			endif
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDLegCuffs(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; LegCuffs
+			return True
+		endif
+	elseif DeviceName == "ArmShackles"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword ; HeavyBondage
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x63AD9, "Devious Devices - Assets.esm") as Keyword ; CuffsFront
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			DeviceStyle = "Iron"
+			DeviceColour = ""
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDArmShackles(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; ArmShackles
+			return True
+		endif
+	elseif DeviceName == "LegShackles"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x5F4BB, "Devious Devices - Integration.esm") as Keyword ; AnkleShackles
+		if !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+			DeviceStyle = "NoBall"
+			DeviceColour = ""
+			PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+			Armor DeviceInventory
+			DeviceInventory = DefeatUtil2.GetDDLegShackles(DeviceStyle, DeviceColour)
+			StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+			DefeatUtil2.LockDevice(Player, DeviceInventory)
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; LegCuffs
+			return True
+		endif
+	elseif DeviceName == "ArmLegShackles"
+		Keyword TempDDKeyword = Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword ; HeavyBondage
+		Keyword TempDDKeyword2 = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
+		Keyword TempDDKeyword3 = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
+		Keyword TempDDKeyword4 = Game.GetFormFromFile(0x3DF9, "Devious Devices - Assets.esm") as Keyword ; ArmCuffs
+		if  !Player.WornHasKeyword(TempDDKeyword) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword)
+				DeviceStyle = "Iron"
+				DeviceColour = ""
+				PlayerScr.DefeatLog("[Defeat] - EquipPreferedDevice - DeviceStyle:" + DeviceStyle + " DeviceColour: " + DeviceColour)
+				Armor DeviceInventory
+				DeviceInventory = DefeatUtil2.GetDDArmLegShackles(DeviceStyle, DeviceColour)
+				Armor DeviceRendered = DefeatUtil2.GetRenderedDevice(DeviceInventory)
+				if  ((DeviceRendered.HasKeyword(TempDDKeyword2) && !Player.WornHasKeyword(TempDDKeyword2)) || !DeviceRendered.HasKeyword(TempDDKeyword2)) && \
+					((DeviceRendered.HasKeyword(TempDDKeyword3) && !Player.WornHasKeyword(TempDDKeyword3)) || !DeviceRendered.HasKeyword(TempDDKeyword3)) && \
+					((DeviceRendered.HasKeyword(TempDDKeyword4) && !Player.WornHasKeyword(TempDDKeyword4)) || !DeviceRendered.HasKeyword(TempDDKeyword4))
+						StorageUtil.FormListAdd(Player, "zad_libs_ForceSilent", DeviceInventory)
+						DefeatUtil2.LockDevice(Player, DeviceInventory)
+						StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword) ; HeavyBondage
+						if DeviceRendered.HasKeyword(TempDDKeyword2)
+							StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword2)
+						endif
+						if DeviceRendered.HasKeyword(TempDDKeyword3)
+							StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword3)
+						endif
+						if DeviceRendered.HasKeyword(TempDDKeyword4)
+							StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeyword4)
+						endif
+						return True
+				endif
+		endif
+	endif
+	return False
+EndFunction
+
+Function BuildConsistantData()
+	PlayerScr.DefeatLog("[Defeat] - BuildConsistantData - Start")
+	StorageUtil.UnSetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour")
+	StorageUtil.UnSetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle")
+	Int BlackCount = 0
+	Int WhiteCount = 0
+	Int RedCount = 0
+	Int LeatherCount = 0
+	Int EboniteCount = 0
+	Int RopeCount = 0
+	Bool UseEquippedColour = False
+	Bool UseEquippedStyle = False
+	Armor DeviceInventory
+	if StorageUtil.GetFormValue(Player, "zad_Equipped" + "Suit" + "_Inventory")
+		DeviceInventory = StorageUtil.GetFormValue(Player, "zad_Equipped" + "Suit" + "_Inventory") as Armor
+		String DeviceInventoryName = DeviceInventory.GetName()
+		if McmConfig.Language == "English"
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Suit White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Red")
+			endif
+		else
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedLeather) != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedEbonite) != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRope) != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedBlack) != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedWhite) != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Suit White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRed) != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Suit Red")
+			endif
+		endif
+	endif
+	if StorageUtil.GetFormValue(Player, "zad_Equipped" + "StraitJacket" + "_Inventory")
+		DeviceInventory = StorageUtil.GetFormValue(Player, "zad_Equipped" + "StraitJacket" + "_Inventory") as Armor
+		String DeviceInventoryName = DeviceInventory.GetName()
+		if McmConfig.Language == "English"
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Red")
+			endif
+		else
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedLeather) != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedEbonite) != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRope) != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedBlack) != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedWhite) != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRed) != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - StraitJacket Red")
+			endif
+		endif
+	endif
+	if StorageUtil.GetFormValue(Player, "zad_Equipped" + "HobbleSkirt" + "_Inventory")
+		DeviceInventory = StorageUtil.GetFormValue(Player, "zad_Equipped" + "HobbleSkirt" + "_Inventory") as Armor
+		String DeviceInventoryName = DeviceInventory.GetName()
+		if McmConfig.Language == "English"
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Red")
+			endif
+		else
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedLeather) != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedEbonite) != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRope) != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedBlack) != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedWhite) != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRed) != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - HobbleSkirt Red")
+			endif
+		endif
+	endif
+	if StorageUtil.GetFormValue(Player, "zad_Equipped" + "Corset" + "_Inventory")
+		DeviceInventory = StorageUtil.GetFormValue(Player, "zad_Equipped" + "Corset" + "_Inventory") as Armor
+		String DeviceInventoryName = DeviceInventory.GetName()
+		if McmConfig.Language == "English"
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Corset White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Red")
+			endif
+		else
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedLeather) != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedEbonite) != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRope) != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedBlack) != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedWhite) != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Corset White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRed) != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Corset Red")
+			endif
+		endif
+	endif
+	if StorageUtil.GetFormValue(Player, "zad_Equipped" + "Harness" + "_Inventory")
+		DeviceInventory = StorageUtil.GetFormValue(Player, "zad_Equipped" + "Harness" + "_Inventory") as Armor
+		String DeviceInventoryName = DeviceInventory.GetName()
+		if McmConfig.Language == "English"
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Harness White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Red")
+			endif
+		else
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedLeather) != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedEbonite) != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRope) != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedBlack) != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedWhite) != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Harness White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRed) != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Harness Red")
+			endif
+		endif
+	endif
+	if StorageUtil.GetFormValue(Player, "zad_Equipped" + "Gloves" + "_Inventory")
+		DeviceInventory = StorageUtil.GetFormValue(Player, "zad_Equipped" + "Gloves" + "_Inventory") as Armor
+		String DeviceInventoryName = DeviceInventory.GetName()
+		if McmConfig.Language == "English"
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Red")
+			endif
+		else
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedLeather) != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedEbonite) != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRope) != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedBlack) != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedWhite) != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRed) != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Gloves Red")
+			endif
+		endif
+	endif
+	if StorageUtil.GetFormValue(Player, "zad_Equipped" + "Boots" + "_Inventory")
+		DeviceInventory = StorageUtil.GetFormValue(Player, "zad_Equipped" + "Boots" + "_Inventory") as Armor
+		String DeviceInventoryName = DeviceInventory.GetName()
+		if McmConfig.Language == "English"
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Boots White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Red")
+			endif
+		else
+			if StringUtil.Find(DeviceInventoryName, "Leather") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedLeather) != -1
+				LeatherCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Leather")
+			elseif StringUtil.Find(DeviceInventoryName, "Ebonite") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedEbonite) != -1
+				EboniteCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Ebonite")
+			elseif StringUtil.Find(DeviceInventoryName, "Rope") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRope) != -1
+				RopeCount += 1
+				UseEquippedStyle = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Rope")
+			endif
+			if StringUtil.Find(DeviceInventoryName, "Black") != -1 || StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedBlack) != -1
+				BlackCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Black")
+			elseif StringUtil.Find(DeviceInventoryName, "White") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedWhite) != -1
+				WhiteCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Boots White")
+			elseif StringUtil.Find(DeviceInventoryName, "Red") != -1 ||  StringUtil.Find(DeviceInventoryName, McmConfig.LocalisedRed) != -1
+				RedCount += 1
+				UseEquippedColour = True
+				PlayerScr.DefeatLog("[Defeat] - Boots Red")
+			endif
+		endif
+	endif
+	if UseEquippedColour == False
+		If McmConfig.DDPaSuitColour == "Black"
+			BlackCount += 1
+		elseIf McmConfig.DDPaSuitColour == "White"
+			WhiteCount += 1
+		elseIf McmConfig.DDPaSuitColour == "Red"
+			RedCount += 1
+		endif
+		If McmConfig.DDPaHoodColour == "Black"
+			BlackCount += 1
+		elseIf McmConfig.DDPaHoodColour == "White"
+			WhiteCount += 1
+		elseIf McmConfig.DDPaHoodColour == "Red"
+			RedCount += 1
+		endif
+		If McmConfig.DDPaHarnessColour == "Black"
+			BlackCount += 1
+		elseIf McmConfig.DDPaHarnessColour == "White"
+			WhiteCount += 1
+		elseIf McmConfig.DDPaHarnessColour == "Red"
+			RedCount += 1
+		endif
+		If McmConfig.DDPaCorsetColour == "Black"
+			BlackCount += 1
+		elseIf McmConfig.DDPaCorsetColour == "White"
+			WhiteCount += 1
+		elseIf McmConfig.DDPaCorsetColour == "Red"
+			RedCount += 1
+		endif
+		If McmConfig.DDPaBootsColour == "Black"
+			BlackCount += 1
+		elseIf McmConfig.DDPaBootsColour == "White"
+			WhiteCount += 1
+		elseIf McmConfig.DDPaBootsColour == "Red"
+			RedCount += 1
+		endif
+		If McmConfig.DDPaGlovesColour == "Black"
+			BlackCount += 1
+		elseIf McmConfig.DDPaGlovesColour == "White"
+			WhiteCount += 1
+		elseIf McmConfig.DDPaGlovesColour == "Red"
+			RedCount += 1
+		endif
+	endif
+	if UseEquippedStyle == False
+		If McmConfig.DDPaHarnessStyle == "Leather"
+			LeatherCount += 1
+		elseIf McmConfig.DDPaHarnessStyle == "Ebonite"
+			EboniteCount += 1
+		elseIf McmConfig.DDPaHarnessStyle == "Rope"
+			RopeCount += 1
+		endif
+		If McmConfig.DDPaCorsetStyle == "Leather"
+			LeatherCount += 1
+		elseIf McmConfig.DDPaCorsetStyle == "Ebonite"
+			EboniteCount += 1
+		elseIf McmConfig.DDPaCorsetStyle == "Rope"
+			RopeCount += 1
+		endif
+		If McmConfig.DDPaBootsStyle == "Leather"
+			LeatherCount += 1
+		elseIf McmConfig.DDPaBootsStyle == "Ebonite"
+			EboniteCount += 1
+		elseIf McmConfig.DDPaBootsStyle == "Rope"
+			RopeCount += 1
+		endif
+		If McmConfig.DDPaGlovesStyle == "Leather"
+			LeatherCount += 1
+		elseIf McmConfig.DDPaGlovesStyle == "Ebonite"
+			EboniteCount += 1
+		elseIf McmConfig.DDPaGlovesStyle == "Rope"
+			RopeCount += 1
+		endif
+	endif
+	Int TotalCount = BlackCount + WhiteCount + RedCount
+	PlayerScr.DefeatLog("[Defeat] - TotalCount: " + TotalCount)
+	PlayerScr.DefeatLog("[Defeat] - BlackCount: " + BlackCount)
+	PlayerScr.DefeatLog("[Defeat] - WhiteCount: " + WhiteCount)
+	PlayerScr.DefeatLog("[Defeat] - RedCount: " + RedCount)
+	if TotalCount > 0
+		Int RandomInt = Utility.RandomInt(1, TotalCount)
+		if RandomInt <= BlackCount
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "Black")
+			PlayerScr.DefeatLog("[Defeat] - Black")
+		else
+			RandomInt -= BlackCount
+		endif
+		if (RandomInt <= WhiteCount) && StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "") == ""
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "White")
+			PlayerScr.DefeatLog("[Defeat] - White")
+		elseif StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "") == ""
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "Red")
+			PlayerScr.DefeatLog("[Defeat] - Red")
+		endif
+	else
+		Int RandomInt = Utility.RandomInt(0, 2)
+		if RandomInt == 0
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "Black")
+			PlayerScr.DefeatLog("[Defeat] - Random Black")
+		elseif RandomInt == 1
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "White")
+			PlayerScr.DefeatLog("[Defeat] - Random White")
+		elseif RandomInt == 2
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantColour", "Red")
+			PlayerScr.DefeatLog("[Defeat] - Random Red")
+		endif
+	endif
+	TotalCount = LeatherCount + EboniteCount + RopeCount
+	PlayerScr.DefeatLog("[Defeat] - TotalCount: " + TotalCount)
+	PlayerScr.DefeatLog("[Defeat] - LeatherCount: " + LeatherCount)
+	PlayerScr.DefeatLog("[Defeat] - EboniteCount: " + EboniteCount)
+	PlayerScr.DefeatLog("[Defeat] - RopeCount: " + RopeCount)
+	if TotalCount > 0
+		Int RandomInt = Utility.RandomInt(1, TotalCount)
+		if RandomInt <= LeatherCount
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "Leather")
+			PlayerScr.DefeatLog("[Defeat] - Leather")
+		else
+			RandomInt -= LeatherCount
+		endif
+		if (RandomInt <= EboniteCount) && StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "") == ""
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "Ebonite")
+			PlayerScr.DefeatLog("[Defeat] - Ebonite")
+		elseif StorageUtil.GetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "") == ""
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "Rope")
+			PlayerScr.DefeatLog("[Defeat] - Rope")
+		endif
+	else
+		Int RandomInt = Utility.RandomInt(0, 2)
+		if RandomInt == 0
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "Leather")
+			PlayerScr.DefeatLog("[Defeat] - Random Leather")
+		elseif RandomInt == 1
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "Ebonite")
+			PlayerScr.DefeatLog("[Defeat] - Random Ebonite")
+		elseif RandomInt == 2
+			StorageUtil.SetStringValue(none, "Defeat_LRGPatch_PostAssault_TempData_ConsistantStyle", "Rope")
+			PlayerScr.DefeatLog("[Defeat] - Random Rope")
+		endif
+	endif
+	PlayerScr.DefeatLog("[Defeat] - BuildConsistantData - End")
+EndFunction

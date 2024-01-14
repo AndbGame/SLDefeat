@@ -120,7 +120,7 @@ Function Install()
 	MiscScenes[1] = (GetFormFromFile(0xABD69, "SexLabDefeat.esp") As Scene) ; SCEscape
 	MiscScenes[2] = (GetFormFromFile(0xBD0C9, "SexLabDefeat.esp") As Scene) ; SCRobbing
 	MiscScenes[3] = none;(GetFormFromFile(0xB54B2, "SexLabDefeat.esp") As Scene) ; SCCollateral
-	ComeOverHereSPL = (GetFormFromFile(0x3145ED4, "SexLabDefeat.esp") As Spell)
+	ComeOverHereSPL = (GetFormFromFile(0x145ED4, "SexLabDefeat.esp") As Spell)						;Bane Fixed ID 05/11/2023
 	ComeOverHereAlias = (GetOwningQuest().GetAliasByName("ComeOverHere") As ReferenceAlias)
 EndFunction
 Function Uninstall()
@@ -136,6 +136,9 @@ Function Hkrefresh()
 	RegisterForKey(RessConfig.HotKeyInts[3]) ; Surrender key
 EndFunction
 State Inactive
+	;Event OnBeginState()
+	;	("State -> " + GetState())
+	;EndEvent
 EndState
 
 String Property ForcedScene = "" Auto Hidden
@@ -161,6 +164,7 @@ Function SceneSettings( String ForceScenario = "",	String ForceEvent = "",		Int 
 			Scenario = McmConfig.KDScenario
 		Endif
 	Endif
+	SetStringValue(Player, "defeat_Scenario", scenario) ;Bane 08/01/2023 Save Scenario for use in DefeatPlayerFollowerScr.psc 
 	If (ForcePostAssaultOnly == 3)
 		AllowPostAssaultOnly = False
 	Else
@@ -210,7 +214,16 @@ Function SetAutoResist(Bool OnOff = True)
 EndFunction
 Function TriggerBleedOut()
 EndFunction
+
+Function ProcessOnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
+EndFunction
+
+Bool OnHitBusy = False
 State Running
+	;Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+	;EndEvent
+
 	Function TriggerBleedOut()
 		If McmConfig.PlayerEssential && LastHitAggressor && CheckAggressor(LastHitAggressor) && (LastHitAggressor.GetDistance(Player) < FarMaxDist) && DefeatTriggerActive(LastHitAggressor)
 			Player.RestoreActorValue("Health", ((Player.GetActorValuePercentage("Health") * 100) - 80))
@@ -222,6 +235,16 @@ State Running
 		Endif
 	EndFunction
 	Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
+		if !OnHitBusy
+			ProcessOnHit(akAggressor, akSrc, akProjectile, abPowerAttack, abSneakAttack, abBashAttack, abHitBlocked)
+		else
+			DefeatLog("[Defeat] - DefeatPlayer - Running - OnHit - Busy")
+		endif
+	EndEvent
+	
+	Function ProcessOnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
+		DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Start")
+		OnHitBusy = True
 		Actor Aggressor = (akAggressor As Actor)
 		If Aggressor
 			LastHitAggressor = Aggressor
@@ -242,15 +265,23 @@ State Running
 								TheKnockDown(Aggressor)
 							Endif
 							Detect.Stop()
+							OnHitBusy = False
+							DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Finish")
 							Return
 						Endif
 					Endif
 				Endif
-				Wait(2.0)
+			 
 				SpamGuard = False
 			Endif
 		Endif
-	EndEvent
+		if akProjectile
+			Utility.Wait(2)
+		endif
+		DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Finish")
+		OnHitBusy = False
+	EndFunction
+	
 	Event OnKeyDown(Int KeyCode)
 		If (KeyCode == RessConfig.HotKeyInts[3]) ; Surrender key
 			If !SSpamGuard
@@ -304,6 +335,9 @@ Function Surrender()
 			RessConfig.DefeatMoan(Player, TheNext, "Flee", AllowPlayerCommentary)
 			Player.SheatheWeapon()
 			Restored()
+			if DynamicWydgetOn
+				StartDynamicWidget(False)
+			endif
 			Return
 		Endif
 		RessConfig.WasAnEnemy = (TheNext.GetFactionReaction(Player) == 1) ; 0: Neutral / 1: Enemy / 2: Ally / 3: Friend
@@ -335,6 +369,9 @@ Function Surrender()
 			RessConfig.DefeatPlayAnimation(Player, "Surrender")
 			GoToState("Downed")
 			EnablePlayerControls(1, 0, 0, 0, 0, 0, 0, 0) ; To display the hud
+			if DynamicWydgetOn
+				StartDynamicWidget(False)
+			endif
 			Detect.Stop()
 			Return
 		Elseif (IsCreature && RessConfig.SexCombination(TheNext, Player, True))
@@ -368,6 +405,9 @@ Function Surrender()
 				GoToState("Downed")
 			Endif
 			EnablePlayerControls(1, 0, 0, 0, 0, 0, 0, 0) ; To display the hud
+			if DynamicWydgetOn
+				StartDynamicWidget(False)
+			endif
 			Detect.Stop()
 			Return
 		Else
@@ -387,6 +427,7 @@ State ForceGreetWait																			;===== ForceGreetWait
 	Event OnBeginState()
 		Time = -1.0
 		RegisterForSingleUpdate(1.0)
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 	EndEvent
 	Event OnUpdate()
 		Time += 1
@@ -402,6 +443,7 @@ State ForceGreetWait																			;===== ForceGreetWait
 EndState
 
 Function KnockDownQTE(Actor Aggressor)
+	DefeatLog("[Defeat] - DefeatPlayer - KnockDownQTE")
 	If (!Player.HasKeywordString("ActorTypeNPC") || IsVampireLord())
 		TheKnockDown(Aggressor)
 	Else
@@ -448,6 +490,7 @@ Function KnockDownQTEFail(Actor Aggressor)
 	Endif
 Endfunction
 Function TheKnockDown(Actor Aggressor = None)
+	DefeatLog("[Defeat] - DefeatPlayer - TheKnockDown")
 ;	PlayerBase.SetInvulnerable(True)
 	ForceThirdPerson()
 	PlayerFaction.ForceRefTo(Player)
@@ -465,6 +508,9 @@ Function TheKnockDown(Actor Aggressor = None)
 		Wait(0.5)
 		NoTrans = True
 		TheNext = Aggressor
+		Actor[] Positions = New Actor[2]
+		Positions[0] = Player
+		Positions[1] = TheNext
 		If (McmConfig.NoTranAutoResist && !IsCreature && (TheNext.GetDistance(Player) < 500.0) && RessConfig.SexInterest(TheNext, True, False))
 			EnablePlayerControls(1, 0, 0, 0, 0, 0, 0, 0) ; To display the hud
 			RessConfig.StruggleSceneTrigger(TheNext, Player, "Player Victim")
@@ -474,22 +520,46 @@ Function TheKnockDown(Actor Aggressor = None)
 			If !IsCreature
 				String AnimationSet
 				If Tied
-					Anims = SexLab.GetAnimationsByTags(2, McmConfig.TiedTagPvic, McmConfig.TiedSupressTagPvic, McmConfig.TiedRequireAllTagPvic)
+					if !RapeItemsUnequipped && RessConfig.DDon
+						RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+					endif
+					if McmConfig.UseDDFilter && RessConfig.DDon
+						Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.TiedTagPvic, McmConfig.TiedSupressTagPvic, McmConfig.TiedRequireAllTagPvic)
+					else
+						Anims = SexLab.GetAnimationsByTags(2, McmConfig.TiedTagPvic, McmConfig.TiedSupressTagPvic, McmConfig.TiedRequireAllTagPvic)
+					endif
 					AnimationSet = "TiedPvic"
 				Endif
 				If (Anims.length == 0)
 					Int GenderCombination = RessConfig.GenderCombination(Player, TheNext)
 					If (GenderCombination == 2)
-						Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoMTagPvic, McmConfig.FoMSupressTagPvic, McmConfig.FoMRequireAllTagPvic)
+						if !RapeItemsUnequipped && RessConfig.DDon
+							RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+						endif
+						if McmConfig.UseDDFilter && RessConfig.DDon
+							Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.FoMTagPvic, McmConfig.FoMSupressTagPvic, McmConfig.FoMRequireAllTagPvic)
+						else
+							Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoMTagPvic, McmConfig.FoMSupressTagPvic, McmConfig.FoMRequireAllTagPvic)
+						endif
 						AnimationSet = "FoMPvic"
 					Elseif (GenderCombination == 3)
-						Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoFTagPvic, McmConfig.FoFSupressTagPvic, McmConfig.FoFRequireAllTagPvic)
+						if !RapeItemsUnequipped && RessConfig.DDon
+							RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+						endif
+						if McmConfig.UseDDFilter && RessConfig.DDon
+							Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.FoFTagPvic, McmConfig.FoFSupressTagPvic, McmConfig.FoFRequireAllTagPvic)
+						else
+							Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoFTagPvic, McmConfig.FoFSupressTagPvic, McmConfig.FoFRequireAllTagPvic)
+						endif
 						AnimationSet = "FoFPvic"
 					Endif
 				Endif
 				If (Anims.length == 0)
 					AnimationSet = "RapePvic"
 				Endif
+				if !RapeItemsUnequipped && RessConfig.DDon
+					RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+				endif
 				TheRape = RessConfig.SexLabScene(Player, TheNext, CustomAnimations = Anims, Tags = McmConfig.RapeTagPvic, SupressTags = McmConfig.RapeSupressTagPvic, TagsRequireAll = McmConfig.RapeRequireAllTagPvic, FemaleFirst = AnimationSet)
 			Else
 				TheRape = RessConfig.SexLabScene(Player, TheNext, CustomAnimations = Anims, Tags = McmConfig.CreatureTagPvic, SupressTags = McmConfig.CreatureSupressTagPvic, TagsRequireAll = McmConfig.CreatureRequireAllTagPvic)
@@ -560,6 +630,8 @@ EndFunction
 
 State KnockedOut
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+		DefeatLog("[Defeat] - DefeatPlayer - KnockedOut - OnBeginState")
 		IsQTEKD = True ; for the player to use stand animation to get up in restored function
 		DownedTime = 15.0
 		Time = 0.0
@@ -607,15 +679,28 @@ Function KnockoutProceed()
 			sslBaseAnimation[] Anims
 			sslThreadModel TheRape
 			String AnimationSet
+			Actor[] Positions = new Actor[2]
+			Positions[0] = Player
+			Positions[1] = TheNext
 			If !AddOne
 				If !IsCreature
 					If (Anims.length == 0)
-						Anims = SexLab.GetAnimationsByTags(2, McmConfig.KOTagPvic, McmConfig.KOSupressTagPvic, McmConfig.KORequireAllTagPvic)
+						if !RapeItemsUnequipped && RessConfig.DDon
+							RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+						endif
+						if McmConfig.UseDDFilter && RessConfig.DDon
+							Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.KOTagPvic, McmConfig.KOSupressTagPvic, McmConfig.KORequireAllTagPvic)
+						else
+							Anims = SexLab.GetAnimationsByTags(2, McmConfig.KOTagPvic, McmConfig.KOSupressTagPvic, McmConfig.KORequireAllTagPvic)
+						endif
 						AnimationSet = "KOPvic"
 					Endif
 					If (Anims.length == 0)
 						AnimationSet = "RapePvic"
 					Endif
+					if !RapeItemsUnequipped && RessConfig.DDon
+						RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+					endif
 					TheRape = RessConfig.SexLabScene(Player, TheNext, AddOne, AddTwo, AddThree, CustomAnimations = Anims, Tags = McmConfig.RapeTagPvic, SupressTags = McmConfig.RapeSupressTagPvic, TagsRequireAll = McmConfig.RapeRequireAllTagPvic, FemaleFirst = AnimationSet)
 				Else
 					TheRape = RessConfig.SexLabScene(Player, TheNext, AddOne, AddTwo, AddThree, CustomAnimations = Anims, Tags = McmConfig.CreatureTagPvic, SupressTags = McmConfig.CreatureSupressTagPvic, TagsRequireAll = McmConfig.CreatureRequireAllTagPvic)
@@ -628,11 +713,17 @@ Function KnockoutProceed()
 					Elseif AddTwo
 						ActorCount = 4
 					Endif
+					if !RapeItemsUnequipped && RessConfig.DDon
+						RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+					endif
 					Anims = SexLab.GetAnimationsByTags(ActorCount, McmConfig.KOTagPvic, McmConfig.KOSupressTagPvic, McmConfig.KORequireAllTagPvic)
 					AnimationSet = "KOPvic"
 					If (Anims.length == 0)
 						AnimationSet = "MultPvic"
 					Endif
+					if !RapeItemsUnequipped && RessConfig.DDon
+						RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+					endif
 					TheRape = RessConfig.SexLabScene(Player, TheNext, AddOne, AddTwo, AddThree, CustomAnimations = Anims, Tags = McmConfig.MultipleTagPvic, SupressTags = McmConfig.MultipleSupressTagPvic, TagsRequireAll = McmConfig.MultipleRequireAllTagPvic, FemaleFirst = AnimationSet)
 				Else
 					TheRape = RessConfig.SexLabScene(Player, TheNext, AddOne, AddTwo, AddThree, CustomAnimations = Anims, Tags = McmConfig.CreatureTagPvic, SupressTags = McmConfig.CreatureSupressTagPvic, TagsRequireAll = McmConfig.CreatureRequireAllTagPvic)
@@ -804,6 +895,55 @@ Bool Function KDWay(Actor Aggressor, Bool PowerAttack, Form HitSource, Bool Bloc
 					Endif
 				Endif
 			Endif
+			If McmConfig.KDWayVulnerability ; Vulnerability
+				If Blocked && McmConfig.KDVulnerabilityBlock
+					Return False
+				Endif
+				float PlayerVulnerability
+				if RessConfig.DeviousFrameworkON && McmConfig.KDWayVulnerabilityUseDFW
+					PlayerVulnerability = DefeatUtil2.DFW_GetVulnerability(Player)
+				else
+					PlayerVulnerability = DefVulnScr.Vulnerability_Total
+				endif
+				If OnlyBack(McmConfig.KDWayVulnerabilityOB, Aggressor)
+					If ((RandomInt(1, 100) <= McmConfig.ChanceOnHitPvicVulnerability) && (PlayerVulnerability >= McmConfig.VulnerabilityPvic))
+						IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutVulnerabilityPvic) && !RessConfig.Tied(Player)
+						if HitSource.GetType() == 41
+							if Aggressor.IsEquipped(HitSource)
+								If !IsKnockout
+									StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleVulnerabilityPvic)
+								Endif
+								Return True
+							endif
+						elseif HitSource.GetType() == 22
+							if Aggressor.IsEquipped(HitSource)
+								If !IsKnockout
+									StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleVulnerabilityPvic)
+								Endif
+								Return True
+							endif
+						endif
+					Endif
+				Endif
+			Endif
+			If McmConfig.KDWayDynamic ; Dynamic
+				Float DefeatAmount = CalculateWidget(PowerAttack, Aggressor, HitSource, Blocked)
+				if !DynamicWydgetOn
+					StartDynamicWidget(True)
+					UpdateDynamicWidget(DefeatAmount)
+				else
+					UpdateDynamicWidget(DefeatAmount)
+				endif
+				if StruggleBar.Percent >= 1.0
+;					debug.messagebox("Done")
+					StartDynamicWidget(False)
+					IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutDynamicPvic) && !RessConfig.Tied(Player)
+					If !IsKnockout
+						StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleDynamicPvic)
+					endif
+					return True
+				endif
+			endif
 			If PowerAttack
 				If McmConfig.KDWayPowerAtk ; Stun
 					If Blocked && McmConfig.KDPowerABlock
@@ -844,6 +984,7 @@ Bool Function CheckActor(Actor Target = None)
 			TheAggressors[i].Clear()
 			NumAgg -= 1
 			DefeatConfig.Log("CheckActor Remove aggressor - "+Target+" / Slot - "+i)
+			FormListRemove(Player, "defeat_SceneAggressors", Target) ;Bane 08/01/2023 Remove from Non-Volatile Scene Aggressor List
 			Return False
 		Endif
 		i = Accomplices.Find(Target)
@@ -851,12 +992,16 @@ Bool Function CheckActor(Actor Target = None)
 			Accomplices[i] = None
 			TheAggressors[i + 5].Clear()
 			DefeatConfig.Log("CheckActor Remove accomplice - "+Target+" / Slot - "+i)
+			FormListRemove(Player, "defeat_SceneAccomplices", Target) ;Bane 08/01/2023 Remove from Non-Volatile Scene Accomplice List
 			Return False
 		Endif
 	Endif
 	Return True
 EndFunction
 Bool Function CheckAggressor(Actor Aggressor)
+	if StorageUtil.FormListHas(none, "Defeat_IgnoreActor_OnHit", Aggressor)
+		Return False
+	endif
 	If (IsSurrender || McmConfig.EveryonePvic)
 		Return True
 	Else
@@ -893,6 +1038,8 @@ Bool Function IsVampireLord()
 EndFunction
 ;=============================================================================================================================== NPCS HANDLING
 Function SetAggressors(Actor Agg = None)
+	FormListClear(Player, "defeat_SceneAggressors") 				;Bane 08/01/2023 Reset Non-Volatile scene aggressor and accomplice lists
+	FormListClear(Player, "defeat_SceneAccomplices")				
 	If (Agg && Aggressors.Find(Agg) == -1)
 		AddAggressor(Agg, 0)
 	Endif
@@ -905,6 +1052,7 @@ Function SetAggressors(Actor Agg = None)
 				Int Slot = Aggressors.Find(None)
 				If (RessConfig.SexCombination(Reference, Player, True) && (Slot != -1))
 					Aggressors[Slot] = Reference
+					FormListAdd(Player, "defeat_SceneAggressors", Reference, False) ;Bane 08/01/2023 Setting Non-Volatile Scene aggressor List
 					TheAggressors[Slot].ForceRefTo(Reference)
 					DefeatConfig.Log("SetAggressors Aggressor / Slot filled - "+Slot+" // Aggressor -> "+Aggressors[Slot])
 					Reference.EvaluatePackage()
@@ -912,6 +1060,7 @@ Function SetAggressors(Actor Agg = None)
 					Slot = Accomplices.Find(None)
 					If (Slot != -1)
 						Accomplices[Slot] = Reference
+						FormListAdd(Player, "defeat_SceneAccomplices", Reference, False) ;Bane 08/01/2023 Setting Non-Volatile Scene accomplice List
 						TheAggressors[Slot + 5].ForceRefTo(Reference)
 						DefeatConfig.Log("SetAggressors Accomplices / Slot filled - "+Slot+" // Accomplice -> "+Accomplices[Slot])
 						Reference.EvaluatePackage()
@@ -926,13 +1075,15 @@ Function SetAggressors(Actor Agg = None)
 EndFunction
 Function SetFollowers()
 	Int i
+	FormListClear(Player, "defeat_SceneFollowers")				;Bane 08/01/2023 Reset Non-Volatile Scene Follower List
 	While (i < 5)
 		Actor Reference = (DParts[i].GetReference() As Actor)
 		If Reference
 			Followers[i] = Reference
+			FormListAdd(Player, "defeat_SceneFollowers", Reference, False) ;Bane 08/01/2023 Setting Non-Volatile Scene Follower List
 			TheFollowers[i].ForceRefTo(Reference)
-			DefeatConfig.Log("SetFollowers / Slot filled - "+i+" // Follower - "+Followers[i])
 			String TheState = RessConfig.VictimState(Reference)
+			DefeatConfig.Log("SetFollowers / Slot filled - "+i+" // Follower - "+Followers[i] + " in  State '" + TheState +"'")
 			If (TheState == "") ; The follower is doing well
 				If (IsSurrender && McmConfig.FollowerSurrender)
 					RessConfig.Surrender(Followers[i])
@@ -940,22 +1091,27 @@ Function SetFollowers()
 					Int n
 					While (n < 5)
 						If (Aggressors[n] && CheckActor(Aggressors[n]) && !Aggressors[n].GetAnimationVariableBool("bIsSynced"))
-;							DefeatConfig.Log(Aggressors[n]+" attacks "+Reference)
+							DefeatConfig.Log(Aggressors[n]+" attacks "+Reference) ;!!!
 							Aggressors[n].StartCombat(Reference)
 							Reference.StartCombat(Aggressors[n])
+						ElseIf !CheckActor(Accomplices[n])
+							DefeatConfig.Log(Aggressors[n]+" Failed CheckActor");!!!!
 						Endif
 						If (Accomplices[n] && CheckActor(Accomplices[n]))
+							DefeatConfig.Log(Accomplices[n]+" attacks "+Reference) ;!!!
 							Accomplices[n].StartCombat(Reference)
 							Reference.StartCombat(Accomplices[n])
+						ElseIf !CheckActor(Accomplices[n])
+							DefeatConfig.Log(Accomplices[n]+" Failed CheckActor");!!!!
 						Endif
 						n += 1
 					EndWhile
 				Else ; "Original" scenario, every follower gets knocked down
-					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Player Victim")
+					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Follower")
 				Endif
 			Else
 				If (TheState == "BleedOut")
-					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Player Victim")
+					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Follower")
 				Endif
 			Endif
 		Endif
@@ -967,22 +1123,38 @@ Function KnockdownFollowers()
 	Int i
 	While (i < 5)
 		If Followers[i]
-			RessConfig.Knockdown(Followers[i], Duration = 60.0, Type = "Player Victim")
+			RessConfig.Knockdown(Followers[i], Duration = 60.0, Type = "Follower")
 		EndIf
 		i += 1
 	EndWhile
 EndFunction
 ;=============================================================================================================================== NPCS HANDLING
 Bool Function StillFighting()
+	Actor VictimAgg
+	Actor VictimAcc
 	Int i
 	While (i < 5)
 		If (Aggressors[i] && Aggressors[i].IsInCombat()) || (Accomplices[i] && Accomplices[i].IsInCombat()) || (Followers[i] && Followers[i].IsInCombat())
+		;	CheckValidTarget(Aggressors[i])
+		;	CheckValidTarget(Accomplices[i])
 			Return True
 		Endif
 		i += 1
 	EndWhile
 	Return False
 EndFunction
+
+Function CheckValidTarget(Actor akAggressor)
+	If akAggressor
+		Actor akVictim = akAggressor.GetCombatTarget()
+		If akVictim != Player && GetStringValue(akVictim, "DefeatState") == "Knockdown" ;This is a knocked down NPC - Stop hitting them!
+			akVictim.StopCombatAlarm()
+			;akAggressor.StopCombat()
+			;akAggressor.SetAlert()
+		Endif
+	EndIf
+EndFunction
+
 Actor Function IsThereGuard()
 	Int i
 	While (i < 5)
@@ -1026,6 +1198,7 @@ State Downed																					;===== STATE DOWNED
 		Endif
 	EndEvent
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		DownedTime = 15.0
 		Time = 0.0
 		IsBar = AllowResist
@@ -1145,6 +1318,7 @@ State MightRecover																			    ;===== STATE MIGHT RECOVER
 		Endif
 	EndEvent
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		Tied = RessConfig.Tied(Player) ; Check if the player is tied
 		TheLast = Aggressors[0]
 		If (!Aggressors[0] && Accomplices[0])
@@ -1156,6 +1330,7 @@ State MightRecover																			    ;===== STATE MIGHT RECOVER
 		Time += 1.0
 ;		DefeatConfig.Log("MightRecover / Time -> "+Time+" / DownedTime - "+DownedTime+" / TheNext -> "+TheNext)
 		If SetNextAgg()
+			;ConsoleUtil.PrintMessage("Agg: " + TheNext + "  -> Defeat Distance to Player = " + TheNext.GetDistance(Player) + " must be < " + Dist(TheNext) + " && !IsinCombat = " + !TheNext.IsInCombat())
 			If (IsBar && (StruggleBar.Percent >= 1.0)) ; Bar filled, player get up, only if resist bar is enabled.
 				StruggleBar(False)
 				Restored()
@@ -1219,6 +1394,7 @@ State Escape																					;===== STATE ESCAPE
 		Endif
 	EndEvent
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		FillThreshold = 0.060	
 		StruggleBar()
 		RegisterForSingleUpdate(1.0)
@@ -1248,6 +1424,7 @@ State Escape																					;===== STATE ESCAPE
 EndState
 State Flee
 	Event OnUpdate()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		MiscScenes[1].Stop() ; SCEscape
 	EndEvent
 EndState
@@ -1259,6 +1436,7 @@ State AssaultMode 																				;===== STATE ASSAULT MODE
 		Endif
 	EndEvent
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		RegisterForSingleUpdate(0.50)
 	EndEvent
 	Event OnUpdate()
@@ -1318,7 +1496,7 @@ State AssaultMode 																				;===== STATE ASSAULT MODE
 						Wait(1.5)
 					Endif
 					If RessConfig.AWitness
-						RessConfig.UILib.ShowNotification("${"+RessConfig.AWitness.GetLeveledActorBase().GetName()+"} witnesses what is happenning.", "#CD4C4C")
+						RessConfig.UILib.ShowNotification("${"+RessConfig.AWitness.GetLeveledActorBase().GetName()+"} notices what is happening!", "#CD4C4C")
 						RessConfig.DefeatMoan(RessConfig.AWitness, Player, "Witness")
 						Wait(2.0)
 						RessConfig.MiscSpells[5].Cast(RessConfig.AWitness, Player) ; ImmunitySPL, forces the player to use the escape event
@@ -1369,6 +1547,7 @@ State Pursuit
 		Endif
 	EndEvent
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		Time = -1.0
 		RegisterForSingleUpdate(1.0)
 	EndEvent
@@ -1393,6 +1572,9 @@ State Pursuit
 	EndEvent
 EndState
 Function PostAssault()
+	if RapeItemsUnequipped == True
+		RapeReequipDevices(Player)
+	endif
 ;	RessConfig.DefeatMoan(Player, Player, "Flee", McmConfig.CommentsPvic)
 	Player.SetAnimationVariableBool("bSprintOK", True)
 	If !IsKnockout
@@ -1459,23 +1641,54 @@ Function PreDownRape()
 	sslBaseAnimation[] Anims
 	sslThreadModel TheRape
 	String AnimationSet
+	Actor[] Positions = new Actor[2]
+	Positions[0] = Player
+	Positions[1] = TheNext
 	If !AddOne
 		If !IsCreature
 			If IsKnockout
-				Anims = SexLab.GetAnimationsByTags(2, McmConfig.KOTagPvic, McmConfig.KOSupressTagPvic, McmConfig.KORequireAllTagPvic)
+				if !RapeItemsUnequipped && RessConfig.DDon
+					RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+				endif
+				if McmConfig.UseDDFilter && RessConfig.DDon
+					Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.KOTagPvic, McmConfig.KOSupressTagPvic, McmConfig.KORequireAllTagPvic)
+				else
+					Anims = SexLab.GetAnimationsByTags(2, McmConfig.KOTagPvic, McmConfig.KOSupressTagPvic, McmConfig.KORequireAllTagPvic)
+				endif
 				AnimationSet = "KOPvic"
 			Else
 				If Tied
-					Anims = SexLab.GetAnimationsByTags(2, McmConfig.TiedTagPvic, McmConfig.TiedSupressTagPvic, McmConfig.TiedRequireAllTagPvic)
+					if !RapeItemsUnequipped && RessConfig.DDon
+						RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+					endif
+					if McmConfig.UseDDFilter && RessConfig.DDon
+						Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.TiedTagPvic, McmConfig.TiedSupressTagPvic, McmConfig.TiedRequireAllTagPvic)
+					else
+						Anims = SexLab.GetAnimationsByTags(2, McmConfig.TiedTagPvic, McmConfig.TiedSupressTagPvic, McmConfig.TiedRequireAllTagPvic)
+					endif
 					AnimationSet = "TiedPvic"
 				Endif
 				If (Anims.length == 0)
 					Int GenderCombination = RessConfig.GenderCombination(Player, TheNext)
 					If (GenderCombination == 2)
-						Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoMTagPvic, McmConfig.FoMSupressTagPvic, McmConfig.FoMRequireAllTagPvic)
+						if !RapeItemsUnequipped && RessConfig.DDon
+							RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+						endif
+						if McmConfig.UseDDFilter && RessConfig.DDon
+							Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.FoMTagPvic, McmConfig.FoMSupressTagPvic, McmConfig.FoMRequireAllTagPvic)
+						else
+							Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoMTagPvic, McmConfig.FoMSupressTagPvic, McmConfig.FoMRequireAllTagPvic)
+						endif
 						AnimationSet = "FoMPvic"
 					Elseif (GenderCombination == 3)
-						Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoFTagPvic, McmConfig.FoFSupressTagPvic, McmConfig.FoFRequireAllTagPvic)
+						if !RapeItemsUnequipped && RessConfig.DDon
+							RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+						endif
+						if McmConfig.UseDDFilter && RessConfig.DDon
+							Anims = RessConfig.PickDDAnimationsByTag(Positions, 2, McmConfig.FoFTagPvic, McmConfig.FoFSupressTagPvic, McmConfig.FoFRequireAllTagPvic)
+						else
+							Anims = SexLab.GetAnimationsByTags(2, McmConfig.FoFTagPvic, McmConfig.FoFSupressTagPvic, McmConfig.FoFRequireAllTagPvic)
+						endif
 						AnimationSet = "FoFPvic"
 					Endif
 				Endif
@@ -1483,12 +1696,18 @@ Function PreDownRape()
 			If (Anims.length == 0)
 				AnimationSet = "RapePvic"
 			Endif
+			if !RapeItemsUnequipped && RessConfig.DDon
+				RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+			endif
 			TheRape = RessConfig.SexLabScene(Player, TheNext, CustomAnimations = Anims, Tags = McmConfig.RapeTagPvic, SupressTags = McmConfig.RapeSupressTagPvic, TagsRequireAll = McmConfig.RapeRequireAllTagPvic, FemaleFirst = AnimationSet)
 		Else
 			TheRape = RessConfig.SexLabScene(Player, TheNext, CustomAnimations = Anims, Tags = McmConfig.CreatureTagPvic, SupressTags = McmConfig.CreatureSupressTagPvic, TagsRequireAll = McmConfig.CreatureRequireAllTagPvic)
 		Endif
 	Else
 		If !IsCreature
+			if !RapeItemsUnequipped && RessConfig.DDon
+				RapeUnequipDevices(Player, TheNext, McmConfig.AllowUnequipBelt, McmConfig.AllowUnequipGag, McmConfig.AllowUnequipHeavyBondage, McmConfig.AllowUnequipHarness, McmConfig.AllowUnequipSuit)
+			endif
 			TheRape = RessConfig.SexLabScene(Player, TheNext, AddOne, AddTwo, AddThree, CustomAnimations = Anims, Tags = McmConfig.MultipleTagPvic, SupressTags = McmConfig.MultipleSupressTagPvic, TagsRequireAll = McmConfig.MultipleRequireAllTagPvic, FemaleFirst = "MultPvic")
 		Else
 			TheRape = RessConfig.SexLabScene(Player, TheNext, AddOne, AddTwo, AddThree, CustomAnimations = Anims, Tags = McmConfig.CreatureTagPvic, SupressTags = McmConfig.CreatureSupressTagPvic, TagsRequireAll = McmConfig.CreatureRequireAllTagPvic, FemaleFirst = "MultCreaPvic")
@@ -1504,7 +1723,7 @@ Function PreDownRape()
 	sslThreadController Thread = TheRape.StartThread()
 	If Thread
 		NumRapes += 1
-		Enough = (NumRapes >= (NumAgg * 2))
+		Enough = (NumRapes >= ( (NumAgg * 2) + RandomInt(0, NumAgg) ) ) ;Bane 04/01/2023 - Make number of Rapes less predictable by adding an additional random(0 to NumAgg) 
 		RessConfig.Weakenings(Player, RemoveSpl = True)
 		Player.AddSpell(RessConfig.MiscSpells[1], False) ; DebuffConsSPL
 		Raped = True
@@ -1552,7 +1771,16 @@ Function StartRobbingScene(Actor Victim, Actor Aggressor, String RobWay = "", Fl
 	Else
 		RobValue = McmConfig.vRobbing
 	ENdif
-	AliasLastAgg.ForceRefTo(Aggressor)
+	If Aggressor
+		AliasLastAgg.ForceRefTo(Aggressor)
+	Else ;Bane 18/11/2023 - Aggressor seems to be none sometimes - if so pick another
+		Aggressor = FormListGet(Player, "defeat_SceneAggressors", 0) as Actor
+		If Aggressor
+			AliasLastAgg.ForceRefTo(Aggressor)
+		Else
+			debug.trace("Defeat: Warning - unable to set Last Aggressor on Rob Event")
+		EndIf
+	EndIf
 	AliasLastVic.ForceRefTo(Victim)
 	MiscScenes[2].ForceStart() ; SCRobbing
 Endfunction
@@ -1734,6 +1962,7 @@ Int Function CollateralReturnSlot()
 	EndWhile
 	return -1
 EndFunction
+
 Actor[] Function CollateralGetActors()
 	Actor[] CollaActors = New Actor[3]
 	Int i
@@ -1934,7 +2163,7 @@ Function CollateralRape(Actor Victim, Actor Aggressor, Actor TheAdd = None)
 		RessConfig.CastImmune(Victim) ; to avoid redress
 		RessConfig.RemoveStates(Victim, False)
 		NumRapes += 1
-		Enough = (NumRapes >= (NumAgg * 2))
+		Enough = (NumRapes >= ( (NumAgg * 2) + RandomInt(0, NumAgg) ) ) ;Bane 04/01/2023 - Make number of Rapes less predictable by adding an additional random(0 to NumAgg) 
 	Else
 		Aggressor.SetFactionRank(RessConfig.DefeatFactions[1], 0) ; AggFaction
 		Victim.SetFactionRank(RessConfig.DefeatFactions[0], 0) ; DefeatFaction
@@ -2079,6 +2308,15 @@ Event EndBJ(string EventName, string argString, Float argNum, form sender)
 ;	UnregisterForModEvent("AnimationEnd_DefeatPvic")
 EndEvent
 Event CollaEnd(string EventName, string argString, Float argNum, form sender)
+	; Bane 04/01/2023 - Fix for Surrender with Followers resulting in Defeat hanging when assaults end. The aliases are set in DefeatConfig @ Line 1630 but not cleared if the follower is not first to be assaulted as the dialogue outcome
+	; Clear orphaned actors in Collateral[0] preventing them from being excluded from collateral assault scenes and ensures PlayerScr.StillBusy() does not get stuck as True - This was causing the Struggle State to hang when assaults ended
+	If Ressconfig.IsThereCollateralVictim
+		CollaVic[0].Clear()
+		CollaAgg[0].Clear()
+		CollaAggAdd[0].Clear()
+		Ressconfig.IsThereCollateralVictim = false
+	EndIf
+
 	Actor TheVic = SexLab.HookVictim(argString)
 	Int i 
 	While (i < 5)
@@ -2268,11 +2506,13 @@ Function Strip(Actor Vic, Actor Agg)
 			RessConfig.ActionQst.OptionOutOfBag(Player, True)
 		Endif
 		If !NoTrans
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[1], Armor.GetMaskForSlot(McmConfig.SSPvic[0] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[2], Armor.GetMaskForSlot(McmConfig.SSPvic[1] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[3], Armor.GetMaskForSlot(McmConfig.SSPvic[2] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[4], Armor.GetMaskForSlot(McmConfig.SSPvic[3] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[5], Armor.GetMaskForSlot(McmConfig.SSPvic[4] As Int))
+			Int iNumSlots = McmConfig.SSPvic.Length - 1		;Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
+			Int iSlot
+			While iSlot < iNumSlots
+				PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[iSlot + 1], Armor.GetMaskForSlot(McmConfig.SSPvic[iSlot] As Int)) ;Bane Updated to use Array Length in V26092023
+				iSlot +=1
+			EndWhile
+
 			Weapon Equipped = Vic.GetEquippedWeapon()
 			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[0], 0, Equipped)
 			Equipped = Vic.GetEquippedWeapon(True)
@@ -2282,11 +2522,12 @@ Function Strip(Actor Vic, Actor Agg)
 		Endif
 	Endif
 EndFunction
-Function StripRegister(Actor Target)
+Function StripRegister(Actor Target) 
 	If McmConfig.bRedressPvic
 		Form Clothes
 		Int i
-		While (i < 5)
+		Int iNumSlots = McmConfig.SSNVN.Length - 1 	;Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
+		While i < iNumSlots    						;Bane Updated to use Array Length in V26092023
 			If (McmConfig.SSNVNSet[i+1] == "$UNEQUIP")
 				Clothes = Target.GetWornForm(Armor.GetMaskForSlot(McmConfig.SSNVN[i] As Int))
 				If Clothes
@@ -2297,32 +2538,52 @@ Function StripRegister(Actor Target)
 		EndWhile
 	Endif
 EndFunction
-Function StripColla(Actor Vic, Actor Agg)
-	RessConfig.SetEmptyOutfit(Vic)
-	StripRegister(Vic)
-	Agg.SetAngle(0.0, 0.0, Agg.GetAngleZ() + Agg.GetHeadingAngle(Vic))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[1], Armor.GetMaskForSlot(McmConfig.SSNVN[0] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[2], Armor.GetMaskForSlot(McmConfig.SSNVN[1] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[3], Armor.GetMaskForSlot(McmConfig.SSNVN[2] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[4], Armor.GetMaskForSlot(McmConfig.SSNVN[3] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[5], Armor.GetMaskForSlot(McmConfig.SSNVN[4] As Int))	
+Function StripColla(Actor Vic, Actor Agg) ;Bane V26092023 - Major rework to use 'Scan all items then Strip' approach to fix NVN Follower Stripping :::
 	Weapon Equipped = Vic.GetEquippedWeapon()
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Equipped)
-	Equipped = Vic.GetEquippedWeapon(True)
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Equipped)
+	Weapon EquippedOff = Vic.GetEquippedWeapon(True)
 	Armor Shield = Vic.GetEquippedShield()
+	Form kItem
+	StripRegister(Vic)
+	FormListClear(Vic, "def_StripList")
+	StringListClear(Vic, "def_StripWays")
+	Agg.SetAngle(0.0, 0.0, Agg.GetAngleZ() + Agg.GetHeadingAngle(Vic))
+	Int iNumSlots = McmConfig.SSNVN.Length
+	Int iSlot
+	
+	While iSlot < iNumSlots ;Scan Phase
+		kItem = Vic.GetWornForm(Armor.GetMaskForSlot(McmConfig.SSNVN[iSlot] As Int))
+		If kItem
+			FormListAdd(Vic, "def_StripList", kItem)
+			StringListAdd(Vic, "def_StripWays", McmConfig.SSNVNSet[iSlot + 1])
+		EndIf
+		iSlot +=1
+	EndWhile
+	
+	iNumSlots = FormListCount(Vic, "def_StripList")
+	iSlot = 0
+	While iSlot < iNumSlots ;Strip Phase
+		PieceToStrip(Vic, Agg, StringListGet(Vic, "def_StripWays", iSlot), 0, FormListGet(Vic, "def_StripList", iSlot))
+		iSlot +=1
+	EndWhile
+
 	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Shield)
+	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, EquippedOff)
+	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Equipped) 	;Bane V26092023 - Unequipping the Main hand causes Followers to stand so do this last 
+
+	RessConfig.SetEmptyOutfit(Vic)
 EndFunction
-Function PieceToStrip(Actor Vic, Actor Agg, String Way, Int Slot, Form Weapons = None, Float WaitTime = 1.5, String Animation = "DefeatPickUp")
+Function PieceToStrip(Actor Vic, Actor Agg, String Way, Int Slot, Form Weapons = None, Float WaitTime = 1.5, String Animation = "DefeatPickUp") 
 	Form Equipped
+	Armor kArmor
 	If Weapons
 		Equipped = Weapons
 	Else
 		Equipped = Vic.GetWornForm(Slot)
 	Endif
 	If (Equipped && (Way != "$Disabled"))
-		If !Equipped.HasKeyWordString("SexLabNoStrip")
-			If (Slot == 0x00000004)
+		If bIsStrippable(Equipped) ;Bane Updated to use filter all appropriate Keywords V26092023 :::
+			kArmor = Equipped as Armor
+			If kArmor && Math.LogicalAnd(kArmor.GetSlotMask(), 0x00000004) == 0x00000004  ;(Slot == 0x00000004)  ;Bane reworked to prevent default to 2.5 secs wait for all items after Slot = 0x00000004 V26092023 :::
 				Animation = "DefeatStripAnim"
 				WaitTime = 2.5
 			Endif
@@ -2331,6 +2592,7 @@ Function PieceToStrip(Actor Vic, Actor Agg, String Way, Int Slot, Form Weapons =
 			If (Way == "$UNEQUIP")
 				Vic.UnequipItem(Equipped, False, True)
 			Elseif ((Way == "$STEAL") && !IsCreature)
+				Vic.UnequipItem(Equipped, False, True) ;Bane - Added as Remove without Unequipping causes Followers to remove all outfit items V26092023
 				Vic.RemoveItem(Equipped, 1, True, Agg)
 			Else
 				MiscFormLists[1].AddForm(Equipped) ; StrippedStuff
@@ -2340,6 +2602,11 @@ Function PieceToStrip(Actor Vic, Actor Agg, String Way, Int Slot, Form Weapons =
 		Endif
 	Endif
 EndFunction	
+
+Bool Function bIsStrippable(Form akForm) ;Bane Added full Strip Item Filtering V26092023
+	Return !( akForm.haskeyword(SexLabNoStrip) || akForm.HasKeyword(zad_Lockable) || akForm.HasKeyword(zad_QuestItem) || akForm.HasKeyword(_SLMC_MCDevice) || akForm.HasKeyword(SOS_Underwear) || akForm.HasKeyword(SOS_Genitals) || akForm.HasKeyword(zbfWornDevice) || akForm.HasKeyword(ToysToy) )
+EndFunction
+
 Function UnequipWeapons(Actor Target)
 	Int i = 5 ; Security for the loop to not be stuck just in case.
 	Form EquippedWeapon = Target.GetEquippedWeapon()
@@ -2382,6 +2649,7 @@ Function RecoverStuff(Actor Target)
 EndFunction
 State FollowerWait
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		If !IsKnockout
 			FillDifficulty = 0.008
 			StruggleBar()
@@ -2429,7 +2697,7 @@ EndState
 Actor Function Supervisor()
 	Int i
 	While (i < 5)
-		If (Aggressors[i] && CheckActor(Aggressors[i]) && Aggressors[i].HasLOS(Player))
+		If (Aggressors[i] && CheckActor(Aggressors[i]) && Aggressors[i].HasLOS(Player)) && Aggressors[i].GetDistance(Player) < 384.0 ; Bane 09/01/2023 18' Range Limit added
 			If (!Aggressors[i].HasKeywordString("SexLabActive") || !Aggressors[i].HasKeywordString("DefeatCollateral"))
 				Return Aggressors[i]
 			Endif
@@ -2438,7 +2706,7 @@ Actor Function Supervisor()
 	EndWhile
 	i = 0
 	While (i < 5)
-		If (Accomplices[i] && CheckActor(Accomplices[i]) && Accomplices[i].HasLOS(Player))
+		If (Accomplices[i] && CheckActor(Accomplices[i]) && Accomplices[i].HasLOS(Player)) && Accomplices[i].GetDistance(Player) < 384.0 ; Bane 09/01/2023 18' Range Limit added
 			If (!Accomplices[i].HasKeywordString("SexLabActive") || !Accomplices[i].HasKeywordString("DefeatCollateral"))
 				Return Accomplices[i]
 			Endif
@@ -2452,7 +2720,7 @@ Bool Function StillBusy()
 	While (i < 5)
 		If (Accomplices[i] && CheckActor(Accomplices[i]))
 			Int FactionRank = Accomplices[i].GetFactionRank(RessConfig.DefeatFactions[1]) ; AggFaction
-;			DefeatConfig.Log("StillBusy Accomplices[i] - "+Accomplices[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Accomplices[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Accomplices[i].HasKeywordString("DefeatCollateral"))
+			DefeatConfig.Log("StillBusy Accomplices[i] - "+Accomplices[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Accomplices[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Accomplices[i].HasKeywordString("DefeatCollateral"))
 			If (FactionRank == 3 || Accomplices[i].HasKeywordString("SexLabActive") || Accomplices[i].HasKeywordString("DefeatCollateral"))
 				Return True
 			Endif
@@ -2463,7 +2731,7 @@ Bool Function StillBusy()
 	While (i < 5)
 		If (Aggressors[i] && CheckActor(Aggressors[i]))
 			Int FactionRank = Aggressors[i].GetFactionRank(RessConfig.DefeatFactions[1]) ; AggFaction
-;			DefeatConfig.Log("StillBusy Aggressors[i] - "+Aggressors[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Aggressors[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Aggressors[i].HasKeywordString("DefeatCollateral"))
+			DefeatConfig.Log("StillBusy Aggressors[i] - "+Aggressors[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Aggressors[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Aggressors[i].HasKeywordString("DefeatCollateral"))
 			If (FactionRank == 3 || Aggressors[i].HasKeywordString("SexLabActive") || Aggressors[i].HasKeywordString("DefeatCollateral"))
 				Return True
 			Endif
@@ -2474,7 +2742,7 @@ Bool Function StillBusy()
 	While (i < 5)
 		If (Followers[i] && CheckActor(Followers[i]))
 			Int FactionRank = Followers[i].GetFactionRank(RessConfig.DefeatFactions[0]) ; DefeatFaction
-;			DefeatConfig.Log("StillBusy Followers[i] HasKeywordString SexLabActive - "+Followers[i].HasKeywordString("SexLabActive"))
+			DefeatConfig.Log("StillBusy Followers[i] HasKeywordString SexLabActive - "+Followers[i].HasKeywordString("SexLabActive"))
 			If (FactionRank == 3) || Followers[i].HasKeywordString("SexLabActive")
 				Return True
 			Endif
@@ -2485,6 +2753,7 @@ Bool Function StillBusy()
 EndFunction
 State StruggleFree
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		FillDifficulty = 0.01
 		FillThreshold = 0.0
 		If !IsMovementControlsEnabled()
@@ -2506,9 +2775,17 @@ State StruggleFree
 			SendAnimationEvent(Player, "DefeatTieUpExit")
 			Wait(2)
 			Restored()
+		Elseif Supervisor()
+			If Input.IsKeyPressed(StrafeL) || Input.IsKeyPressed(StrafeR)
+				Notification("$An aggressor watches you.")
+				StruggleBar.Percent -= 0.2
+				If (StruggleBar.Percent < 0)
+					StruggleBar.Percent = 0
+				Endif
+			Endif
 		Endif
 		FillThreshold = StruggleBar.Percent
-		RegisterForSingleUpdate(1.0)
+		RegisterForSingleUpdate(2.0) ;Was 1.0
 	EndEvent
 	Event OnEndState()
 		StruggleBar(False)
@@ -2531,6 +2808,7 @@ State QTE 																	;===== STATE QTE : RESIST Function
 		Endif
 	EndEvent
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		If ((McmConfig.QTEHKType == "$Attack") || UsingGamepad())
 			StrafeL = Input.GetMappedKey("Left Attack/Block")
 			StrafeR = Input.GetMappedKey("Right Attack/Block")
@@ -2606,6 +2884,7 @@ Function StruggleBar(Bool Display = True)
 EndFunction
 State PushAway 																	;===== Resist during sexlab animation
 	Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 		If ((McmConfig.QTEHKType == "$Attack") || UsingGamepad())
 			StrafeL = Input.GetMappedKey("Left Attack/Block")
 			StrafeR = Input.GetMappedKey("Right Attack/Block")
@@ -2636,6 +2915,9 @@ Function SetGetUpInRestored(Bool On = True)
 	IsQTEKD = On
 EndFunction
 Function Restored()																		;===== RESTORED
+	if RapeItemsUnequipped == True
+		RapeReequipDevices(Player)
+	endif
 	RessConfig.MiscSpells[5].Cast(Player, Player) ; ImmunitySPL
 	If Player.HasSpell(RessConfig.MiscSpells[1]) ; DebuffConsSPL
 		Player.RemoveSpell(RessConfig.MiscSpells[1]) ; DebuffConsSPL
@@ -2770,8 +3052,11 @@ Actor Function GetWitness()
 EndFunction
 Function AddAggressor(Actor Target, Int Slot)
 	If !Aggressors[Slot]
+		NumAgg += 1 	;Bane 04/01/2023 - Allow another round so that the added aggressor has an opportunity to have a turn
+		Enough = False 	;
 		DefeatConfig.Log("AddAggressor, Target - "+Target+" / Slot - "+Slot)
 		Aggressors[Slot] = Target
+		FormListAdd(Player, "defeat_SceneAggressors", Target, False) ;Bane 08/01/2023 Add to Non-Volatile Scene Aggressor List
 		TheAggressors[Slot].ForceRefTo(Target)
 		Target.EvaluatePackage()
 	Endif
@@ -2809,4 +3094,949 @@ Bool Function RemoveAggressor(Actor Target)
 EndFunction
 Actor Function IsThereNext()
 	Return TheNext
+EndFunction
+
+Armor BeltInventory
+Armor PlugVagInventory
+Armor PlugAnalInventory
+Armor GagInventory
+Armor HeavyBondageInventory
+Armor HarnessInventory
+Armor SuitInventory
+Armor BeltRendered
+Armor PlugVagRendered
+Armor PlugAnalRendered
+Armor GagRendered
+Armor HeavyBondageRendered
+Armor HarnessRendered
+Armor SuitRendered
+Bool BeltUnequipped
+Bool PlugVagUnequipped
+Bool PlugAnalUnequipped
+Bool GagUnequipped
+Bool HeavyBondageUnequipped
+Bool HarnessUnequipped
+Bool SuitUnequipped
+Bool Property RapeItemsUnequipped Auto
+
+KeyWord SexLabNoStrip
+Keyword zad_Lockable
+Keyword zad_QuestItem
+Keyword _SLMC_MCDevice
+Keyword SOS_Underwear
+Keyword SOS_Genitals
+Keyword zbfWornDevice
+Keyword ToysToy
+
+
+Event OnPlayerLoadGame()
+	if (BeltInventory != None || PlugVagInventory != None || PlugAnalInventory != None || GagInventory != None || HeavyBondageInventory != None || HarnessInventory != None || SuitInventory != None)
+		RapeItemsUnequipped = True
+	else
+		RapeItemsUnequipped = False
+		if StorageUtil.FormListClear(Player, "zad_libs_ForceSilent") > 0
+			debug.trace("zad_libs_ForceSilent - Cleared")
+		endif
+	endif
+	if RessConfig.DefeatPatchVersion != 1.5
+		DefeatLog("[Defeat] - OnPlayerLoadGame - DefeatPatchVersion: " + RessConfig.DefeatPatchVersion + " - Updating")
+		RessConfig.DefeatPatchVersion = 1.5
+		RessConfig.CheckForMods()
+	endif
+	if DefVulnScr == None
+		DefVulnScr = Quest.GetQuest("DefeatVulnerability").GetAlias(0) as DefeatPlayer_Vulnerability
+	endif
+	
+	McmConfig.BuildDDSettingLists()
+	
+	SexLabNoStrip = KeyWord.GetKeyword("SexLabNoStrip") ;Bane - Keywords Added to provide full Strip Item Filtering in V26092023
+	zad_Lockable  = KeyWord.GetKeyword("zad_Lockable")
+	zad_QuestItem = KeyWord.GetKeyword("zad_QuestItem")
+	_SLMC_MCDevice = KeyWord.GetKeyword("_SLMC_MCDevice")
+	SOS_Underwear = KeyWord.GetKeyword("SOS_Underwear")
+	SOS_Genitals = KeyWord.GetKeyword("SOS_Genitals")
+	zbfWornDevice = KeyWord.GetKeyword("zbfWornDevice")
+	ToysToy = KeyWord.GetKeyword("ToysToy")
+
+EndEvent
+
+Function RapeUnequipBelt(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
+	Bool ShowNott = False
+	if Utility.RandomInt(0, 100) <= McmConfig.UnequipBeltNotificationChance
+		ShowNott = True
+	endif
+	Key DeviceKey = DefeatUtil2.GetDDKey(WornItem)
+	if DeviceKey != none
+		if Target.GetItemCount(DeviceKey) > 0
+			if RessConfig.DDVersion == 5
+				DefeatLog("[Defeat] - Unequip Belt DD5 with key. Inventory: " + WornItem.GetName())
+				if ShowNott
+					MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Belt", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+				endif
+				BeltUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, RefdeviceRendered = RenderedItem, Refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousBelt"))
+				Target.RemoveItem(DeviceKey, 1)
+			else
+				DefeatLog("[Defeat] - Unequip Belt DD4 with key. Inventory: " + WornItem.GetName())
+				if ShowNott
+					MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Belt", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+				endif
+				BeltUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousBelt"))
+				Target.RemoveItem(DeviceKey, 1)
+			endif
+		elseif McmConfig.UnequipBeltWithPlayerKeysOnly
+			DefeatLog("[Defeat] - Don't unequip Belt without a key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Belt", Success = False, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			return
+		endif
+	endif
+	if ((Utility.RandomInt(0, 100) <= McmConfig.UnequipBeltChance) && !McmConfig.UnequipBeltWithPlayerKeysOnly)
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Belt DD5. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Belt", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			BeltUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousBelt"))
+		else
+			DefeatLog("[Defeat] - Unequip Belt DD4. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Belt", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			BeltUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousBelt"))
+		endif
+	else
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Belt", Success = False, UseKey = False, Chanse = True, QuestItem = False)
+		endif
+		DefeatLog("[Defeat] - Don't unequip Belt. Inventory: " + WornItem.GetName())
+	endif
+EndFunction
+
+Function RapeUnequipVaginalPlug(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
+	Key DeviceKey = DefeatUtil2.GetDDKey(WornItem)
+	if DeviceKey
+		if Target.GetItemCount(DeviceKey) > 0
+			if RessConfig.DDVersion == 5
+				DefeatLog("[Defeat] - Unequip Vaginal Plug DD5. Inventory: " + WornItem.GetName())
+				PlugVagUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousPlugVaginal"))
+			else
+				DefeatLog("[Defeat] - Unequip Vaginal Plug DD4. Inventory: " + WornItem.GetName())
+				PlugVagUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousPlugVaginal"))
+			endif
+		endif
+	else
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Vaginal Plug DD5. Inventory: " + WornItem.GetName())
+			PlugVagUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousPlugVaginal"))
+		else
+			DefeatLog("[Defeat] - Unequip Vaginal Plug DD4. Inventory: " + WornItem.GetName())
+			PlugVagUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousPlugVaginal"))
+		endif
+	endif
+EndFunction
+
+Function RapeUnequipAnalPlug(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
+	Key DeviceKey = DefeatUtil2.GetDDKey(WornItem)
+	if DeviceKey
+		if Target.GetItemCount(DeviceKey) > 0
+			if RessConfig.DDVersion == 5
+				DefeatLog("[Defeat] - Unequip Anal Plug DD5. Inventory: " + WornItem.GetName())
+				PlugAnalUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousPlugAnal"))
+			else
+				DefeatLog("[Defeat] - Unequip Vaginal Plug DD4. Inventory: " + WornItem.GetName())
+				PlugAnalUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousPlugAnal"))
+			endif
+		endif
+	else
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Anal Plug DD5. Inventory: " + WornItem.GetName())
+			PlugAnalUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousPlugAnal"))
+		else
+			DefeatLog("[Defeat] - Unequip Vaginal Plug DD4. Inventory: " + WornItem.GetName())
+			PlugAnalUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousPlugAnal"))
+		endif
+	endif
+EndFunction
+
+Function RapeUnequipGag(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
+	Bool ShowNott = False
+	if Utility.RandomInt(0, 100) <= McmConfig.UnequipGagNotificationChance
+		ShowNott = True
+	endif
+	Key DeviceKey = DefeatUtil2.GetDDKey(WornItem)
+	if Target.GetItemCount(DeviceKey) > 0
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Gag DD5 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Gag", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			GagUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousGag"))
+			Target.RemoveItem(DeviceKey, 1)
+		else
+			DefeatLog("[Defeat] - Unequip Gag DD4 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Gag", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			GagUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousGag"))
+			Target.RemoveItem(DeviceKey, 1)
+		endif
+	elseif McmConfig.UnequipGagWithPlayerKeysOnly
+		DefeatLog("[Defeat] - Don't unequip Gag without a key. Inventory: " + WornItem.GetName())
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Gag", Success = False, UseKey = True, Chanse = False, QuestItem = False)
+		endif
+		return
+	endif
+	if ((Utility.RandomInt(0, 100) <= McmConfig.UnequipGagChance) && !McmConfig.UnequipGagWithPlayerKeysOnly)
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Gag DD5. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Gag", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			GagUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousGag"))
+		else
+			DefeatLog("[Defeat] - Unequip Gag DD4. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Gag", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			GagUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousGag"))
+		endif
+	else
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Gag", Success = False, UseKey = False, Chanse = True, QuestItem = False)
+		endif
+		DefeatLog("[Defeat] - Don't unequip Gag. Inventory: " + WornItem.GetName())
+	endif
+EndFunction
+
+Function RapeUnequipHeavyBondage(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
+	Bool ShowNott = False
+	if Utility.RandomInt(0, 100) <= McmConfig.UnequipHeavyBondageNotificationChance
+		ShowNott = True
+	endif
+	Key DeviceKey = DefeatUtil2.GetDDKey(WornItem)
+	if Target.GetItemCount(DeviceKey) > 0
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Heavy Bondage DD5 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "HeavyBond", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			HeavyBondageUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousHeavyBondage"))
+			Target.RemoveItem(DeviceKey, 1)
+		else
+			DefeatLog("[Defeat] - Unequip Heavy Bondage DD4 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "HeavyBond", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			HeavyBondageUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousHeavyBondage"))
+			Target.RemoveItem(DeviceKey, 1)
+		endif
+	elseif McmConfig.UnequipHeavyBondageWithPlayerKeysOnly
+		DefeatLog("[Defeat] - Don't unequip HeavyBondage without a key. Inventory: " + WornItem.GetName())
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "HeavyBond", Success = False, UseKey = True, Chanse = False, QuestItem = False)
+		endif
+		return
+	endif
+	if ((Utility.RandomInt(0, 100) <= McmConfig.UnequipHeavyBondageChance) && !McmConfig.UnequipHeavyBondageWithPlayerKeysOnly)
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Heavy Bondage DD5. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "HeavyBond", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			HeavyBondageUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousHeavyBondage"))
+		else
+			DefeatLog("[Defeat] - Unequip Heavy Bondage DD4. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "HeavyBond", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			HeavyBondageUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousHeavyBondage"))
+		endif
+	else
+		DefeatLog("[Defeat] - Don't unequip Heavy Bondage. Inventory: " + WornItem.GetName())
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "HeavyBond", Success = False, UseKey = False, Chanse = True, QuestItem = False)
+		endif
+	endif
+EndFunction
+
+Function RapeUnequipHarness(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
+	Bool ShowNott = False
+	if Utility.RandomInt(0, 100) <= McmConfig.UnequipHarnessNotificationChance
+		ShowNott = True
+	endif
+	Key DeviceKey = DefeatUtil2.GetDDKey(WornItem)
+	if Target.GetItemCount(DeviceKey) > 0
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Harness DD5 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Harness", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			HarnessUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousHarness"))
+			Target.RemoveItem(DeviceKey, 1)
+		else
+			DefeatLog("[Defeat] - Unequip Harness DD4 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Harness", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			HarnessUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousHarness"))
+			Target.RemoveItem(DeviceKey, 1)
+		endif
+	elseif McmConfig.UnequipHarnessWithPlayerKeysOnly
+		DefeatLog("[Defeat] - Don't unequip Harness without a key. Inventory: " + WornItem.GetName())
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Harness", Success = False, UseKey = True, Chanse = False, QuestItem = False)
+		endif
+		return
+	endif
+	if ((Utility.RandomInt(0, 100) <= McmConfig.UnequipHarnessChance) && !McmConfig.UnequipHarnessWithPlayerKeysOnly)
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Harness DD5. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Harness", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			HarnessUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousHarness"))
+		else
+			DefeatLog("[Defeat] - Unequip Harness DD4. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Harness", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			HarnessUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousHarness"))
+		endif
+	else
+		DefeatLog("[Defeat] - Don't unequip Harness. Inventory: " + WornItem.GetName())
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Harness", Success = False, UseKey = False, Chanse = True, QuestItem = False)
+		endif
+	endif
+EndFunction
+
+Function RapeUnequipSuit(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
+	Bool ShowNott = False
+	if Utility.RandomInt(0, 100) <= McmConfig.UnequipSuitNotificationChance
+		ShowNott = True
+	endif
+	Key DeviceKey = DefeatUtil2.GetDDKey(WornItem)
+	if Target.GetItemCount(DeviceKey) > 0
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Suit DD5 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Suit", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			SuitUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousSuit"))
+			Target.RemoveItem(DeviceKey, 1)
+		else
+			DefeatLog("[Defeat] - Unequip Suit DD4 with key. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Suit", Success = True, UseKey = True, Chanse = False, QuestItem = False)
+			endif
+			SuitUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousSuit"))
+			Target.RemoveItem(DeviceKey, 1)
+		endif
+	elseif McmConfig.UnequipSuitWithPlayerKeysOnly
+		DefeatLog("[Defeat] - Don't unequip Suit without a key. Inventory: " + WornItem.GetName())
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Suit", Success = False, UseKey = True, Chanse = False, QuestItem = False)
+		endif
+		return
+	endif
+	if ((Utility.RandomInt(0, 100) <= McmConfig.UnequipSuitChance) && !McmConfig.UnequipSuitWithPlayerKeysOnly)
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Unequip Suit DD5. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Suit", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			SuitUnequipped = DefeatUtil2.UnlockDevice(Target, WornItem, refzad_DeviousDevice = Keyword.GetKeyword("zad_deviousSuit"))
+		else
+			DefeatLog("[Defeat] - Unequip Suit DD4. Inventory: " + WornItem.GetName())
+			if ShowNott
+				MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Suit", Success = True, UseKey = False, Chanse = True, QuestItem = False)
+			endif
+			SuitUnequipped = DefeatUtil2.RemoveDevice(Target, WornItem, RenderedItem, Keyword.GetKeyword("zad_deviousSuit"))
+		endif
+	else
+		DefeatLog("[Defeat] - Don't unequip Suit. Inventory: " + WornItem.GetName())
+		if ShowNott
+			MessageOnUnequipDevice(Aggressor, WornItem, RenderedItem, "Suit", Success = False, UseKey = False, Chanse = True, QuestItem = False)
+		endif
+	endif
+EndFunction
+
+Function RapeUnequipDevices(Actor Target, Actor Aggressor, Bool UnequipBelt = False, Bool UnequipGag = False, Bool UnequipHeavyBondage = False, Bool UnequipHarness = false, Bool UnequipSuit = False)
+	DefeatLog("[Defeat] - Start Unequpping Devices")
+	BeltUnequipped = False
+	PlugVagUnequipped = False
+	PlugAnalUnequipped = False
+	GagUnequipped = False
+	HeavyBondageUnequipped = False
+	HarnessUnequipped = False
+	SuitUnequipped = False
+	BeltInventory = None
+	PlugVagInventory = None
+	PlugAnalInventory = None
+	GagInventory = None
+	HeavyBondageInventory = None
+	HarnessInventory = None
+	SuitInventory = None
+	BeltRendered = None
+	PlugVagRendered = None
+	PlugAnalRendered = None
+	GagRendered = None
+	HeavyBondageRendered = None
+	HarnessRendered = None
+	SuitRendered = None
+	key DeviceKey = None
+	Bool UnequipPause
+	
+	RapeItemsUnequipped = True
+	
+	
+	if UnequipBelt && (Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousBelt")) || Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousPlugVaginal")) || Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousPlugAnal")))
+		if Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousBelt"))
+			if RessConfig.DDVersion == 5
+				BeltInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousBelt"))
+				if BeltInventory
+					BeltRendered = DefeatUtil2.GetRenderedDevice(BeltInventory)
+					if BeltRendered
+						bool beltgeneric = !BeltInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !BeltInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !BeltRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !BeltRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+						if beltgeneric
+							DefeatLog("[Defeat] - Process Belt DD5. Inventory: " + BeltInventory.GetName())
+							RapeUnequipBelt(target, Aggressor, BeltInventory, BeltRendered)
+						else
+							if Utility.RandomInt(0, 100) <= McmConfig.UnequipBeltNotificationChance
+								MessageOnUnequipDevice(Aggressor, BeltInventory, BeltRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+							endif
+							DefeatLog("[Defeat] - Belt is non-generic. Don't unlock.")
+						endif
+					else
+						DefeatLog("[Defeat] - No Rendered object for Belt.")
+					endif
+				else
+					DefeatLog("[Defeat] - No Inventory object for Belt.")
+				endif
+			else
+				BeltInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousBelt"))
+				BeltRendered = DefeatUtil2.GetRenderedDevice(BeltInventory)
+				if !BeltInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !BeltInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !BeltRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !BeltRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+					DefeatLog("[Defeat] - Process Belt DD4. Inventory: " + BeltInventory.GetName())
+					RapeUnequipBelt(target, Aggressor, BeltInventory, BeltRendered)
+				else
+					if Utility.RandomInt(0, 100) <= McmConfig.UnequipBeltNotificationChance
+						MessageOnUnequipDevice(Aggressor, BeltInventory, BeltRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+					endif
+					DefeatLog("[Defeat] - Belt is non-generic. Don't unlock.")
+				endif
+			endif
+		endif
+		if Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousPlugVaginal")) && (!Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousBelt")) || (Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousBelt")) && BeltUnequipped))
+			if RessConfig.DDVersion == 5
+				PlugVagInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousPlugVaginal"))
+				PlugVagRendered = DefeatUtil2.GetRenderedDevice(PlugVagInventory)
+				bool Vagplugeneric = !PlugVagInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugVagInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !PlugVagRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugVagRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+				if Vagplugeneric
+					PlugVagInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousPlugVaginal"))
+					DefeatLog("[Defeat] - Process Vaginal Plug DD5. Inventory: " + PlugVagInventory.GetName())
+					RapeUnequipVaginalPlug(target, Aggressor, PlugVagInventory)
+				else
+					DefeatLog("[Defeat] - Vaginal Plug is non-generic. Don't unlock.")
+				endif
+			else
+				PlugVagInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousPlugVaginal"))
+				PlugVagRendered = DefeatUtil2.GetRenderedDevice(PlugVagInventory)
+				if !PlugVagInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugVagInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !PlugVagRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugVagRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+					DefeatLog("[Defeat] - Process Vaginal Plug DD4. Inventory: " + PlugVagInventory.GetName())
+					RapeUnequipVaginalPlug(target, Aggressor, PlugVagInventory, PlugVagRendered)
+				else
+					DefeatLog("[Defeat] - Vaginal Plug is non-generic. Don't unlock.")
+				endif
+			endif
+		endif
+		if Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousPlugAnal")) && (!Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousBelt")) || (Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousBelt")) && BeltUnequipped))
+			if RessConfig.DDVersion == 5
+				PlugAnalInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousPlugAnal"))
+				PlugAnalRendered = DefeatUtil2.GetRenderedDevice(PlugAnalInventory)
+				bool analplugeneriv = !PlugAnalInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugAnalInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !PlugAnalRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugAnalRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+				if analplugeneriv
+					PlugAnalInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousPlugAnal"))
+					DefeatLog("[Defeat] - Process Anal Plug DD5. Inventory: " + PlugAnalInventory.GetName())
+					RapeUnequipAnalPlug(target, Aggressor, PlugAnalInventory)
+				else
+					DefeatLog("[Defeat] - Anal Plug is non-generic. Don't unlock.")
+				endif
+			else
+				PlugAnalInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousPlugAnal"))
+				PlugAnalRendered = DefeatUtil2.GetRenderedDevice(PlugAnalInventory)
+				if !PlugAnalInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugAnalInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !PlugAnalRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !PlugAnalRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+					DefeatLog("[Defeat] - Process Anal Plug DD4. Inventory: " + PlugAnalInventory.GetName())
+					RapeUnequipAnalPlug(target, Aggressor, PlugAnalInventory, PlugAnalRendered)
+				else
+					DefeatLog("[Defeat] - Anal Plug is non-generic. Don't unlock.")
+				endif
+			endif
+		endif
+	endif
+	if UnequipHarness && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousHarness"))
+		if RessConfig.DDVersion == 5
+			HarnessInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousHarness"))
+			if HarnessInventory
+				HarnessRendered = DefeatUtil2.GetRenderedDevice(HarnessInventory)
+				if HarnessRendered
+					bool harnessgeneric = !HarnessInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HarnessInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !HarnessRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HarnessRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+					if harnessgeneric
+						DefeatLog("[Defeat] - Process Gag DD5. Inventory: " + HarnessInventory.GetName())
+						RapeUnequipHarness(target, Aggressor, HarnessInventory)
+					else
+						if Utility.RandomInt(0, 100) <= McmConfig.UnequipHarnessNotificationChance
+							MessageOnUnequipDevice(Aggressor, HarnessInventory, HarnessRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+						endif
+						DefeatLog("[Defeat] - Harness is non-generic. Don't unlock.")
+					endif
+				else
+					DefeatLog("[Defeat] - No Rendered object for Harness.")
+				endif
+			else
+				DefeatLog("[Defeat] - No Inventory object for Harness.")
+			endif
+		else
+			HarnessInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousHarness"))
+			HarnessRendered = DefeatUtil2.GetRenderedDevice(HarnessInventory)
+			if !HarnessInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HarnessInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !HarnessRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HarnessRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+				DefeatLog("[Defeat] - Process Harness DD4. Inventory: " + HarnessInventory.GetName())
+				RapeUnequipHarness(target, Aggressor, HarnessInventory, HarnessRendered)
+			else
+				if Utility.RandomInt(0, 100) <= McmConfig.UnequipHarnessNotificationChance
+					MessageOnUnequipDevice(Aggressor, HarnessInventory, HarnessRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+				endif
+				DefeatLog("[Defeat] - Harness is non-generic. Don't unlock.")
+			endif
+		endif
+	endif
+	if UnequipSuit && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousSuit"))
+		if RessConfig.DDVersion == 5
+			SuitInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousSuit"))
+			if SuitInventory
+				SuitRendered = DefeatUtil2.GetRenderedDevice(SuitInventory)
+				if SuitRendered
+					bool suitgeneric = !SuitInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !SuitInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !SuitRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !SuitRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+					if suitgeneric
+						DefeatLog("[Defeat] - Process Suit DD5. Inventory: " + SuitInventory.GetName())
+						RapeUnequipSuit(target, Aggressor, SuitInventory)
+					else
+						if Utility.RandomInt(0, 100) <= McmConfig.UnequipSuitNotificationChance
+							MessageOnUnequipDevice(Aggressor, SuitInventory, SuitRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+						endif
+						DefeatLog("[Defeat] - Suit is non-generic. Don't unlock.")
+					endif
+				else
+					DefeatLog("[Defeat] - No Rendered object for Suit.")
+				endif
+			else
+				DefeatLog("[Defeat] - No Inventory object for Suit.")
+			endif
+		else
+			SuitInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousSuit"))
+			SuitRendered = DefeatUtil2.GetRenderedDevice(SuitInventory)
+			if !SuitInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !SuitInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !SuitRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !SuitRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+				DefeatLog("[Defeat] - Process Suit DD4. Inventory: " + SuitInventory.GetName())
+				RapeUnequipSuit(target, Aggressor, SuitInventory, SuitRendered)
+			else
+				if Utility.RandomInt(0, 100) <= McmConfig.UnequipSuitNotificationChance
+					MessageOnUnequipDevice(Aggressor, SuitInventory, SuitRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+				endif
+				DefeatLog("[Defeat] - Suit is non-generic. Don't unlock.")
+			endif
+		endif
+	endif
+	if UnequipGag && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousGag"))
+		if RessConfig.DDVersion == 5
+			GagInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousGag"))
+			if GagInventory
+				GagRendered = DefeatUtil2.GetRenderedDevice(GagInventory)
+				if GagRendered
+					bool gaggeneric = !GagInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !GagInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !GagRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !GagRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+					if gaggeneric
+						DefeatLog("[Defeat] - Process Gag DD5. Inventory: " + GagInventory.GetName())
+						RapeUnequipGag(target, Aggressor, GagInventory)
+					else
+						if Utility.RandomInt(0, 100) <= McmConfig.UnequipGagNotificationChance
+							MessageOnUnequipDevice(Aggressor, GagInventory, GagRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+						endif
+						DefeatLog("[Defeat] - Gag is non-generic. Don't unlock.")
+					endif
+				else
+					DefeatLog("[Defeat] - No Rendered object for Gag.")
+				endif
+			else
+				DefeatLog("[Defeat] - No Inventory object for Gag.")
+			endif
+		else
+			GagInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousGag"))
+			GagRendered = DefeatUtil2.GetRenderedDevice(GagInventory)
+			if !GagInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !GagInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !GagRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !GagRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+				DefeatLog("[Defeat] - Process Gag DD4. Inventory: " + GagInventory.GetName())
+				RapeUnequipGag(target, Aggressor, GagInventory, GagRendered)
+			else
+				if Utility.RandomInt(0, 100) <= McmConfig.UnequipGagNotificationChance
+					MessageOnUnequipDevice(Aggressor, GagInventory, GagRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+				endif
+				DefeatLog("[Defeat] - Gag is non-generic. Don't unlock.")
+			endif
+		endif
+	endif
+	if UnequipHeavyBondage && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousHeavyBondage"))
+		if RessConfig.DDVersion == 5
+			HeavyBondageInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousHeavyBondage"))
+			if HeavyBondageInventory
+				HeavyBondageRendered = DefeatUtil2.GetRenderedDevice(HeavyBondageInventory)
+				if HeavyBondageRendered
+					bool heavybondgeneric = !HeavyBondageInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HeavyBondageInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !HeavyBondageRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HeavyBondageRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+					if heavybondgeneric
+						DefeatLog("[Defeat] - Process Heavy Bondage DD5. Inventory: " + HeavyBondageInventory.GetName())
+						RapeUnequipHeavyBondage(target, Aggressor, HeavyBondageInventory)
+					else
+						if Utility.RandomInt(0, 100) <= McmConfig.UnequipHeavyBondageNotificationChance
+							MessageOnUnequipDevice(Aggressor, HeavyBondageInventory, HeavyBondageRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+						endif
+						DefeatLog("[Defeat] - Heavy Bondage is non-generic. Don't unlock.")
+					endif
+				else
+					DefeatLog("[Defeat] - No Rendered object for Heavy Bondage.")
+				endif
+			else
+				DefeatLog("[Defeat] - No Inventory object for Heavy Bondage.")
+			endif
+		else
+			HeavyBondageInventory = DefeatUtil2.GetWornDevice(Target, Keyword.GetKeyword("zad_deviousHeavyBondage"))
+			HeavyBondageRendered = DefeatUtil2.GetRenderedDevice(HeavyBondageInventory)
+			if !HeavyBondageInventory.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HeavyBondageInventory.HasKeyword(Keyword.GetKeyword("zad_QuestItem")) && !HeavyBondageRendered.HasKeyword(Keyword.GetKeyword("zad_BlockGeneric")) && !HeavyBondageRendered.HasKeyword(Keyword.GetKeyword("zad_QuestItem"))
+				DefeatLog("[Defeat] - Process Heavy Bondage DD4. Inventory: " + HeavyBondageInventory.GetName())
+				RapeUnequipHeavyBondage(target, Aggressor, HeavyBondageInventory, HeavyBondageRendered)
+			else
+				if Utility.RandomInt(0, 100) <= McmConfig.UnequipHeavyBondageNotificationChance
+					MessageOnUnequipDevice(Aggressor, HeavyBondageInventory, HeavyBondageRendered, "", Success = False, UseKey = False, Chanse = False, QuestItem = True)
+				endif
+				DefeatLog("[Defeat] - Heavy Bondage is non-generic. Don't unlock.")
+			endif
+		endif
+	endif
+	
+	int Waiting = 2
+	while ((BeltUnequipped && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousBelt"))) || (PlugVagUnequipped && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousPlugVaginal"))) || \
+		   (PlugAnalUnequipped && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousPlugAnal"))) || (GagUnequipped && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousGag"))) || \
+		   (HeavyBondageUnequipped && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousHeavyBondage"))) || (HarnessUnequipped && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousHarness"))) || \
+		   (SuitUnequipped && Target.WornHasKeyWord(Keyword.GetKeyword("zad_deviousSuit")))) || Waiting > 0
+		   Waiting -= 1
+		   utility.wait(1)
+	endwhile
+	DefeatLog("[Defeat] - Unequpping Devices. Belt: " + BeltUnequipped + " PlugVag: " + PlugVagUnequipped + " PlugAnal: " + PlugAnalUnequipped + \
+				" Gag: " + GagUnequipped + " HeavyBondage: " + HeavyBondageUnequipped + " Harness: " + HarnessUnequipped + " Suit:" + SuitUnequipped)
+	DefeatLog("[Defeat] - Finish Unequpping Devices")
+EndFunction
+
+Function RapeReequipDevices(Actor Target)
+	DefeatLog("[Defeat] - Start Re-equipping Devices. Belt: " + BeltUnequipped + " PlugVag: " + PlugVagUnequipped + " PlugAnal: " + PlugAnalUnequipped + \
+				" Gag: " + GagUnequipped + " HeavyBondage: " + HeavyBondageUnequipped + " Harness: " + HarnessUnequipped + " Suit:" + SuitUnequipped)
+	RapeItemsUnequipped = False
+	if PlugVagUnequipped == True
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Re-equip Vaginal Plug DD5. Inventory: " + PlugVagInventory.GetName())
+			StorageUtil.FormListAdd(Target, "zad_libs_ForceSilent", PlugVagInventory)
+			DefeatUtil2.LockDevice(Target, PlugVagInventory)
+		else
+			DefeatLog("[Defeat] - Re-equip Vaginal Plug DD4. Inventory: " + PlugVagInventory.GetName())
+			DefeatUtil2.EquipDevice(Target, PlugVagInventory, PlugVagRendered, Keyword.GetKeyword("zad_deviousPlugVaginal"))
+		endif
+		PlugVagInventory = None
+		PlugVagUnequipped = False
+	endif
+	if PlugAnalUnequipped == True
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Re-equip Anal Plug DD5. Inventory: " + PlugAnalInventory.GetName())
+			StorageUtil.FormListAdd(Target, "zad_libs_ForceSilent", PlugAnalInventory)
+			DefeatUtil2.LockDevice(Target, PlugAnalInventory)
+		else
+			DefeatLog("[Defeat] - Re-equip Anal Plug DD4. Inventory: " + PlugAnalInventory.GetName())
+			DefeatUtil2.EquipDevice(Target, PlugAnalInventory, PlugAnalRendered, Keyword.GetKeyword("zad_deviousPlugAnal"))
+		endif
+		PlugAnalInventory = None
+		PlugAnalRendered = None
+		PlugAnalUnequipped = False
+	endif
+	if BeltUnequipped == True
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Re-equip Belt DD5. Inventory: " + BeltInventory.GetName())
+			StorageUtil.FormListAdd(Target, "zad_libs_ForceSilent", BeltInventory)
+			DefeatUtil2.LockDevice(Target, BeltInventory)
+		else
+			DefeatLog("[Defeat] - Re-equip Belt DD4. Inventory: " + BeltInventory.GetName())
+			DefeatUtil2.EquipDevice(Target, BeltInventory, BeltRendered, Keyword.GetKeyword("zad_deviousBelt"))
+		endif
+		BeltInventory = None
+		BeltRendered = None
+		BeltUnequipped = False
+	endif
+	if HarnessUnequipped == True
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Re-equip Harness DD5. Inventory: " + HarnessInventory.GetName())
+			StorageUtil.FormListAdd(Target, "zad_libs_ForceSilent", HarnessInventory)
+			DefeatUtil2.LockDevice(Target, HarnessInventory)
+		else
+			DefeatLog("[Defeat] - Re-equip Harness DD4. Inventory: " + HarnessInventory.GetName())
+			DefeatUtil2.EquipDevice(Target, HarnessInventory, HarnessRendered, Keyword.GetKeyword("zad_deviousHarness"))
+		endif
+		HarnessInventory = None
+		HarnessRendered = None
+		HarnessUnequipped = None
+	endif
+	if SuitUnequipped == True
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Re-equip Suit DD5. Inventory: " + SuitInventory.GetName())
+			StorageUtil.FormListAdd(Target, "zad_libs_ForceSilent", SuitInventory)
+			DefeatUtil2.LockDevice(Target, SuitInventory)
+		else
+			DefeatLog("[Defeat] - Re-equip Suit DD4. Inventory: " + SuitInventory.GetName())
+			DefeatUtil2.EquipDevice(Target, SuitInventory, SuitRendered, Keyword.GetKeyword("zad_deviousSuit"))
+		endif
+		SuitInventory = None
+		SuitRendered = None
+		SuitUnequipped = None
+	endif
+	if GagUnequipped == True
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Re-equip Gag DD5. Inventory: " + GagInventory.GetName())
+			StorageUtil.FormListAdd(Target, "zad_libs_ForceSilent", GagInventory)
+			DefeatUtil2.LockDevice(Target, GagInventory)
+		else
+			DefeatLog("[Defeat] - Re-equip Gag DD4. Inventory: " + GagInventory.GetName())
+			DefeatUtil2.EquipDevice(Target, GagInventory, GagRendered, Keyword.GetKeyword("zad_deviousGag"))
+		endif
+		GagInventory = None
+		GagRendered = None
+		GagUnequipped = None
+	endif
+	if HeavyBondageUnequipped == True
+		if RessConfig.DDVersion == 5
+			DefeatLog("[Defeat] - Re-equip Heavy Bondage DD5. Inventory: " + HeavyBondageInventory.GetName())
+			StorageUtil.FormListAdd(Target, "zad_libs_ForceSilent", HeavyBondageInventory)
+			DefeatUtil2.LockDevice(Target, HeavyBondageInventory)
+		else
+			DefeatLog("[Defeat] - Re-equip Heavy Bondage DD4. Inventory: " + HeavyBondageInventory.GetName())
+			DefeatUtil2.EquipDevice(Target, HeavyBondageInventory, HeavyBondageRendered, Keyword.GetKeyword("zad_deviousHeavyBondage"))
+		endif
+		HeavyBondageInventory = None
+		HeavyBondageRendered = None
+		HeavyBondageUnequipped = False
+	endif
+	DefeatLog("[Defeat] - Finish Re-equipping Devices. Belt: " + BeltUnequipped + " PlugVag: " + PlugVagUnequipped + " PlugAnal: " + PlugAnalUnequipped + \
+				" Gag: " + GagUnequipped + " HeavyBondage: " + HeavyBondageUnequipped + " Harness: " + HarnessUnequipped + " Suit: " + SuitUnequipped)
+EndFunction
+
+Function MessageOnUnequipDevice(Actor Aggressor, Armor DeviceInventory, Armor DeviceRendered = None, String DeviceType = "", Bool Success = False, Bool UseKey = False, Bool Chanse = False, Bool QuestItem = False)
+	String AggressorName = Aggressor.GetDisplayName()
+	String DeviceName = DefeatUtil2.GetDeviceName(DeviceInventory)
+	String DeviceDisplayName = DeviceInventory.GetName()
+	Bool MessageOverride = False
+	Bool IsRope = False
+	Bool UseDeviceDisplayName = False
+	if DeviceName == ""
+		DeviceName = DeviceDisplayName
+		UseDeviceDisplayName = True
+	endif
+	if StringUtil.Find(DeviceDisplayName, "Rope") != -1
+		if StringUtil.Find(DeviceName, "Rope") != -1
+			MessageOverride = True
+			IsRope = True
+		else
+			if !UseDeviceDisplayName
+				DeviceName = "Rope " + DeviceName
+			endif
+			MessageOverride = True
+			IsRope = True
+		endif
+	endif
+	if Success == False
+		if MessageOverride
+			Int TempInt = Utility.RandomInt(0, 1)
+			if TempInt == 0
+				Debug.Notification(AggressorName + " failed to untie your " + DeviceName)
+				DefeatLog("[Defeat] - Message: " + AggressorName + " failed to untie your " + DeviceName)
+			elseif TempInt == 1
+				Debug.Notification("Your " + DeviceName + " is too tight for " + AggressorName + " to untie")
+				DefeatLog("[Defeat] - Message: " + "Your " + DeviceName + " is too tight for " + AggressorName + " to untie")
+			endif
+		else
+			if UseKey
+				Int TempInt = Utility.RandomInt(0, 2)
+				if TempInt == 0
+					Debug.Notification(AggressorName + " doesn't have a key to unlock your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " doesn't have a key to unlock your " + DeviceName)
+				elseif TempInt == 1
+					Debug.Notification(AggressorName + " can't find a key to unlock your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " can't find a key to unlock your " + DeviceName)
+				elseif TempInt == 2
+					Debug.Notification(AggressorName + " can't find a key to unlock your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " can't find a key to unlock your " + DeviceName)
+				endif
+			elseif Chanse
+				Int TempInt = Utility.RandomInt(0, 1)
+				if TempInt == 0
+					Debug.Notification(AggressorName + " failed to unequip your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " failed to unequip your " + DeviceName)
+				elseif TempInt == 1
+					Debug.Notification(AggressorName + " is trying to unlock your " + DeviceName + ", but to no avail.")
+					DefeatLog("[Defeat] - Message: " + AggressorName + " is trying to unlock your " + DeviceName + ", but to no avail.")
+				endif
+			elseif QuestItem
+				Int TempInt = Utility.RandomInt(0, 1)
+				if TempInt == 0
+					Debug.Notification("Your " + DeviceName + "'s locking mechanism is too complicated for " + AggressorName)
+					DefeatLog("[Defeat] - Message: " + "Your " + DeviceName + "'s locking mechanism is too complicated for " + AggressorName)
+				elseif TempInt == 1
+					Debug.Notification(AggressorName + " can't figure out how to unlock your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " can't figure out how to unlock your " + DeviceName)
+				endif
+			endif
+		endif
+	else
+		if MessageOverride
+			Int TempInt = Utility.RandomInt(0, 1)
+			if TempInt == 0
+				Debug.Notification(AggressorName + " untied your " + DeviceName)
+				DefeatLog("[Defeat] - Message: " + AggressorName + " untied your " + DeviceName)
+			elseif TempInt == 1
+				Debug.Notification(AggressorName + " managed to losoen knots on your " + DeviceName)
+				DefeatLog("[Defeat] - Message: " + AggressorName + " managed to losoen knots on your " + DeviceName)
+			endif
+		else
+			if UseKey
+				Int TempInt = Utility.RandomInt(0, 1)
+				if TempInt == 0
+					Debug.Notification(AggressorName + " found a key in your bag and unlocked the " + DeviceName + " you're wearing.")
+					DefeatLog("[Defeat] - Message: " + AggressorName + " found a key in your bag and unlocked the " + DeviceName + " you're wearing.")
+				elseif TempInt == 1
+					Debug.Notification(AggressorName + " used your key to unlock " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " used your key to unlock " + DeviceName)
+				endif
+			elseif Chanse
+				Int TempInt = Utility.RandomInt(0, 2)
+				if TempInt == 0
+					Debug.Notification(AggressorName + " ripped off your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " ripped off your " + DeviceName)
+				elseif TempInt == 1
+					Debug.Notification(AggressorName + " unlocked your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + AggressorName + " unlocked your " + DeviceName)
+				elseif TempInt == 2
+					Debug.Notification("After some tinkering " + AggressorName + " managed to slip off your " + DeviceName)
+					DefeatLog("[Defeat] - Message: " + "After some tinkering " + AggressorName + " managed to slip off your " + DeviceName)
+				endif
+			elseif QuestItem
+				Debug.Notification("")
+			endif
+		endif
+	endif
+EndFunction
+
+Bool Property DynamicWydgetOn = False Auto
+Float SpellTimeout
+
+Function StartDynamicWidget(bool Display)
+	If Display
+		StruggleBar.Alpha = 100.0
+		DynamicWydgetOn = True
+		SendModEvent("DefeatStartDynamicWidget")
+	Else
+		if DynamicWydgetOn
+			DefeatLog("[Defeat] - DefeatPlayer - StartDynamicWidget")
+			StruggleBar.Alpha = 0.0
+			StruggleBar.Percent = 0.0
+			DynamicWydgetOn = False
+		endif
+	EndIf
+EndFunction
+
+Function UpdateDynamicWidget(float Amount)
+	StruggleBar.Percent += Amount
+EndFunction
+
+DefeatPlayer_Vulnerability Property DefVulnScr Auto
+
+Float Function CalculateWidget(bool PowerAttack, Actor Aggressor, Form Source, Bool Blocked)
+	Float DefeatAmount = 0
+	Float DefeatBaseDamage = McmConfig.DynamicDefeatOnHitBase / 100
+	Float DefeatVulnerabilityMult = 0
+	Float DefeatPowerAttackMult = 0
+	Float DefeatLowStaminaMult = 0
+	Float DefeatLowHeathMult = 0
+	Float DefeatBackHit = 0
+	Float DefeatBlockReduction = 1.0
+	Int TempInt = Source.GetType()
+	if TempInt == 41
+		Int TempInt2 = (Source as weapon).GetWeaponType()
+		if TempInt2 <= 4 && TempInt2 != 0
+			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitOneHand / 100
+			DefeatLog("[Defeat] - CalculateWidget - WeaponType: One-Handed")
+		elseif TempInt2 == 5 || TempInt2 == 6
+			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitTwoHand / 100
+			DefeatLog("[Defeat] - CalculateWidget - WeaponType: Two-Handed")
+		elseif TempInt2 == 7
+			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitBow / 100
+			DefeatLog("[Defeat] - CalculateWidget - WeaponType: Bow")
+		endif
+	elseif TempInt == 22
+		DefeatBaseDamage = McmConfig.DynamicDefeatOnHitSpell / 100
+		DefeatLog("[Defeat] - CalculateWidget - WeaponType: Spell")
+	endif
+	If RessConfig.DeviousFrameworkON && McmConfig.DynamicDefeatUseDFWVulnerability
+		DefeatLog("[Defeat] - CalculateWidget - DeviousFrameworkON")
+		if McmConfig.DynamicDefeatVulnerabilityMult > 1.0
+			float PlayerVulnerability = DefeatUtil2.DFW_GetVulnerability(Player)
+			if PlayerVulnerability > 0
+				DefeatVulnerabilityMult = (PlayerVulnerability / 100) * (McmConfig.DynamicDefeatVulnerabilityMult - 1)
+			endif
+		endif
+	else
+		DefeatLog("[Defeat] - CalculateWidget - Vulnerability")
+		if McmConfig.DynamicDefeatVulnerabilityMult > 1.0
+			float PlayerVulnerability = DefVulnScr.Vulnerability_Total
+			if PlayerVulnerability > 100.0
+				PlayerVulnerability = 100.0
+			endif
+			DefeatVulnerabilityMult = (PlayerVulnerability / 100) * (McmConfig.DynamicDefeatVulnerabilityMult - 1)
+		endif
+	endif
+	if PowerAttack
+		DefeatPowerAttackMult = McmConfig.DynamicDefeatPowerAttackMult - 1
+	endif
+	if McmConfig.DynamicDefeatLowStaminaMult > 1.0
+		Float PlayerStamina = (Player.GetActorValuePercentage("Stamina") * 100)
+		if PlayerStamina <= McmConfig.DynamicDefeatLowStaminaThreshold
+			DefeatLowStaminaMult = McmConfig.DynamicDefeatLowStaminaMult - 1
+		endif
+	endif
+	if McmConfig.DynamicDefeatLowHealthMult > 1.0
+		Float PlayerHealth = (Player.GetActorValuePercentage("Health") * 100)
+		if PlayerHealth <= McmConfig.DynamicDefeatLowHealthThreshold
+			DefeatLowHeathMult = McmConfig.DynamicDefeatLowHealthMult - 1
+		endif
+	endif
+	if McmConfig.DynamicDefeatBackHitMult > 1.0
+		if OnlyBack(True, Aggressor)
+			DefeatBackHit = McmConfig.DynamicDefeatBackHitMult - 1
+		endif
+	endif
+	if McmConfig.DynamicDefeatBlockReduction > 0.0
+		if Blocked
+			DefeatBlockReduction = (1 - McmConfig.DynamicDefeatBlockReduction / 100)
+		endif
+	endif
+	DefeatAmount = DefeatBaseDamage * (1 + DefeatVulnerabilityMult + DefeatPowerAttackMult + DefeatLowStaminaMult + DefeatLowHeathMult + DefeatBackHit) * DefeatBlockReduction
+	DefeatLog("[Defeat] - CalculateWidget - DefeatAmount: " + DefeatAmount * 100 + " BaseDamage: " + DefeatBaseDamage * 100 + " Vuln: " + DefeatVulnerabilityMult + " PowerAtt: " + DefeatPowerAttackMult + " LowHeathMult: " + DefeatLowHeathMult + " LowStamMult: " + DefeatLowStaminaMult + " DefeatBackHit: " + DefeatBackHit + " DefeatBlockReduction: " + (DefeatBlockReduction) + "%")
+	return DefeatAmount
+EndFunction
+
+Function DefeatLog(string TargetString)
+	if McmConfig.EnableLog
+		Debug.Trace(TargetString)
+	endif
 EndFunction

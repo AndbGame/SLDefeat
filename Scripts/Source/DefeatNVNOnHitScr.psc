@@ -12,6 +12,7 @@ Bool SpamGuardBleedout = False
 
 Function Configure()
 	SpamGuard = False
+	GoToState("")
 EndFunction
 
 Bool Function IsAggressorValid(Actor Aggressor)
@@ -21,48 +22,50 @@ Bool Function HealthThreshold(Actor Vic, Float Threshold, Float ChanceOnHit)
 	Return ((Utility.RandomInt(1, 100) <= ChanceOnHit) && ((Vic.GetActorValuePercentage("Health") * 100) <= Threshold))
 EndFunction
 Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
+	GoToState("OnHitBusy")
 	Actor Aggressor = (akAggressor As Actor)
 	If Aggressor && IsAggressorValid(Aggressor)
-		If !SpamGuard
-			SpamGuard = True
-			Actor Victim = (GetReference() As Actor)
-			If Victim && !Victim.HasMagicEffect(RessConfig.MiscMagicEffects[0]) && (RessConfig.NVNKDtype <= 2) ; Both or on hit
-				If (Aggressor.GetCombatTarget() == Victim) && (Aggressor.GetDistance(Victim) <= 2000.0)
-					LastAggressor = Aggressor
-					If (IsFollower && (Utility.RandomInt(1, 100) <= McmConfig.COHFollower) || (!IsFollower && (Utility.RandomInt(1, 100) <= McmConfig.ChanceOnHitNPC)))
-						If IsFollower || McmConfig.EveryoneNVN || RessConfig.SexCombination(Aggressor, Victim, False)
-							If IsFollower
-								If HealthThreshold(Victim, McmConfig.ThresholdFollower, McmConfig.COHFollower)
-									If !Player.HasKeyWordString("DefeatActive")
-										RessConfig.Knockdown(Victim, Aggressor, 60.0, "Follower")
+		Actor Victim = (GetReference() As Actor)
+		If Victim && !Victim.HasMagicEffect(RessConfig.MiscMagicEffects[0]) && (RessConfig.NVNKDtype <= 2) ; Both or on hit
+			If (Aggressor.GetCombatTarget() == Victim) && (Aggressor.GetDistance(Victim) <= 2000.0)
+				LastAggressor = Aggressor
+				If (IsFollower && (Utility.RandomInt(1, 100) <= McmConfig.COHFollower) || (!IsFollower && (Utility.RandomInt(1, 100) <= McmConfig.ChanceOnHitNPC)))
+					If IsFollower || McmConfig.EveryoneNVN || RessConfig.SexCombination(Aggressor, Victim, False)
+						If IsFollower
+							If HealthThreshold(Victim, McmConfig.ThresholdFollower, McmConfig.COHFollower)
+								If !Player.HasKeyWordString("DefeatActive")
+									RessConfig.Knockdown(Victim, Aggressor, 60.0, "Follower")
+									RessConfig.MiscSpells[3].Cast(Aggressor, Victim) ; NVNAssautSPL
+								Else
+									RessConfig.Knockdown(Victim, Aggressor, 60.0, "Follower")
+								Endif
+								Utility.Wait(2.0)
+							Endif
+						Else
+							If RessConfig.IsFollower(Aggressor)
+								If McmConfig.AllowCagg
+									If HealthThreshold(Victim, McmConfig.ThresholdNPCvsNPC, McmConfig.ChanceOnHitNPC)
+										RessConfig.Knockdown(Victim, Aggressor, 60.0, "NPC")
 										RessConfig.MiscSpells[3].Cast(Aggressor, Victim) ; NVNAssautSPL
-									Else
-										RessConfig.Knockdown(Victim, Aggressor, 60.0, "Follower")
+										Utility.Wait(2.0)
 									Endif
 								Endif
 							Else
-								If RessConfig.IsFollower(Aggressor)
-									If McmConfig.AllowCagg
-										If HealthThreshold(Victim, McmConfig.ThresholdNPCvsNPC, McmConfig.ChanceOnHitNPC)
-											RessConfig.Knockdown(Victim, Aggressor, 60.0, "NPC")
+								If Aggressor.HasKeyWordString("DefeatAggPlayer")
+									If HealthThreshold(Victim, McmConfig.ThresholdNPCvsNPC, McmConfig.ChanceOnHitNPC)
+										RessConfig.Knockdown(Victim, Aggressor, 60.0, "NPC")
+										Actor TheNext = RessConfig.PlayerScr.IsThereNext()
+										If (!TheNext || (TheNext && (TheNext != Aggressor)))
+											RessConfig.PlayerScr.RemoveAggressor(Aggressor)
 											RessConfig.MiscSpells[3].Cast(Aggressor, Victim) ; NVNAssautSPL
 										Endif
+										Utility.Wait(2.0)
 									Endif
 								Else
-									If Aggressor.HasKeyWordString("DefeatAggPlayer")
-										If HealthThreshold(Victim, McmConfig.ThresholdNPCvsNPC, McmConfig.ChanceOnHitNPC)
-											RessConfig.Knockdown(Victim, Aggressor, 60.0, "NPC")
-											Actor TheNext = RessConfig.PlayerScr.IsThereNext()
-											If (!TheNext || (TheNext && (TheNext != Aggressor)))
-												RessConfig.PlayerScr.RemoveAggressor(Aggressor)
-												RessConfig.MiscSpells[3].Cast(Aggressor, Victim) ; NVNAssautSPL
-											Endif
-										Endif
-									Else
-										If HealthThreshold(Victim, McmConfig.ThresholdNPCvsNPC, McmConfig.ChanceOnHitNPC)
-											RessConfig.Knockdown(Victim, Aggressor, 60.0, "NPC")
-											RessConfig.MiscSpells[3].Cast(Aggressor, Victim) ; NVNAssautSPL
-										Endif
+									If HealthThreshold(Victim, McmConfig.ThresholdNPCvsNPC, McmConfig.ChanceOnHitNPC)
+										RessConfig.Knockdown(Victim, Aggressor, 60.0, "NPC")
+										RessConfig.MiscSpells[3].Cast(Aggressor, Victim) ; NVNAssautSPL
+										Utility.Wait(2.0)
 									Endif
 								Endif
 							Endif
@@ -70,10 +73,9 @@ Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, bo
 					Endif
 				Endif
 			Endif
-			Utility.Wait(2.0)
-			SpamGuard = False
 		Endif
 	Endif
+	GoToState("")
 EndEvent
 
 Event OnEnterBleedOut() ; fires Event OnCombatStateChanged 0
@@ -142,3 +144,9 @@ Actor Function GetNearValidNPC(Actor Victim)
 	EndWhile
 	Return None
 EndFunction
+
+State OnHitBusy
+	Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
+		;Busy
+	EndEvent
+EndState

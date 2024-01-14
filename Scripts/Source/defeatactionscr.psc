@@ -375,7 +375,7 @@ Bool Function WitnessAlarm(Actor Target, Actor Aggressor)
 		Wait(0.5)
 		Actor TheWitness = RessConfig.AWitness
 		If TheWitness
-			RessConfig.UILib.ShowNotification("${"+TheWitness.GetLeveledActorBase().GetName()+"} witnesses what is happenning and send the alarm!", "#CD4C4C")
+			RessConfig.UILib.ShowNotification("${"+TheWitness.GetLeveledActorBase().GetName()+"} notices what is happening and calls for help!", "#CD4C4C")
 			TheWitness.SendAssaultAlarm()
 			RessConfig.AWitness = None
 			Return True
@@ -1915,7 +1915,7 @@ Function Strip(Actor Victim, Actor Aggressor) ;===== STRIP
 		If McmConfig.bRedressPagg
 			Form Clothes
 			Int i
-			While (i < 5)
+			While (i < McmConfig.SSPaggSet.Length - 1)    ;Bane Updated to use Array Length in V26092023 - Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
 				If (McmConfig.SSPaggSet[i+1] == "$UNEQUIP")
 					Clothes = Victim.GetWornForm(Armor.GetMaskForSlot(McmConfig.SSPagg[i] As Int))
 					If Clothes
@@ -1927,11 +1927,14 @@ Function Strip(Actor Victim, Actor Aggressor) ;===== STRIP
 		Endif
 		Float zOffset = Aggressor.GetHeadingAngle(Victim)
 		Aggressor.SetAngle(0.0, 0.0, Aggressor.GetAngleZ() + zOffset)
-		PieceToStrip(Victim, Aggressor, McmConfig.SSPaggSet[1], Armor.GetMaskForSlot(McmConfig.SSPagg[0] As Int))
-		PieceToStrip(Victim, Aggressor, McmConfig.SSPaggSet[2], Armor.GetMaskForSlot(McmConfig.SSPagg[1] As Int))
-		PieceToStrip(Victim, Aggressor, McmConfig.SSPaggSet[3], Armor.GetMaskForSlot(McmConfig.SSPagg[2] As Int))
-		PieceToStrip(Victim, Aggressor, McmConfig.SSPaggSet[4], Armor.GetMaskForSlot(McmConfig.SSPagg[3] As Int))
-		PieceToStrip(Victim, Aggressor, McmConfig.SSPaggSet[5], Armor.GetMaskForSlot(McmConfig.SSPagg[4] As Int))
+		
+		Int iNumSlots = McmConfig.SSPagg.Length - 1 ;Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
+		Int iSlot
+		While iSlot < iNumSlots
+			PieceToStrip(Victim, Aggressor, McmConfig.SSPaggSet[iSlot + 1], Armor.GetMaskForSlot(McmConfig.SSPagg[iSlot] As Int)) ;Bane Updated to use Array Length in V26092023
+			iSlot +=1
+		EndWhile
+		
 		If (Victim.GetSleepState() != 3)
 			Weapon Equipped = Victim.GetEquippedWeapon()
 			PieceToStrip(Victim, Aggressor, McmConfig.SSPaggSet[0], 0, Equipped)
@@ -1953,10 +1956,15 @@ Function PieceToStrip(Actor Victim, Actor Aggressor, String Way, Int Slot, Form 
 		If !Equipped.HasKeyWordString("SexLabNoStrip")
 			If (Slot == 0x00000004)
 				Animation = "DefeatStripAnim"
-				WaitTime = 2.5
+				SendAnimationEvent(Aggressor, Animation) ;*
+				Wait(2.5) ;*
+				;WaitTime = 2.5
+			Else ;*
+				;SendAnimationEvent(Aggressor, Animation);*  #######UPDATED
+				Wait(0.1);*
 			Endif
-			SendAnimationEvent(Aggressor, Animation)
-			Wait(WaitTime)
+			;SendAnimationEvent(Aggressor, Animation)
+			;Wait(WaitTime)
 			If (Way == "$UNEQUIP")
 				Victim.UnequipItem(Equipped, False, True)
 			Elseif (Way == "$STRIP")

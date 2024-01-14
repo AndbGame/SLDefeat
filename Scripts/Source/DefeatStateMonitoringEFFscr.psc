@@ -19,12 +19,16 @@ Bool WasPartner = False
 Bool WasentFollower = False
 Bool SpamGuard
 
+String strSurrenderPose ;Bane 06/01/2023 Surrender Pose Animation for this Follower
+Bool bHasSurrendered = False
+
 Function Redress()
 	Int i
 ;	DefeatConfig.Log("Try to redress - "+Victim.GetLeveledActorBase().GetName()+" / Victim.Is3DLoaded() - "+Victim.Is3DLoaded()+" / !RessConfig.IsImmune(Victim) - "+!RessConfig.IsImmune(Victim))
 	If (!Victim.IsDead() && Victim.Is3DLoaded() && !RessConfig.IsImmune(Victim)) ; check for other actions done or not and prevent redress until done.
 		Form Clothes
-		While (i < 5)
+		Int iNumSlots = McmConfig.SSPVicSet.Length - 1 	;Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
+		While (i < McmConfig.SSPVicSet.Length)    		;Bane Updated to use Array Length in V26092023 - **NB Design Assumes all Strip Arrays are Intialised to the same length as SSPVicSet
 			Clothes = GetFormValue(Victim, "DefeatVictimClothes"+i+1)
 			If (Clothes && !Victim.GetWornForm(Armor.GetMaskForSlot(McmConfig.SSPagg[i] As Int)))
 				Victim.EquipItem(Clothes)
@@ -55,6 +59,8 @@ Event OnEffectStart(Actor Target, Actor Caster)
 	Victim = Target
 	Perpetrator = RessConfig.Perpetrator
 	SpamGuard = False
+	;Bane 06/01/2023 Select a Surrender Pose Animation for this Follower
+	strSurrenderPose = StringListGet(Player, "defeat_SurrenderAnims", Utility.RandomInt(0, StringListCount(Player, "defeat_SurrenderAnims") - 1))
 ;	DefeatConfig.Log("DefeatStateMonitoringEFFscr Start // Victim - "+Victim+" / StateType - "+StateType+" / Time - "+Time)
 	GoToState(StateType)
 EndEvent
@@ -114,8 +120,11 @@ State Knockdown
 				RessConfig.Knockout(Victim, Aggressor)
 			Else
 				Victim.Say(RessConfig.TopicToSay[2], Victim) ; Death moan
+				;Aggressor.StopCombat() -----------------
+				;Aggressor.SetAlert() -------------------
 			Endif
-			Utility.Wait(2)
+			Victim.StopCombatAlarm() ;Was StopCombat
+			Utility.Wait(0.5)
 			SpamGuard = False
 		Endif
 	EndEvent
@@ -139,6 +148,7 @@ State Knockdown
 		Redress()
 		RessConfig.Knockdown(Victim, Enter = False)
 	EndEvent
+
 EndState
 State Trauma
 	Event OnBeginState()
@@ -241,14 +251,19 @@ State Surrender
 	Event OnBeginState()
 		Utility.Wait(5.0)
 		RessConfig.DefeatPlayAnimation(Victim, "Surrender")
-		RegisterForSingleUpdate(2)
+		RegisterForSingleUpdate(Utility.RandomFloat(2.0, 5.0)) ;Bane 06/01/23 DeSync Multiple Followers Surrendering
 	EndEvent
 	Event OnUpdate()
 		If Victim.HasKeyWordString("DefeatCollateral")
-			SendAnimationEvent(Victim, "IdleCowering")
+			;SendAnimationEvent(Victim, "IdleCowering")
+			SendAnimationEvent(Victim, strSurrenderPose) ;Bane 06/01/23 Use a randomly selected Surrender pose for this instance
+			bHasSurrendered = True
 		Elseif !Player.HasKeyWordString("DefeatActive")
 			Dispel()
 			Return
+		ElseIf !bHasSurrendered ;Bane 06/01/2023 - Apply the selected Surrender pose to stop followers from just standing around looking bored during surrender
+			SendAnimationEvent(Victim, strSurrenderPose)
+			bHasSurrendered = True
 		Endif
 		RegisterForSingleUpdate(5)
 	EndEvent
@@ -279,7 +294,8 @@ State Yield
 				Else
 					If ((Victim.GetActorValue("Aggression") < 2) || (Victim.GetActorValue("Confidence") < 3))
 						Victim.Say(RessConfig.TopicToSay[3], Player) ; Flee
-						SendAnimationEvent(Victim, "IdleCowering")
+						;SendAnimationEvent(Victim, "IdleCowering")
+						SendAnimationEvent(Victim, strSurrenderPose) ;Bane 06/01/23 Use a randomly selected Yield pose for this instance
 					Else
 						Dispel()
 					Endif

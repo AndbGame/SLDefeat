@@ -495,22 +495,333 @@ Int AllowCvicFlag
 
 String[] Property SlotNames Auto
 
+Bool Property KDWayVulnerability = True Auto Hidden
+Int oidKDWayVulnerability
+Bool Property KDWayVulnerabilityUseDFW = False Auto Hidden
+Int oidKDWayVulnerabilityUseDFW
+Float Property VulnerabilityPvic = 50.0 Auto Hidden
+Int oidVulnerabilityPvic
+Bool Property KDWayVulnerabilityOB = False Auto Hidden
+Int oidKDWayVulnerabilityOB
+Bool Property KDVulnerabilityBlock = False Auto Hidden
+Int oidKDVulnerabilityBlock
+Float Property SStruggleVulnerabilityPvic = 0.0 Auto Hidden
+Int oidSStruggleVulnerabilityPvic
+Float Property KnockOutVulnerabilityPvic = 0.0 Auto Hidden
+Int oidKnockOutVulnerabilityPvic
+Float Property ChanceOnHitPvicVulnerability = 50.0 Auto Hidden
+Int oidChanceOnHitPvicVulnerability
+Int KDwayVulnerabilityFlag
+
+Bool Property KDWayDynamic = True Auto Hidden
+Int oidKDWayDynamic
+Float Property SStruggleDynamicPvic = 0.0 Auto Hidden
+Int oidSStruggleDynamicPvic
+Float Property KnockOutDynamicPvic = 0.0 Auto Hidden
+Int oidKnockOutDynamicPvic
+Float Property DynamicDefeatOnHitBase = 10.0 Auto Hidden
+Int oidDynamicDefeatOnHitBase
+Float Property DynamicDefeatOnHitOneHand = 10.0 Auto Hidden
+Int oidDynamicDefeatOnHitOneHand
+Float Property DynamicDefeatOnHitTwoHand = 10.0 Auto Hidden
+Int oidDynamicDefeatOnHitTwoHand
+Float Property DynamicDefeatOnHitBow = 10.0 Auto Hidden
+Int oidDynamicDefeatOnHitBow
+Float Property DynamicDefeatOnHitSpell = 10.0 Auto Hidden
+Int oidDynamicDefeatOnHitSpell
+Float Property DynamicDefeatPowerAttackMult = 2.0 Auto Hidden
+Int oidDynamicDefeatPowerAttackMult
+Float Property DynamicDefeatBackHitMult = 2.0 Auto Hidden
+Int oidDynamicDefeatBackHitMult
+Bool Property DynamicDefeatUseDFWVulnerability = False Auto Hidden
+Int oidDynamicDefeatUseDFWVulnerability
+Float Property DynamicDefeatVulnerabilityMult = 2.0 Auto Hidden
+Int oidDynamicDefeatVulnerabilityMult
+Float Property DynamicDefeatLowStaminaMult = 2.0 Auto Hidden
+Int oidDynamicDefeatLowStaminaMult
+Float Property DynamicDefeatLowStaminaThreshold = 50.0 Auto Hidden
+Int oidDynamicDefeatLowStaminaThreshold
+Float Property DynamicDefeatLowHealthMult = 2.0 Auto Hidden
+Int oidDynamicDefeatLowHealthMult
+Float Property DynamicDefeatLowHealthThreshold = 50.0 Auto Hidden
+Int oidDynamicDefeatLowHealthThreshold
+Float Property DynamicDefeatBlockReduction = 50.0 Auto Hidden
+Int oidDynamicDefeatBlockReduction
+Float Property DynamicDefeatDepleteOverTime = 1.0 Auto Hidden
+Int oidDynamicDefeatDepleteOverTime
+Int KDwayDynamicDefeatFlag
+
+Int oidAllowUnequipBelt
+Int oidUnequipBeltChance
+Int oidUnequipBeltWithPlayerKeysOnly
+int oidUnequipBeltNotificationChance
+Int oidAllowUnequipGag
+Int oidUnequipGagChance
+Int oidUnequipGagWithPlayerKeysOnly
+Int oidUnequipGagNotificationChance
+Int oidAllowUnequipHeavyBondage
+Int oidUnequipHeavyBondageChance
+Int oidUnequipHeavyBondageWithPlayerKeysOnly
+Int oidUnequipHeavyBondageNotificationChance
+Int oidAllowUnequipHarness
+Int oidUnequipHarnessChance
+Int oidUnequipHarnessWithPlayerKeysOnly
+Int oidUnequipHarnessNotificationChance
+Int oidAllowUnequipSuit
+Int oidUnequipSuitChance
+Int oidUnequipSuitWithPlayerKeysOnly
+Int oidUnequipSuitNotificationChance
+
+Bool Property AllowUnequipBelt = True Auto
+Int Property UnequipBeltChance = 50 Auto
+Bool Property UnequipBeltWithPlayerKeysOnly = True Auto
+Int Property UnequipBeltNotificationChance = 100 Auto
+Bool Property AllowUnequipGag = True Auto
+Int Property UnequipGagChance = 50 Auto
+Bool Property UnequipGagWithPlayerKeysOnly = True Auto
+Int Property UnequipGagNotificationChance = 100 Auto
+Bool Property AllowUnequipHeavyBondage = True Auto
+Int Property UnequipHeavyBondageChance = 50 Auto
+Bool Property UnequipHeavyBondageWithPlayerKeysOnly = True Auto
+Int Property UnequipHeavyBondageNotificationChance = 100 Auto
+Bool Property AllowUnequipHarness = True Auto
+Int Property UnequipHarnessChance = 50 Auto
+Bool Property UnequipHarnessWithPlayerKeysOnly = True Auto
+Int Property UnequipHarnessNotificationChance = 100 Auto
+Bool Property AllowUnequipSuit = True Auto
+Int Property UnequipSuitChance = 50 Auto
+Bool Property UnequipSuitWithPlayerKeysOnly = True Auto
+Int Property UnequipSuitNotificationChance = 100 Auto
+
+Int oidUseDDFilter
+Bool Property UseDDFilter = False Auto
+Int oidEnableLog
+Bool Property EnableLog = False Auto 
+
+Int oidCursedLootMinDevices
+Int Property CursedLootMinDevices = 3 Auto
+Int oidCursedLootMaxDevices
+Int  Property CursedLootMaxDevices = 6 Auto
+
+Int oidAllowCreaturePostAssault
+string[] Property AllowCreaturePostAssault Auto
+Int Property AllowCreaturePostAssaultSelection = 0 Auto
+
+Int oidVulnerabilityValueGag
+Int oidVulnerabilityValueVagPlug
+Int oidVulnerabilityValueAnalPlug
+Int oidVulnerabilityValueBelt
+Int oidVulnerabilityValueBra
+Int oidVulnerabilityValueCollar
+Int oidVulnerabilityValueArmCuffs
+Int oidVulnerabilityValueLegCuffs
+Int oidVulnerabilityValueHeavyBond
+Int oidVulnerabilityValueDisableKick
+Int oidVulnerabilityValueBlindfold
+Int oidVulnerabilityValueBoots
+Int oidVulnerabilityValueCorset
+Int oidVulnerabilityValueHarness
+Int oidVulnerabilityValueFullChastity
+Int oidVulnerabilityValueHelpless
+
+Float Property VulnerabilityValueGag = 10.0 Auto
+Float Property VulnerabilityValueVagPlug = 5.0 Auto
+Float Property VulnerabilityValueAnalPlug = 5.0 Auto
+Float Property VulnerabilityValueBelt = 10.0 Auto
+Float Property VulnerabilityValueBra = 10.0 Auto
+Float Property VulnerabilityValueCollar = 10.0 Auto
+Float Property VulnerabilityValueArmCuffs = 5.0 Auto
+Float Property VulnerabilityValueLegCuffs = 5.0 Auto
+Float Property VulnerabilityValueHeavyBond = 15.0 Auto
+Float Property VulnerabilityValueDisableKick = 15.0 Auto
+Float Property VulnerabilityValueBlindfold = 15.0 Auto
+Float Property VulnerabilityValueBoots = 10.0 Auto
+Float Property VulnerabilityValueCorset = 5.0 Auto
+Float Property VulnerabilityValueHarness = 5.0 Auto
+Float Property VulnerabilityValueFullChastity = 10.0 Auto
+Float Property VulnerabilityValueHelpless = 35.0 Auto
+
+String[] Property DDGeneralPermissionList Auto ; [0] - Disallow    [1] - Allow    [2] - Allways Use
+
+Int oidDDPaUseArmbinder
+Int oidDDPaUseGag
+Int oidDDPaUseSuit
+Int oidDDPaUseHood
+Int oidDDPaUseChastityBelt
+Int oidDDPaUseChastityBra
+Int oidDDPaUseHarness
+Int oidDDPaUseCorset
+Int oidDDPaUseCollar
+Int oidDDPaUsePlugVaginal
+Int oidDDPaUsePlugAnal
+Int oidDDPaUsePiercingVaginal
+Int oidDDPaUsePiercingNipple
+Int oidDDPaUseBoots
+Int oidDDPaUseGloves
+Int oidDDPaUseArmCuffs
+Int oidDDPaUseLegCuffs
+
+Int Property DDPaUseArmbinder = 1 Auto
+Int Property DDPaUseGag = 1 Auto
+Int Property DDPaUseSuit = 1 Auto
+Int Property DDPaUseHood = 1 Auto
+Int Property DDPaUseChastityBelt = 1 Auto
+Int Property DDPaUseChastityBra = 1 Auto
+Int Property DDPaUseHarness = 1 Auto
+Int Property DDPaUseCorset = 1 Auto
+Int Property DDPaUseCollar = 1 Auto
+Int Property DDPaUsePlugVaginal = 1 Auto
+Int Property DDPaUsePlugAnal = 1 Auto
+Int Property DDPaUsePiercingVaginal = 1 Auto
+Int Property DDPaUsePiercingNipple = 1 Auto
+Int Property DDPaUseBoots = 1 Auto
+Int Property DDPaUseGloves = 1 Auto
+Int Property DDPaUseArmCuffs = 1 Auto
+Int Property DDPaUseLegCuffs = 1 Auto
+
+Int oidDDMinDevices
+Int oidDDMaxDevices
+Int Property DDMinDevices = 3 Auto
+Int Property DDMaxDevices = 6 Auto
+
+Int oidDDPaArmbinderStyle
+Int oidDDPaArmbinderColour
+Int oidDDPaGagStyle
+Int oidDDPaGagColour
+Int oidDDPaSuitStyle
+Int oidDDPaSuitColour
+Int oidDDPaHoodStyle
+Int oidDDPaHoodColour
+Int oidDDPaChastityBeltStyle
+Int oidDDPaChastityBeltColour
+Int oidDDPaChastityBraStyle
+Int oidDDPaChastityBraColour
+Int oidDDPaHarnessStyle
+Int oidDDPaHarnessColour
+Int oidDDPaCorsetStyle
+Int oidDDPaCorsetColour
+Int oidDDPaCollarStyle
+Int oidDDPaCollarColour
+Int oidDDPaPlugVaginalStyle
+Int oidDDPaPlugVaginalColour
+Int oidDDPaPlugAnalStyle
+Int oidDDPaPlugAnalColour
+Int oidDDPaPiercingVaginalStyle
+Int oidDDPaPiercingVaginalColour
+Int oidDDPaPiercingNippleStyle
+Int oidDDPaPiercingNippleColour
+Int oidDDPaBootsStyle
+Int oidDDPaBootsColour
+Int oidDDPaGlovesStyle
+Int oidDDPaGlovesColour
+Int oidDDPaArmCuffsStyle
+Int oidDDPaArmCuffsColour
+Int oidDDPaLegCuffsStyle
+Int oidDDPaLegCuffsColour
+
+String Property DDPaArmbinderStyle = "Any" Auto
+String Property DDPaArmbinderColour = "Any" Auto
+String Property DDPaGagStyle = "Any" Auto
+String Property DDPaGagColour = "Any" Auto
+String Property DDPaSuitStyle = "Any" Auto
+String Property DDPaSuitColour = "Any" Auto
+String Property DDPaHoodStyle = "Any" Auto
+String Property DDPaHoodColour = "Any" Auto
+String Property DDPaChastityBeltStyle = "Any" Auto
+String Property DDPaChastityBeltColour = "Any" Auto
+String Property DDPaChastityBraStyle = "Any" Auto
+String Property DDPaChastityBraColour = "Any" Auto
+String Property DDPaHarnessStyle = "Any" Auto
+String Property DDPaHarnessColour = "Any" Auto
+String Property DDPaCorsetStyle = "Any" Auto
+String Property DDPaCorsetColour = "Any" Auto
+String Property DDPaCollarStyle = "Any" Auto
+String Property DDPaCollarColour = "Any" Auto
+String Property DDPaPlugVaginalStyle = "Any" Auto
+String Property DDPaPlugVaginalColour = "Any" Auto
+String Property DDPaPlugAnalStyle = "Any" Auto
+String Property DDPaPlugAnalColour = "Any" Auto
+String Property DDPaPiercingVaginalStyle = "Any" Auto
+String Property DDPaPiercingVaginalColour = "Any" Auto
+String Property DDPaPiercingNippleStyle = "Any" Auto
+String Property DDPaPiercingNippleColour = "Any" Auto
+String Property DDPaBootsStyle = "Any" Auto
+String Property DDPaBootsColour = "Any" Auto
+String Property DDPaGlovesStyle = "Any" Auto
+String Property DDPaGlovesColour = "Any" Auto
+String Property DDPaArmCuffsStyle = "Any" Auto
+String Property DDPaArmCuffsColour = "Any" Auto
+String Property DDPaLegCuffsStyle = "Any" Auto
+String Property DDPaLegCuffsColour = "Any" Auto
+
+Int oidDDPaPlugsWithBelt
+Int oidDDPaArmAndLegShacklesChance
+Bool Property DDPaPlugsWithBelt = True Auto
+Int Property DDPaArmAndLegShacklesChance = 25 Auto
+Int oidDDPaConsistantStyle
+Bool Property DDPaConsistantStyle = True Auto
+Int oidDDPaTestingEquipDevices
+
+Int oidDDPaSelectLanguage
+String Property Language = "English" Auto
+
+String Property LocalisedBlack = "Black" Auto
+String Property LocalisedWhite = "White" Auto
+String Property LocalisedRed = "Red" Auto
+String Property LocalisedLeather = "Leather" Auto
+String Property LocalisedEbonite = "Ebonite" Auto
+String Property LocalisedEbonite2 = "Latex" Auto
+String Property LocalisedRope = "Rope" Auto
+
 ;Event OnInit()
 ;	parent.OnInit()
 ;EndEvent
 
 Event OnConfigInit()
 	DefeatConfig.Log("MCM OnConfigInit")
-	Pages = New String[6]
+	Pages = New String[7]
 	Pages[0] = "$General settings"
 	Pages[1] = "$Animation settings"
 	Pages[2] = "$Player/Follower aggressor"
 	Pages[3] = "$Player as victim"
 	Pages[4] = "$Player Post-Assault"
 	Pages[5] = "$NPC vs NPC"
+	Pages[6] = "Misc Options"
 	If (CurrentVersion == 0) ; First install
 		Install()
 		Debug.Notification("$Defeat: MCM menu initiated.")
+	ElseIf CurrentVersion < 71 && SSPvicSet.Length != 11 ;V71 is Bane Version 18112023 - Not the ideal method but using OnVersionUpdate would require a major rewrite of the original maintainence code
+		
+		oidSSPvicSet = New Int[11] ;Bane - Strip Player Increased to support 10 slots in V18112023
+		SSPvicSet = Utility.CreateStringArray(11, "$Disabled")
+		SSPvicSet[0] = "$Strip"
+		SSPvicSet[1] = "$Unequip"
+
+		oidSSPvic = New Int[10]
+		SSPvic = Utility.CreateFloatArray(10, 37.0)
+		SSPvic[0] = 32.0
+		SSPvic[1] = 33.0
+
+		oidSSPaggSet = New Int[11] ;Bane - Player/Follower Aggressor Strip Increased to support 10 slots in V18112023
+		SSPaggSet = Utility.CreateStringArray(11, "$Disabled")
+		SSPaggSet[0] = "$Strip"
+		SSPaggSet[1] = "$Unequip"
+
+		oidSSPagg = New Int[10]
+		SSPagg = Utility.CreateFloatArray(10, 37.0)
+		SSPagg[0] = 32.0
+		SSPagg[1] = 33.0
+
+		oidSSNVNSet = New Int[11] ;Bane - NPC vs NPC Strip Increased to support 10 slots in V18112023
+		SSNVNSet =  Utility.CreateStringArray(11, "$Disabled")
+		SSNVNSet[0] = "$Strip"
+		SSNVNSet[1] = "$Unequip"
+
+		oidSSNVN = New Int[10]
+		SSNVN = Utility.CreateFloatArray(10, 37.0)
+		SSNVN[0] = 32.0
+		SSNVN[1] = 33.0
+
 	Endif
 EndEvent
 Function Install()
@@ -538,6 +849,11 @@ Function Install()
 	PAfrequency[0] = 20.0 ; Left for dead
 	PAfrequency[1] = 0.0 ; Defeated
 	PAfrequency[2] = 0.0 ; Simple slavery
+	PAfrequency[3] = 0.0 ; SD Dreamworls
+	PAfrequency[4] = 0.0 ; SD Enslavement
+	PAfrequency[5] = 0.0 ; LeashGame
+	PAfrequency[6] = 0.0 ; (Cursed Loot) Equip Devices
+	PAfrequency[7] = 0.0 ; (Devious Devices) Equip Devices
 
 	oidPAbSecondary = New Int[10]
 	PAbSecondary = New Bool[10]
@@ -555,55 +871,37 @@ Function Install()
 	PAbOnlyRaped[1] = False ; Defeated
 	PAbOnlyRaped[2] = False ; Simple slavery
 
-	oidSSPvicSet = New Int[6]
-	SSPvicSet = New String[6]
+	oidSSPvicSet = New Int[11] ;Bane - Strip Player Increased to support 10 slots in V18112023
+	SSPvicSet = Utility.CreateStringArray(11, "$Disabled")
 	SSPvicSet[0] = "$Strip"
 	SSPvicSet[1] = "$Unequip"
-	SSPvicSet[2] = "$Disabled"
-	SSPvicSet[3] = "$Disabled"
-	SSPvicSet[4] = "$Disabled"
-	SSPvicSet[5] = "$Disabled"
-	oidSSPvic = New Int[5]
-	SSPvic = New Float[5]
+
+	oidSSPvic = New Int[10]
+	SSPvic = Utility.CreateFloatArray(10, 37.0)
 	SSPvic[0] = 32.0
 	SSPvic[1] = 33.0
-	SSPvic[2] = 37.0
-	SSPvic[3] = 37.0
-	SSPvic[4] = 37.0
 
-	oidSSPaggSet = New Int[6]
-	SSPaggSet = New String[6]
+	oidSSPaggSet = New Int[11] ;Bane - Player/Follower Aggressor Strip Increased to support 10 slots in V18112023
+	SSPaggSet = Utility.CreateStringArray(11, "$Disabled")
 	SSPaggSet[0] = "$Strip"
 	SSPaggSet[1] = "$Unequip"
-	SSPaggSet[2] = "$Disabled"
-	SSPaggSet[3] = "$Disabled"
-	SSPaggSet[4] = "$Disabled"
-	SSPaggSet[5] = "$Disabled"
-	oidSSPagg = New Int[5]
-	SSPagg = New Float[5]
+
+	oidSSPagg = New Int[10]
+	SSPagg = Utility.CreateFloatArray(10, 37.0)
 	SSPagg[0] = 32.0
 	SSPagg[1] = 33.0
-	SSPagg[2] = 37.0
-	SSPagg[3] = 37.0
-	SSPagg[4] = 37.0
 
-	oidSSNVNSet = New Int[6]
-	SSNVNSet = New String[6]
+	oidSSNVNSet = New Int[11] ;Bane - NPC vs NPC Strip Increased to support 10 slots in V18112023
+	SSNVNSet =  Utility.CreateStringArray(11, "$Disabled")
 	SSNVNSet[0] = "$Strip"
 	SSNVNSet[1] = "$Unequip"
-	SSNVNSet[2] = "$Disabled"
-	SSNVNSet[3] = "$Disabled"
-	SSNVNSet[4] = "$Disabled"
-	SSNVNSet[5] = "$Disabled"
-	oidSSNVN = New Int[5]
-	SSNVN = New Float[5]
+
+	oidSSNVN = New Int[10]
+	SSNVN = Utility.CreateFloatArray(10, 37.0)
 	SSNVN[0] = 32.0
 	SSNVN[1] = 33.0
-	SSNVN[2] = 37.0
-	SSNVN[3] = 37.0
-	SSNVN[4] = 37.0
 
-	AModList = New String[8]
+	AModList = New String[12]
 	AModList[0] = "Dawnguard : OFF"
 	AModList[1] = "Dragonborn : OFF"
 	AModList[2] = "ZaZ Animation Pack : OFF"
@@ -612,7 +910,15 @@ Function Install()
 	AModList[5] = "UIExtensions : OFF"
 	AModList[6] = "Paradise Halls : OFF"
 	AModList[7] = "Simple Slavery : OFF"
+	AModList[8] = "Sanguines Debauchery : OFF"
+	AModList[9] = "Devious Framework : OFF"
+	AModList[10] = "Deviously Cursed Loot : OFF"
+	AModList[11] = "Leash Game : OFF"
 ;	AModList[8] = "SexLab Aroused Redux : OFF"
+	AllowCreaturePostAssault = new string[3]
+	AllowCreaturePostAssault[0] = "Allow All"
+	AllowCreaturePostAssault[1] = "Falmer Only"
+	AllowCreaturePostAssault[2] = "No Creatures"
 
 	RessConfig.SOSetDefaultSOXValues()
 
@@ -621,6 +927,15 @@ Function Install()
 	ArousalSARFlag = OPTION_FLAG_DISABLED
 	AllowNPCFlag = OPTION_FLAG_NONE
 	AllowCvicFlag = OPTION_FLAG_NONE
+
+	; Patched by Bane 29112022 - All HotKeyInts Initial Value Setters moved to MCM Init. These Values match the MCM OID defaults  	
+	RessConfig.HotKeyInts = New Int[4]
+	RessConfig.HotKeyInts[0] = 11	; Option key
+	RessConfig.HotKeyInts[1] = 42	; Modifier key
+	RessConfig.HotKeyInts[2] = 34	; Action key
+	RessConfig.HotKeyInts[3] = 37	; Surrender key
+	
+	BuildDDSettingLists()
 EndFunction
 Function ExportSettings()
 	String File = "../Defeat/DefeatConfig.json"
@@ -884,7 +1199,8 @@ Function ExportSettings()
 	JsonUtil.SetStringValue(File, "MultipleSupressTagNVN", MultipleSupressTagNVN)	
 	JsonUtil.SetIntValue(File, "MultipleRequireAllTagNVN", MultipleRequireAllTagNVN As Int) As Bool
 	JsonUtil.SetIntValue(File, "MultipleFemaleFirstNVN", MultipleFemaleFirstNVN As Int) As Bool
-	QTEColorBar = 0xFFFFFF
+	JsonUtil.SetIntValue(File, "QTEColorBar", QTEColorBar) ;Added by Bane 29112022
+	;QTEColorBar = 0xFFFFFF
 	JsonUtil.SetFloatValue(File, "MeterWidth", MeterWidth)
 	JsonUtil.SetFloatValue(File, "MeterHeight", MeterHeight)
 	JsonUtil.SetFloatValue(File, "AxisX", AxisX)
@@ -902,6 +1218,132 @@ Function ExportSettings()
 	JsonUtil.SetIntValue(File, "bRedressFollower", bRedressFollower As Int) As Bool
 	ExportFloatArray(File, "SSNVN", SSNVN)
 	ExportStringArray(File, "SSNVNSet", SSNVNSet)	
+	JsonUtil.SetIntValue(File, "KDWayVulnerability", KDWayVulnerability As Int) As Bool
+	JsonUtil.SetIntValue(File, "KDWayVulnerabilityUseDFW", KDWayVulnerabilityUseDFW As Int) As Bool
+	JsonUtil.SetFloatValue(File, "VulnerabilityPvic", VulnerabilityPvic)
+	JsonUtil.SetIntValue(File, "KDWayVulnerabilityOB", KDWayVulnerabilityOB As Int) As Bool
+	JsonUtil.SetIntValue(File, "KDVulnerabilityBlock", KDVulnerabilityBlock As Int) As Bool
+	JsonUtil.SetFloatValue(File, "SStruggleVulnerabilityPvic", SStruggleVulnerabilityPvic)
+	JsonUtil.SetFloatValue(File, "KnockOutVulnerabilityPvic", KnockOutVulnerabilityPvic)
+	JsonUtil.SetFloatValue(File, "ChanceOnHitPvicVulnerability", ChanceOnHitPvicVulnerability)
+	JsonUtil.SetIntValue(File, "KDWayDynamic", KDWayDynamic As Int) As Bool
+	JsonUtil.SetFloatValue(File, "SStruggleDynamicPvic", SStruggleDynamicPvic)
+	JsonUtil.SetFloatValue(File, "KnockOutDynamicPvic", KnockOutDynamicPvic)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatOnHitBase", DynamicDefeatOnHitBase)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatOnHitOneHand", DynamicDefeatOnHitOneHand)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatOnHitTwoHand", DynamicDefeatOnHitTwoHand)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatOnHitBow", DynamicDefeatOnHitBow)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatOnHitSpell", DynamicDefeatOnHitSpell)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatPowerAttackMult", DynamicDefeatPowerAttackMult)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatBackHitMult", DynamicDefeatBackHitMult)
+	JsonUtil.SetIntValue(File, "DynamicDefeatUseDFWVulnerability", DynamicDefeatUseDFWVulnerability As Int) As Bool
+	JsonUtil.SetFloatValue(File, "DynamicDefeatVulnerabilityMult", DynamicDefeatVulnerabilityMult)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatLowStaminaMult", DynamicDefeatLowStaminaMult)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatLowStaminaThreshold", DynamicDefeatLowStaminaThreshold)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatLowHealthMult", DynamicDefeatLowHealthMult)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatLowHealthThreshold", DynamicDefeatLowHealthThreshold)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatBlockReduction", DynamicDefeatBlockReduction)
+	JsonUtil.SetFloatValue(File, "DynamicDefeatDepleteOverTime", DynamicDefeatDepleteOverTime)
+	JsonUtil.SetIntValue(File, "AllowUnequipBelt", AllowUnequipBelt As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipBeltChance", UnequipBeltChance)
+	JsonUtil.SetIntValue(File, "UnequipBeltWithPlayerKeysOnly", UnequipBeltWithPlayerKeysOnly As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipBeltNotificationChance", UnequipBeltNotificationChance)
+	JsonUtil.SetIntValue(File, "AllowUnequipGag", AllowUnequipGag As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipGagChance", UnequipGagChance)
+	JsonUtil.SetIntValue(File, "UnequipGagWithPlayerKeysOnly", UnequipGagWithPlayerKeysOnly As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipGagNotificationChance", UnequipGagNotificationChance)
+	JsonUtil.SetIntValue(File, "AllowUnequipHeavyBondage", AllowUnequipHeavyBondage As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipHeavyBondageChance", UnequipHeavyBondageChance)
+	JsonUtil.SetIntValue(File, "UnequipHeavyBondageWithPlayerKeysOnly", UnequipHeavyBondageWithPlayerKeysOnly As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipHeavyBondageNotificationChance", UnequipHeavyBondageNotificationChance)
+	JsonUtil.SetIntValue(File, "AllowUnequipHarness", AllowUnequipHarness As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipHarnessChance", UnequipHarnessChance)
+	JsonUtil.SetIntValue(File, "UnequipHarnessWithPlayerKeysOnly", UnequipHarnessWithPlayerKeysOnly As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipHarnessNotificationChance", UnequipHarnessNotificationChance)
+	JsonUtil.SetIntValue(File, "AllowUnequipSuit", AllowUnequipSuit As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipSuitChance", UnequipSuitChance)
+	JsonUtil.SetIntValue(File, "UnequipSuitWithPlayerKeysOnly", UnequipSuitWithPlayerKeysOnly As Int) As Bool
+	JsonUtil.SetIntValue(File, "UnequipSuitNotificationChance", UnequipSuitNotificationChance)
+	JsonUtil.SetIntValue(File, "UseDDFilter", UseDDFilter As Int) As Bool
+	JsonUtil.SetIntValue(File, "EnableLog", EnableLog As Int) As Bool
+	JsonUtil.SetIntValue(File, "CursedLootMinDevices", CursedLootMinDevices)
+	JsonUtil.SetIntValue(File, "CursedLootMaxDevices", CursedLootMaxDevices)
+	JsonUtil.SetIntValue(File, "AllowCreaturePostAssaultSelection", AllowCreaturePostAssaultSelection)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueGag", VulnerabilityValueGag)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueVagPlug", VulnerabilityValueVagPlug)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueAnalPlug", VulnerabilityValueAnalPlug)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueBelt", VulnerabilityValueBelt)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueBra", VulnerabilityValueBra)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueCollar", VulnerabilityValueCollar)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueArmCuffs", VulnerabilityValueArmCuffs)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueLegCuffs", VulnerabilityValueLegCuffs)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueHeavyBond", VulnerabilityValueHeavyBond)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueDisableKick", VulnerabilityValueDisableKick)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueBlindfold", VulnerabilityValueBlindfold)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueBoots", VulnerabilityValueBoots)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueCorset", VulnerabilityValueCorset)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueHarness", VulnerabilityValueHarness)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueFullChastity", VulnerabilityValueFullChastity)
+	JsonUtil.SetFloatValue(File, "VulnerabilityValueHelpless", VulnerabilityValueHelpless)
+	
+	JsonUtil.SetIntValue(File, "DDPaUseArmbinder", DDPaUseArmbinder)
+	JsonUtil.SetIntValue(File, "DDPaUseGag", DDPaUseGag)
+	JsonUtil.SetIntValue(File, "DDPaUseSuit", DDPaUseSuit)
+	JsonUtil.SetIntValue(File, "DDPaUseHood", DDPaUseHood)
+	JsonUtil.SetIntValue(File, "DDPaUseChastityBelt", DDPaUseChastityBelt)
+	JsonUtil.SetIntValue(File, "DDPaUseChastityBra", DDPaUseChastityBra)
+	JsonUtil.SetIntValue(File, "DDPaUseHarness", DDPaUseHarness)
+	JsonUtil.SetIntValue(File, "DDPaUseCorset", DDPaUseCorset)
+	JsonUtil.SetIntValue(File, "DDPaUseCollar", DDPaUseCollar)
+	JsonUtil.SetIntValue(File, "DDPaUsePlugVaginal", DDPaUsePlugVaginal)
+	JsonUtil.SetIntValue(File, "DDPaUsePlugAnal", DDPaUsePlugAnal)
+	JsonUtil.SetIntValue(File, "DDPaUsePiercingVaginal", DDPaUsePiercingVaginal)
+	JsonUtil.SetIntValue(File, "DDPaUsePiercingNipple",  DDPaUsePiercingNipple)
+	JsonUtil.SetIntValue(File, "DDPaUseBoots", DDPaUseBoots)
+	JsonUtil.SetIntValue(File, "DDPaUseGloves", DDPaUseGloves)
+	JsonUtil.SetIntValue(File, "DDPaUseArmCuffs", DDPaUseArmCuffs)
+	JsonUtil.SetIntValue(File, "DDPaUseLegCuffs", DDPaUseLegCuffs)
+	JsonUtil.SetIntValue(File, "DDMinDevices", DDMinDevices)
+	JsonUtil.SetIntValue(File, "DDMaxDevices", DDMaxDevices)
+	JsonUtil.SetStringValue(File, "DDPaArmbinderStyle", DDPaArmbinderStyle)
+	JsonUtil.SetStringValue(File, "DDPaArmbinderColour", DDPaArmbinderColour)
+	JsonUtil.SetStringValue(File, "DDPaGagStyle", DDPaGagStyle)
+	JsonUtil.SetStringValue(File, "DDPaGagColour", DDPaGagColour)
+	JsonUtil.SetStringValue(File, "DDPaSuitStyle", DDPaSuitStyle)
+	JsonUtil.SetStringValue(File, "DDPaSuitColour", DDPaSuitColour)
+	JsonUtil.SetStringValue(File, "DDPaHoodStyle", DDPaHoodStyle)
+	JsonUtil.SetStringValue(File, "DDPaHoodColour", DDPaHoodColour)
+	JsonUtil.SetStringValue(File, "DDPaChastityBeltStyle", DDPaChastityBeltStyle)
+	JsonUtil.SetStringValue(File, "DDPaChastityBeltColour", DDPaChastityBeltColour)
+	JsonUtil.SetStringValue(File, "DDPaChastityBraStyle", DDPaChastityBraStyle)
+	JsonUtil.SetStringValue(File, "DDPaChastityBraColour", DDPaChastityBraColour)
+	JsonUtil.SetStringValue(File, "DDPaHarnessStyle", DDPaHarnessStyle)
+	JsonUtil.SetStringValue(File, "DDPaHarnessColour", DDPaHarnessColour)
+	JsonUtil.SetStringValue(File, "DDPaCorsetStyle", DDPaCorsetStyle)
+	JsonUtil.SetStringValue(File, "DDPaCorsetColour", DDPaCorsetColour)
+	JsonUtil.SetStringValue(File, "DDPaCollarStyle", DDPaCollarStyle)
+	JsonUtil.SetStringValue(File, "DDPaCollarColour", DDPaCollarColour)
+	JsonUtil.SetStringValue(File, "DDPaPlugVaginalStyle", DDPaPlugVaginalStyle)
+	JsonUtil.SetStringValue(File, "DDPaPlugVaginalColour", DDPaPlugVaginalColour)
+	JsonUtil.SetStringValue(File, "DDPaPlugAnalStyle", DDPaPlugAnalStyle)
+	JsonUtil.SetStringValue(File, "DDPaPlugAnalColour", DDPaPlugAnalColour)
+	JsonUtil.SetStringValue(File, "DDPaPiercingVaginalStyle", DDPaPiercingVaginalStyle)
+	JsonUtil.SetStringValue(File, "DDPaPiercingVaginalColour", DDPaPiercingVaginalColour)
+	JsonUtil.SetStringValue(File, "DDPaPiercingNippleStyle", DDPaPiercingNippleStyle)
+	JsonUtil.SetStringValue(File, "DDPaPiercingNippleColour", DDPaPiercingNippleColour)
+	JsonUtil.SetStringValue(File, "DDPaBootsStyle", DDPaBootsStyle)
+	JsonUtil.SetStringValue(File, "DDPaBootsColour", DDPaBootsColour)
+	JsonUtil.SetStringValue(File, "DDPaGlovesStyle", DDPaGlovesStyle)
+	JsonUtil.SetStringValue(File, "DDPaGlovesColour", DDPaGlovesColour)
+	JsonUtil.SetStringValue(File, "DDPaArmCuffsStyle", DDPaArmCuffsStyle)
+	JsonUtil.SetStringValue(File, "DDPaArmCuffsColour", DDPaArmCuffsColour)
+	JsonUtil.SetStringValue(File, "DDPaLegCuffsStyle", DDPaLegCuffsStyle)
+	JsonUtil.SetStringValue(File, "DDPaLegCuffsColour", DDPaLegCuffsColour)
+	JsonUtil.SetIntValue(File, "DDPaPlugsWithBelt", DDPaPlugsWithBelt As Int) As Bool	
+	JsonUtil.SetIntValue(File, "DDPaArmAndLegShacklesChance", DDPaArmAndLegShacklesChance)
+	JsonUtil.SetIntValue(File, "DDPaConsistantStyle", DDPaConsistantStyle As Int) As Bool
+	JsonUtil.SetStringValue(File, "Language", Language)
+	
 	JsonUtil.Save(File, False)
 EndFunction
 Function ExportFloatArray(String File, String Type, Float[] TheArray)
@@ -1238,7 +1680,11 @@ Function ImportSettings()
 	MultipleSupressTagNVN 	= JsonUtil.GetStringValue(File, "MultipleSupressTagNVN", MultipleSupressTagNVN)
 	MultipleRequireAllTagNVN = JsonUtil.GetIntValue(File, "MultipleRequireAllTagNVN", MultipleRequireAllTagNVN As Int) As Bool
 	MultipleFemaleFirstNVN 	= JsonUtil.GetIntValue(File, "MultipleFemaleFirstNVN", MultipleFemaleFirstNVN As Int) As Bool
-	QTEColorBar 			= 0xFFFFFF
+	;QTEColorBar 			= 0xFFFFFF
+	QTEColorBar 			= JsonUtil.GetIntValue(File, "QTEColorBar", QTEColorBar) ;Added by Bane 2902022
+	SetColorOptionValue(oidQTEColorBar, QTEColorBar)
+    StruggleBar.PrimaryColor = QTEColorBar
+    ;End Patch
 	MeterWidth 				= JsonUtil.GetFloatValue(File, "MeterWidth", MeterWidth)
 	MeterHeight 			= JsonUtil.GetFloatValue(File, "MeterHeight", MeterHeight)
 	AxisX 					= JsonUtil.GetFloatValue(File, "AxisX", AxisX)
@@ -1246,6 +1692,18 @@ Function ImportSettings()
 	HKOption 				= JsonUtil.GetIntValue(File, "HKOption", HKOption)											; HOTKEY ==========
 	HKModifier 				= JsonUtil.GetIntValue(File, "HKModifier", HKModifier)
 	HKAction 				= JsonUtil.GetIntValue(File, "HKAction", HKAction)
+	
+	;Keybinds were being saved to .json and restored to the MCM but not actioned to DefeatConfig or updated in MCM on restore ;Bane 29112022
+	RessConfig.HotKeyInts[0] = HKOption
+	SetKeymapOptionValue(oidHKOption, HKOption)
+	RessConfig.HotKeyInts[1] = HKModifier
+	SetKeymapOptionValue(oidHKModifier, HKModifier)
+	RessConfig.HotKeyInts[2] = HKAction
+	SetKeymapOptionValue(oidHKAction, HKAction)
+	RessConfig.HotKeyInts[3] = HKSurrender
+	SetKeymapOptionValue(oidHKSurrender, HKSurrender)
+	;End Patch
+
 	bRedressPvic 			= JsonUtil.GetIntValue(File, "bRedressPvic", bRedressPvic As Int) As Bool					; STRIPPING ==========
 	ImportFloatArray(File, "SSPvic", SSPvic)
 	ImportStringArray(File, "SSPvicSet", SSPvicSet)
@@ -1254,6 +1712,133 @@ Function ImportSettings()
 	ImportStringArray(File, "SSPaggSet", SSPaggSet)
 	bRedressNVN 			= JsonUtil.GetIntValue(File, "bRedressNVN", bRedressNVN As Int) As Bool
 	bRedressFollower 		= JsonUtil.GetIntValue(File, "bRedressFollower", bRedressFollower As Int) As Bool
+	KDWayVulnerability = JsonUtil.GetIntValue(File, "KDWayVulnerability", KDWayVulnerability As Int) As Bool
+	KDWayVulnerabilityUseDFW = JsonUtil.GetIntValue(File, "KDWayVulnerabilityUseDFW", KDWayVulnerabilityUseDFW As Int) As Bool
+	VulnerabilityPvic = JsonUtil.GetFloatValue(File, "VulnerabilityPvic", VulnerabilityPvic)
+	KDWayVulnerabilityOB = JsonUtil.GetIntValue(File, "KDWayVulnerabilityOB", KDWayVulnerabilityOB As Int) As Bool
+	KDVulnerabilityBlock = JsonUtil.GetIntValue(File, "KDVulnerabilityBlock", KDVulnerabilityBlock As Int) As Bool
+	SStruggleVulnerabilityPvic = JsonUtil.GetFloatValue(File, "SStruggleVulnerabilityPvic", SStruggleVulnerabilityPvic)
+	KnockOutVulnerabilityPvic = JsonUtil.GetFloatValue(File, "KnockOutVulnerabilityPvic", KnockOutVulnerabilityPvic)
+	ChanceOnHitPvicVulnerability = JsonUtil.GetFloatValue(File, "ChanceOnHitPvicVulnerability", ChanceOnHitPvicVulnerability)
+	KDWayDynamic = JsonUtil.GetIntValue(File, "KDWayDynamic", KDWayDynamic As Int) As Bool
+	SStruggleDynamicPvic = JsonUtil.GetFloatValue(File, "SStruggleDynamicPvic", SStruggleDynamicPvic)
+	KnockOutDynamicPvic = JsonUtil.GetFloatValue(File, "KnockOutDynamicPvic", KnockOutDynamicPvic)
+	DynamicDefeatOnHitBase = JsonUtil.GetFloatValue(File, "DynamicDefeatOnHitBase", DynamicDefeatOnHitBase)
+	DynamicDefeatOnHitOneHand = JsonUtil.GetFloatValue(File, "DynamicDefeatOnHitOneHand", DynamicDefeatOnHitOneHand)
+	DynamicDefeatOnHitTwoHand = JsonUtil.GetFloatValue(File, "DynamicDefeatOnHitTwoHand", DynamicDefeatOnHitTwoHand)
+	DynamicDefeatOnHitBow = JsonUtil.GetFloatValue(File, "DynamicDefeatOnHitBow", DynamicDefeatOnHitBow)
+	DynamicDefeatOnHitSpell = JsonUtil.GetFloatValue(File, "DynamicDefeatOnHitSpell", DynamicDefeatOnHitSpell)
+	DynamicDefeatPowerAttackMult = JsonUtil.GetFloatValue(File, "DynamicDefeatPowerAttackMult", DynamicDefeatPowerAttackMult)
+	DynamicDefeatBackHitMult = JsonUtil.GetFloatValue(File, "DynamicDefeatBackHitMult", DynamicDefeatBackHitMult)
+	DynamicDefeatUseDFWVulnerability = JsonUtil.GetIntValue(File, "DynamicDefeatUseDFWVulnerability", DynamicDefeatUseDFWVulnerability As Int) As Bool
+	DynamicDefeatVulnerabilityMult = JsonUtil.GetFloatValue(File, "DynamicDefeatVulnerabilityMult", DynamicDefeatVulnerabilityMult)
+	DynamicDefeatLowStaminaMult = JsonUtil.GetFloatValue(File, "DynamicDefeatLowStaminaMult", DynamicDefeatLowStaminaMult)
+	DynamicDefeatLowStaminaThreshold = JsonUtil.GetFloatValue(File, "DynamicDefeatLowStaminaThreshold", DynamicDefeatLowStaminaThreshold)
+	DynamicDefeatLowHealthMult = JsonUtil.GetFloatValue(File, "DynamicDefeatLowHealthMult", DynamicDefeatLowHealthMult)
+	DynamicDefeatLowHealthThreshold = JsonUtil.GetFloatValue(File, "DynamicDefeatLowHealthThreshold", DynamicDefeatLowHealthThreshold)
+	DynamicDefeatBlockReduction = JsonUtil.GetFloatValue(File, "DynamicDefeatBlockReduction", DynamicDefeatBlockReduction)
+	DynamicDefeatDepleteOverTime = JsonUtil.GetFloatValue(File, "DynamicDefeatDepleteOverTime", DynamicDefeatDepleteOverTime)
+	AllowUnequipBelt = JsonUtil.GetIntValue(File, "AllowUnequipBelt", AllowUnequipBelt As Int) As Bool
+	UnequipBeltChance = JsonUtil.GetIntValue(File, "UnequipBeltChance", UnequipBeltChance)
+	UnequipBeltWithPlayerKeysOnly = JsonUtil.GetIntValue(File, "UnequipBeltWithPlayerKeysOnly", UnequipBeltWithPlayerKeysOnly As Int) As Bool
+	UnequipBeltNotificationChance = JsonUtil.GetIntValue(File, "UnequipBeltNotificationChance", UnequipBeltNotificationChance)
+	AllowUnequipGag = JsonUtil.GetIntValue(File, "AllowUnequipGag", AllowUnequipGag As Int) As Bool
+	UnequipGagChance = JsonUtil.GetIntValue(File, "UnequipGagChance", UnequipGagChance)
+	UnequipGagWithPlayerKeysOnly = JsonUtil.GetIntValue(File, "UnequipGagWithPlayerKeysOnly", UnequipGagWithPlayerKeysOnly As Int) As Bool
+	UnequipGagNotificationChance = JsonUtil.GetIntValue(File, "UnequipGagNotificationChance", UnequipGagNotificationChance)
+	AllowUnequipHeavyBondage = JsonUtil.GetIntValue(File, "AllowUnequipHeavyBondage", AllowUnequipHeavyBondage As Int) As Bool
+	UnequipHeavyBondageChance = JsonUtil.GetIntValue(File, "UnequipHeavyBondageChance", UnequipHeavyBondageChance)
+	UnequipHeavyBondageWithPlayerKeysOnly = JsonUtil.GetIntValue(File, "UnequipHeavyBondageWithPlayerKeysOnly", UnequipHeavyBondageWithPlayerKeysOnly As Int) As Bool
+	UnequipHeavyBondageNotificationChance = JsonUtil.GetIntValue(File, "UnequipHeavyBondageNotificationChance", UnequipHeavyBondageNotificationChance)
+	AllowUnequipHarness = JsonUtil.GetIntValue(File, "AllowUnequipHarness", AllowUnequipHarness As Int) As Bool
+	UnequipHarnessChance = JsonUtil.GetIntValue(File, "UnequipHarnessChance", UnequipHarnessChance)
+	UnequipHarnessWithPlayerKeysOnly = JsonUtil.GetIntValue(File, "UnequipHarnessWithPlayerKeysOnly", UnequipHarnessWithPlayerKeysOnly As Int) As Bool
+	UnequipHarnessNotificationChance = JsonUtil.GetIntValue(File, "UnequipHarnessNotificationChance", UnequipHarnessNotificationChance)
+	AllowUnequipSuit = JsonUtil.GetIntValue(File, "AllowUnequipSuit", AllowUnequipSuit As Int) As Bool
+	UnequipSuitChance = JsonUtil.GetIntValue(File, "UnequipSuitChance", UnequipSuitChance)
+	UnequipSuitWithPlayerKeysOnly = JsonUtil.GetIntValue(File, "UnequipSuitWithPlayerKeysOnly", UnequipSuitWithPlayerKeysOnly As Int) As Bool
+	UnequipSuitNotificationChance = JsonUtil.GetIntValue(File, "UnequipSuitNotificationChance", UnequipSuitNotificationChance)
+	UseDDFilter = JsonUtil.GetIntValue(File, "UseDDFilter", UseDDFilter As Int) As Bool
+	EnableLog = JsonUtil.GetIntValue(File, "EnableLog", EnableLog As Int) As Bool
+	CursedLootMinDevices = JsonUtil.GetIntValue(File, "CursedLootMinDevices", CursedLootMinDevices)
+	CursedLootMaxDevices = JsonUtil.GetIntValue(File, "CursedLootMaxDevices", CursedLootMaxDevices)
+	AllowCreaturePostAssaultSelection = JsonUtil.GetIntValue(File, "AllowCreaturePostAssaultSelection", AllowCreaturePostAssaultSelection)
+	VulnerabilityValueGag = JsonUtil.GetFloatValue(File, "VulnerabilityValueGag", VulnerabilityValueGag)
+	VulnerabilityValueVagPlug = JsonUtil.GetFloatValue(File, "VulnerabilityValueVagPlug", VulnerabilityValueVagPlug)
+	VulnerabilityValueAnalPlug = JsonUtil.GetFloatValue(File, "VulnerabilityValueAnalPlug", VulnerabilityValueAnalPlug)
+	VulnerabilityValueBelt = JsonUtil.GetFloatValue(File, "VulnerabilityValueBelt", VulnerabilityValueBelt)
+	VulnerabilityValueBra = JsonUtil.GetFloatValue(File, "VulnerabilityValueBra", VulnerabilityValueBra)
+	VulnerabilityValueCollar = JsonUtil.GetFloatValue(File, "VulnerabilityValueCollar", VulnerabilityValueCollar)
+	VulnerabilityValueArmCuffs = JsonUtil.GetFloatValue(File, "VulnerabilityValueArmCuffs", VulnerabilityValueArmCuffs)
+	VulnerabilityValueLegCuffs = JsonUtil.GetFloatValue(File, "VulnerabilityValueLegCuffs", VulnerabilityValueLegCuffs)
+	VulnerabilityValueHeavyBond = JsonUtil.GetFloatValue(File, "VulnerabilityValueHeavyBond", VulnerabilityValueHeavyBond)
+	VulnerabilityValueDisableKick = JsonUtil.GetFloatValue(File, "VulnerabilityValueDisableKick", VulnerabilityValueDisableKick)
+	VulnerabilityValueBlindfold = JsonUtil.GetFloatValue(File, "VulnerabilityValueBlindfold", VulnerabilityValueBlindfold)
+	VulnerabilityValueBoots = JsonUtil.GetFloatValue(File, "VulnerabilityValueBoots", VulnerabilityValueBoots)
+	VulnerabilityValueCorset= JsonUtil.GetFloatValue(File, "VulnerabilityValueCorset", VulnerabilityValueCorset)
+	VulnerabilityValueHarness = JsonUtil.GetFloatValue(File, "VulnerabilityValueHarness", VulnerabilityValueHarness)
+	VulnerabilityValueFullChastity = JsonUtil.GetFloatValue(File, "VulnerabilityValueFullChastity", VulnerabilityValueFullChastity)
+	VulnerabilityValueHelpless = JsonUtil.GetFloatValue(File, "VulnerabilityValueHelpless", VulnerabilityValueHelpless)
+	
+	DDPaUseArmbinder = JsonUtil.GetIntValue(File, "DDPaUseArmbinder", DDPaUseArmbinder)
+	DDPaUseGag = JsonUtil.GetIntValue(File, "DDPaUseGag", DDPaUseGag)
+	DDPaUseSuit = JsonUtil.GetIntValue(File, "DDPaUseSuit", DDPaUseSuit)
+	DDPaUseHood = JsonUtil.GetIntValue(File, "DDPaUseHood", DDPaUseHood)
+	DDPaUseChastityBelt = JsonUtil.GetIntValue(File, "DDPaUseChastityBelt", DDPaUseChastityBelt)
+	DDPaUseChastityBra = JsonUtil.GetIntValue(File, "DDPaUseChastityBra", DDPaUseChastityBra)
+	DDPaUseHarness = JsonUtil.GetIntValue(File, "DDPaUseHarness", DDPaUseHarness)
+	DDPaUseCorset = JsonUtil.GetIntValue(File, "DDPaUseCorset", DDPaUseCorset)
+	DDPaUseCollar = JsonUtil.GetIntValue(File, "DDPaUseCollar", DDPaUseCollar)
+	DDPaUsePlugVaginal = JsonUtil.GetIntValue(File, "DDPaUsePlugVaginal", DDPaUsePlugVaginal)
+	DDPaUsePlugAnal = JsonUtil.GetIntValue(File, "DDPaUsePlugAnal", DDPaUsePlugAnal)
+	DDPaUsePiercingVaginal = JsonUtil.GetIntValue(File, "DDPaUsePiercingVaginal", DDPaUsePiercingVaginal)
+	DDPaUsePiercingNipple = JsonUtil.GetIntValue(File, "DDPaUsePiercingNipple",  DDPaUsePiercingNipple)
+	DDPaUseBoots = JsonUtil.GetIntValue(File, "DDPaUseBoots", DDPaUseBoots)
+	DDPaUseGloves = JsonUtil.GetIntValue(File, "DDPaUseGloves", DDPaUseGloves)
+	DDPaUseArmCuffs = JsonUtil.GetIntValue(File, "DDPaUseArmCuffs", DDPaUseArmCuffs)
+	DDPaUseLegCuffs = JsonUtil.GetIntValue(File, "DDPaUseLegCuffs", DDPaUseLegCuffs)
+	DDMinDevices = JsonUtil.GetIntValue(File, "DDMinDevices", DDMinDevices)
+	DDMaxDevices = JsonUtil.GetIntValue(File, "DDMaxDevices", DDMaxDevices)
+	DDPaArmbinderStyle = JsonUtil.GetStringValue(File, "DDPaArmbinderStyle", DDPaArmbinderStyle)
+	DDPaArmbinderColour = JsonUtil.GetStringValue(File, "DDPaArmbinderColour", DDPaArmbinderColour)
+	DDPaGagStyle = JsonUtil.GetStringValue(File, "DDPaGagStyle", DDPaGagStyle)
+	DDPaGagColour = JsonUtil.GetStringValue(File, "DDPaGagColour", DDPaGagColour)
+	DDPaSuitStyle = JsonUtil.GetStringValue(File, "DDPaSuitStyle", DDPaSuitStyle)
+	DDPaSuitColour = JsonUtil.GetStringValue(File, "DDPaSuitColour", DDPaSuitColour)
+	DDPaHoodStyle = JsonUtil.GetStringValue(File, "DDPaHoodStyle", DDPaHoodStyle)
+	DDPaHoodColour = JsonUtil.GetStringValue(File, "DDPaHoodColour", DDPaHoodColour)
+	DDPaChastityBeltStyle = JsonUtil.GetStringValue(File, "DDPaChastityBeltStyle", DDPaChastityBeltStyle)
+	DDPaChastityBeltColour = JsonUtil.GetStringValue(File, "DDPaChastityBeltColour", DDPaChastityBeltColour)
+	DDPaChastityBraStyle = JsonUtil.GetStringValue(File, "DDPaChastityBraStyle", DDPaChastityBraStyle)
+	DDPaChastityBraColour = JsonUtil.GetStringValue(File, "DDPaChastityBraColour", DDPaChastityBraColour)
+	DDPaHarnessStyle = JsonUtil.GetStringValue(File, "DDPaHarnessStyle", DDPaHarnessStyle)
+	DDPaHarnessColour = JsonUtil.GetStringValue(File, "DDPaHarnessColour", DDPaHarnessColour)
+	DDPaCorsetStyle = JsonUtil.GetStringValue(File, "DDPaCorsetStyle", DDPaCorsetStyle)
+	DDPaCorsetColour = JsonUtil.GetStringValue(File, "DDPaCorsetColour", DDPaCorsetColour)
+	DDPaCollarStyle = JsonUtil.GetStringValue(File, "DDPaCollarStyle", DDPaCollarStyle)
+	DDPaCollarColour = JsonUtil.GetStringValue(File, "DDPaCollarColour", DDPaCollarColour)
+	DDPaPlugVaginalStyle = JsonUtil.GetStringValue(File, "DDPaPlugVaginalStyle", DDPaPlugVaginalStyle)
+	DDPaPlugVaginalColour = JsonUtil.GetStringValue(File, "DDPaPlugVaginalColour", DDPaPlugVaginalColour)
+	DDPaPlugAnalStyle = JsonUtil.GetStringValue(File, "DDPaPlugAnalStyle", DDPaPlugAnalStyle)
+	DDPaPlugAnalColour = JsonUtil.GetStringValue(File, "DDPaPlugAnalColour", DDPaPlugAnalColour)
+	DDPaPiercingVaginalStyle = JsonUtil.GetStringValue(File, "DDPaPiercingVaginalStyle", DDPaPiercingVaginalStyle)
+	DDPaPiercingVaginalColour = JsonUtil.GetStringValue(File, "DDPaPiercingVaginalColour", DDPaPiercingVaginalColour)
+	DDPaPiercingNippleStyle = JsonUtil.GetStringValue(File, "DDPaPiercingNippleStyle", DDPaPiercingNippleStyle)
+	DDPaPiercingNippleColour = JsonUtil.GetStringValue(File, "DDPaPiercingNippleColour", DDPaPiercingNippleColour)
+	DDPaBootsStyle = JsonUtil.GetStringValue(File, "DDPaBootsStyle", DDPaBootsStyle)
+	DDPaBootsColour = JsonUtil.GetStringValue(File, "DDPaBootsColour", DDPaBootsColour)
+	DDPaGlovesStyle = JsonUtil.GetStringValue(File, "DDPaGlovesStyle", DDPaGlovesStyle)
+	DDPaGlovesColour = JsonUtil.GetStringValue(File, "DDPaGlovesColour", DDPaGlovesColour)
+	DDPaArmCuffsStyle = JsonUtil.GetStringValue(File, "DDPaArmCuffsStyle", DDPaArmCuffsStyle)
+	DDPaArmCuffsColour = JsonUtil.GetStringValue(File, "DDPaArmCuffsColour", DDPaArmCuffsColour)
+	DDPaLegCuffsStyle = JsonUtil.GetStringValue(File, "DDPaLegCuffsStyle", DDPaLegCuffsStyle)
+	DDPaLegCuffsColour = JsonUtil.GetStringValue(File, "DDPaLegCuffsColour", DDPaLegCuffsColour)
+	DDPaPlugsWithBelt = JsonUtil.GetIntValue(File, "DDPaPlugsWithBelt", DDPaPlugsWithBelt As Int) As Bool	
+	DDPaArmAndLegShacklesChance = JsonUtil.GetIntValue(File, "DDPaArmAndLegShacklesChance", DDPaArmAndLegShacklesChance)
+	DDPaConsistantStyle = JsonUtil.GetIntValue(File, "DDPaConsistantStyle", DDPaConsistantStyle As Int) As Bool
+	Language = JsonUtil.GetStringValue(File, "Language", Language)
+	SetLanguageProperties()
+	
 	ImportFloatArray(File, "SSNVN", SSNVN)
 	ImportStringArray(File, "SSNVNSet", SSNVNSet)
 	If (OnOffPagg == "$Enabled")
@@ -1300,6 +1885,16 @@ Function ImportSettings()
 	Else
 		KDwayPowerAtkFlag = OPTION_FLAG_DISABLED
 	Endif
+	If KDWayVulnerability
+		KDwayVulnerabilityFlag = OPTION_FLAG_NONE
+	Else
+		KDwayVulnerabilityFlag = OPTION_FLAG_DISABLED
+	Endif
+	If KDWayDynamic
+		KDwayDynamicDefeatFlag = OPTION_FLAG_NONE
+	Else
+		KDwayDynamicDefeatFlag = OPTION_FLAG_DISABLED
+	Endif
 	If bResistQTE
 		ResistFlag = OPTION_FLAG_NONE
 	Else
@@ -1318,17 +1913,20 @@ Function ImportSettings()
 	PlayerScr.Hkrefresh()
 	ActionQst.Hkrefresh()
 	RessConfig.Hkrefresh()
+	RessConfig.CheckForMods()
 EndFunction
 
 Int Function GetVersion()
-	Return 69
+	Return 72 ;Bane 18/11/2023
 EndFunction
+
 Event OnVersionUpdate(Int NewVersion)
 	If (CurrentVersion != 0)
 		OnConfigInit()
 		RessConfig.Maintenance(True, NewVersion)
 	Endif
 EndEvent
+
 Event OnGameReload()
 	If (CurrentVersion != 0)
 		RessConfig.Maintenance()
@@ -1441,12 +2039,17 @@ Event OnPageReset(String page)
 			oidExhaustedPagg = AddSliderOption("$Exhausted", ExhaustedPagg, "{0} seconds")
 			oidEscapePagg = AddSliderOption("$Escape", EscapePagg, "{0} seconds")
 			AddHeaderOption("$Strip options")
+			
 			oidSSPaggSet[0] = AddTextOption("$Weapon", SSPaggSet[0])
-			oidSSPaggSet[1] = AddTextOption("$Armor piece 01", SSPaggSet[1])
-			oidSSPaggSet[2] = AddTextOption("$Armor piece 02", SSPaggSet[2])
-			oidSSPaggSet[3] = AddTextOption("$Armor piece 03", SSPaggSet[3])
-			oidSSPaggSet[4] = AddTextOption("$Armor piece 04", SSPaggSet[4])
-			oidSSPaggSet[5] = AddTextOption("$Armor piece 05", SSPaggSet[5])
+			
+			Int iNumSlots = SSPaggSet.Length
+			Int iSlot = 1
+			String strSlot
+			While iSlot < iNumSlots
+				strSlot = "$Armor piece " + iSlot
+				oidSSPaggSet[iSlot] = AddTextOption(strSlot, SSPaggSet[iSlot]);Bane Updated to use Array Length in V18112023
+				iSlot +=1
+			EndWhile
 		Else
 			AddTextOption("$Disabled", none)
 		Endif
@@ -1478,9 +2081,10 @@ Event OnPageReset(String page)
 			oidbRedressPagg = AddToggleOption("$Redress", bRedressPagg)
 			AddHeaderOption("")
 			oidCheckSlots = AddTextOption("$Check equipped item slots", "$CLICK")
+			
 			Int i
-			While (i < 5)
-				oidSSPagg[i] = AddSliderOption(">>>>>", SSPagg[i], "{0}"+SlotNames[(SSPagg[i] As Int) - 30])
+			While (i < oidSSPagg.Length)
+				oidSSPagg[i] = AddSliderOption(">>>>>", SSPagg[i], "{0}"+SlotNames[(SSPagg[i] As Int) - 30]) ;Bane Updated to use Array Length in V18112023
 				i += 1
 			EndWhile
 		Endif
@@ -1503,6 +2107,18 @@ Event OnPageReset(String page)
 			oidKnockOutSPvic = AddSliderOption("$Exhaustion - Knock out chance", KnockOutSPvic, "{0} %", KDwayStaminaFlag)
 			oidSStruggleExhaustionPvic = AddSliderOption("$Exhaustion - Auto resist chance", SStruggleExhaustionPvic, "{0} %", KDwayStaminaFlag)
 			oidKDStaminaBlock = AddToggleOption("$Exhaustion - Unblocked only", KDStaminaBlock, KDwayStaminaFlag)
+			oidKDWayVulnerability = AddToggleOption(">> Vulnerability", KDWayVulnerability)
+			if RessConfig.DeviousFrameworkON
+				oidKDWayVulnerabilityUseDFW = AddToggleOption("Vulnerability - Use DFW Vulnerability", KDWayVulnerabilityUseDFW, KDwayVulnerabilityFlag)
+			else
+				oidKDWayVulnerabilityUseDFW = AddToggleOption("Vulnerability - Use DFW Vulnerability", KDWayVulnerabilityUseDFW, OPTION_FLAG_DISABLED)
+			endif
+			oidVulnerabilityPvic = AddSliderOption("Vulnerability - Threshold", VulnerabilityPvic, "{0}", KDwayVulnerabilityFlag)
+			oidChanceOnHitPvicVulnerability = AddSliderOption("Vulnerability - Chance on hit", ChanceOnHitPvicVulnerability, "{0} %", KDwayVulnerabilityFlag)
+			oidKDWayVulnerabilityOB = AddToggleOption("Vulnerability - Back only", KDWayVulnerabilityOB, KDwayVulnerabilityFlag)
+			oidKnockOutVulnerabilityPvic = AddSliderOption("Vulnerability - Knock out chance", KnockOutVulnerabilityPvic, "{0} %", KDwayVulnerabilityFlag)
+			oidSStruggleVulnerabilityPvic = AddSliderOption("Vulnerability - Auto resist chance", SStruggleVulnerabilityPvic, "{0} %", KDwayVulnerabilityFlag)
+			oidKDVulnerabilityBlock = AddToggleOption("Vulnerability - Unblocked only", KDVulnerabilityBlock, KDwayVulnerabilityFlag)
 			oidKDWayPowerAtk = AddToggleOption("$>> Stun", KDWayPowerAtk)
 			oidKDWayPowerAtkCOH = AddSliderOption("$Stun - Chance on hit", KDWayPowerAtkCOH, "{0} %", KDwayPowerAtkFlag)
 			oidPowerAtkStagger = AddSliderOption("$Stun - Stagger", PowerAtkStagger, "{0}", KDwayPowerAtkFlag)
@@ -1525,18 +2141,55 @@ Event OnPageReset(String page)
 			AddHeaderOption("$Weakening Effects")
 			oidDebuffDuration = AddSliderOption("$Weakened", DebuffDuration, "{0} seconds")
 			oidDamageStamina = AddToggleOption("$Exhausted", DamageStamina)
+			AddEmptyOption()
+			AddEmptyOption()
+			AddEmptyOption()
+			AddEmptyOption()
+			AddEmptyOption()
+			AddEmptyOption()
+			;AddEmptyOption() Bane V18112023 removed 2 empty rows
+			;AddEmptyOption()   
 			AddHeaderOption("$Strip options")
+			
 			oidSSPvicSet[0] = AddTextOption("$Weapon", SSPvicSet[0])
-			oidSSPvicSet[1] = AddTextOption("$Armor piece 01", SSPvicSet[1])
-			oidSSPvicSet[2] = AddTextOption("$Armor piece 02", SSPvicSet[2])
-			oidSSPvicSet[3] = AddTextOption("$Armor piece 03", SSPvicSet[3])
-			oidSSPvicSet[4] = AddTextOption("$Armor piece 04", SSPvicSet[4])
-			oidSSPvicSet[5] = AddTextOption("$Armor piece 05", SSPvicSet[5])
+
+			Int iNumSlots = SSPvicSet.Length
+			Int iSlot = 1
+			String strSlot
+			While iSlot < iNumSlots
+				strSlot = "$Armor piece " + iSlot
+				oidSSPvicSet[iSlot] = AddTextOption(strSlot, SSPvicSet[iSlot]);Bane Updated to use Array Length in V18112023 interface file edit needed
+				iSlot +=1
+			EndWhile
 		Else
 			AddTextOption("$Disabled", none)
 		Endif
 			SetCursorPosition(1)
 		If (OnOffPvic == "$Enabled")
+			AddEmptyOption()
+
+			oidKDWayDynamic = AddToggleOption(">> Dynamic", KDWayDynamic)
+			oidDynamicDefeatOnHitOneHand = AddSliderOption("Dynamic - Defeat Damage (One-Handed)", DynamicDefeatOnHitOneHand, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatOnHitTwoHand = AddSliderOption("Dynamic - Defeat Damage (Two-Handed)", DynamicDefeatOnHitTwoHand, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatOnHitBow = AddSliderOption("Dynamic - Defeat Damage (Bow)", DynamicDefeatOnHitBow, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatOnHitSpell = AddSliderOption("Dynamic - Defeat Damage (Spell)", DynamicDefeatOnHitSpell, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatOnHitBase = AddSliderOption("Dynamic - Defeat Damage (Other)", DynamicDefeatOnHitBase, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatLowHealthThreshold = AddSliderOption("Dynamic - Health Threshold", DynamicDefeatLowHealthThreshold, "{0} %", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatLowHealthMult = AddSliderOption("Dynamic - Low Health Mult.", DynamicDefeatLowHealthMult, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatLowStaminaThreshold = AddSliderOption("Dynamic - Stamina Threshold", DynamicDefeatLowStaminaThreshold, "{0} %", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatLowStaminaMult = AddSliderOption("Dynamic - Low Stamina Mult.", DynamicDefeatLowStaminaMult, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatPowerAttackMult = AddSliderOption("Dynamic - Power Attack Mult.",DynamicDefeatPowerAttackMult,  "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatBackHitMult = AddSliderOption("Dynamic - Back Hit Mult.",DynamicDefeatBackHitMult,  "{1}", KDwayDynamicDefeatFlag)
+			if RessConfig.DeviousFrameworkON
+				oidDynamicDefeatUseDFWVulnerability = AddToggleOption("Dynamic - Use DFW Vulnerability", DynamicDefeatUseDFWVulnerability, KDwayDynamicDefeatFlag)
+			else
+				oidDynamicDefeatUseDFWVulnerability = AddToggleOption("Dynamic - Use DFW Vulnerability", DynamicDefeatUseDFWVulnerability, OPTION_FLAG_DISABLED)
+			endif
+			oidDynamicDefeatVulnerabilityMult = AddSliderOption("Dynamic - Vulnerability Mult.", DynamicDefeatVulnerabilityMult, "{1}", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatBlockReduction = AddSliderOption("Dynamic - Block Reduction", DynamicDefeatBlockReduction, "{0} %", KDwayDynamicDefeatFlag)
+			oidDynamicDefeatDepleteOverTime = AddSliderOption("Dynamic - Deplete Amount", DynamicDefeatDepleteOverTime, "{1}", KDwayDynamicDefeatFlag)
+			oidKnockOutDynamicPvic = AddSliderOption("Dynamic - Knock out chance", KnockOutDynamicPvic, "{0} %", KDwayDynamicDefeatFlag)
+			oidSStruggleDynamicPvic = AddSliderOption("Dynamic - Auto resist chance", SStruggleDynamicPvic, "{0} %", KDwayDynamicDefeatFlag)																										   
 			AddHeaderOption("$Settings")
 			oidHKSurrender = AddKeyMapOption("$Surrender", HKSurrender)
 			oidEveryonePvic = AddToggleOption("$Can be knocked down by everyone", EveryonePvic)	
@@ -1554,17 +2207,18 @@ Event OnPageReset(String page)
 			oidWitnessPvic = AddToggleOption("$Witness intervention", WitnessPvic)
 			oidCoverSelfPvic = AddToggleOption("$Cover self animation", CoverSelfPvic) 
 			AddEmptyOption()
-			AddEmptyOption()
-			AddEmptyOption()
-			AddEmptyOption()
-			AddEmptyOption()
-			AddEmptyOption()			
+;			AddEmptyOption() Bane V18112023 Removed 2 empty rows
+;			AddEmptyOption()
+;			AddEmptyOption()
+;			AddEmptyOption()
+;			AddEmptyOption()			
 			AddHeaderOption("$Follower collateral")
 			oidCollateralAssault = AddToggleOption("$Follower collateral", CollateralAssault)
 			oidFollowerSurrender = AddToggleOption("$Follower surrender", FollowerSurrender)
 			oidbExhaustedPvic = AddToggleOption("$Exhausted", bExhaustedPvic)
 			oidbRedressPvic = AddToggleOption("$Redress", bRedressPvic)
 			oidThreesomeChanceCollateral = AddSliderOption("$Threesome chance", ThreesomeChanceCollateral, "{0} %")
+			AddEmptyOption()
 			AddHeaderOption("$Assault by creature")
 			oidCrScenario = AddTextOption("$Knock down scenario", CrScenario)
 			oidHuntCrea = AddToggleOption("$Male creatures allowed", HuntCrea)
@@ -1574,12 +2228,13 @@ Event OnPageReset(String page)
 			oidGbCrChancePvic = AddSliderOption("$Multiple chance", GbCrChancePvic, "{0} %")	
 			AddHeaderOption("")
 			oidSlowDown = AddToggleOption("$Slowdown", SlowDown)
-			AddEmptyOption()
+			;AddEmptyOption()
+			;AddEmptyOption()
 			AddHeaderOption("")
 			oidCheckSlots = AddTextOption("$Check equipped item slots", "$CLICK")
 			Int i
-			While (i < 5)
-				oidSSPvic[i] = AddSliderOption(">>>>>", SSPvic[i], "{0}"+SlotNames[(SSPvic[i] As Int) - 30])
+			While (i < oidSSPvic.Length)
+				oidSSPvic[i] = AddSliderOption(">>>>>", SSPvic[i], "{0}"+SlotNames[(SSPvic[i] As Int) - 30]) ;Bane Updated to use Array Length in V18112023
 				i += 1
 			EndWhile
 		Endif
@@ -1588,6 +2243,7 @@ Event OnPageReset(String page)
 		If (OnOffPvic == "$Enabled")
 			AddHeaderOption("$(Base) End of the scene")
 			oidbEscape = AddTextOption("$Type", bEscape)
+			oidAllowCreaturePostAssault = AddMenuOption("Allow Creatures", AllowCreaturePostAssault[AllowCreaturePostAssaultSelection])
 			AddHeaderOption("$(Base) Robbed")
 			oidfRobbing = AddSliderOption("$Event Chance", fRobbing, "{0} %")
 			oidRobbingWay = AddTextOption("$Type", RobbingWay)
@@ -1603,6 +2259,259 @@ Event OnPageReset(String page)
 			oidPAfrequency[2] = AddSliderOption("$Event Chance", PAfrequency[2], "{0} %")
 			oidPAbOnlyEnemy[2] = AddToggleOption("$Only enemy factions", PAbOnlyEnemy[2])
 			oidPAbOnlyRaped[2] = AddToggleOption("$Only after a sexual assault", PAbOnlyRaped[2])
+			AddEmptyOption()
+			AddHeaderOption("-----------------------------------------------------------")
+			AddHeaderOption("(Cursed Loot) Equip Devices")
+			if RessConfig.DeviouslyCursedLootON
+				oidPAfrequency[6] = AddSliderOption("$Event Chance", PAfrequency[6], "{0} %")
+				oidCursedLootMinDevices = AddSliderOption("Minimum number of Devices", CursedLootMinDevices)
+				oidCursedLootMaxDevices = AddSliderOption("Maximum number of Devices", CursedLootMaxDevices)
+			else
+				oidPAfrequency[6] = AddSliderOption("$Event Chance", PAfrequency[6], "{0} %", OPTION_FLAG_DISABLED)
+			endif
+		AddHeaderOption("-----------------------------------------------------------")
+			AddHeaderOption("(Devious Devices) Equip Devices")
+			if RessConfig.DDon
+				oidPAfrequency[7] = AddSliderOption("$Event Chance", PAfrequency[7], "{0} %")
+				if PAfrequency[7] == 0
+					AddTextOption("Event Disabled", "Settings Hidden")
+				else
+					oidDDMinDevices = AddSliderOption("Minimum number of Devices", DDMinDevices)
+					oidDDMaxDevices = AddSliderOption("Maximum number of Devices", DDMaxDevices)
+					oidDDPaSelectLanguage = AddMenuOption("Select Language", Language)
+					AddEmptyOption()
+					oidDDPaUseArmbinder = AddMenuOption("Armbinder Settings", DDGeneralPermissionList[DDPaUseArmbinder])
+					if DDPaUseArmbinder >= 1
+						oidDDPaArmbinderStyle = AddMenuOption("Armbinder Style", GetStyleMenuList("Armbinder")[GetStyleIndexFromList("Armbinder", DDPaArmbinderStyle)])
+						oidDDPaArmbinderColour = AddMenuOption("Armbinder Colour", GetColourMenuList("Armbinder", DDPaArmbinderStyle)[GetColourIndexFromList("Armbinder", DDPaArmbinderStyle, DDPaArmbinderColour)])
+;						if oidDDPaArmbinderStyle == "Any"
+;							oidDDPaArmbinderColour = AddTextOption("Armbinder Colour", "Any")
+;						else
+;							oidDDPaArmbinderColour = AddMenuOption("Armbinder Colour", GetColourMenuList("Armbinder", DDPaArmbinderStyle)[GetColourIndexFromList("Armbinder", DDPaArmbinderStyle, DDPaArmbinderColour)])
+;						endif
+					else
+						oidDDPaArmbinderStyle = AddTextOption("Armbinder Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaArmbinderColour = AddTextOption("Armbinder Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseGag = AddMenuOption("Gag Settings", DDGeneralPermissionList[DDPaUseGag])
+					if DDPaUseGag >= 1
+						oidDDPaGagStyle = AddMenuOption("Gag Style", GetStyleMenuList("Gag")[GetStyleIndexFromList("Gag", DDPaGagStyle)])
+						oidDDPaGagColour = AddMenuOption("Gag Colour", GetColourMenuList("Gag", DDPaGagStyle)[GetColourIndexFromList("Gag", DDPaGagStyle, DDPaGagColour)])
+;						if oidDDPaGagStyle == "Any"
+;							oidDDPaGagColour = AddTextOption("Gag Colour", "Any")
+;						else
+;							oidDDPaGagColour = AddMenuOption("Gag Colour", GetColourMenuList("Gag", DDPaGagStyle)[GetColourIndexFromList("Gag", DDPaGagStyle, DDPaGagColour)])
+;						endif
+					else
+						oidDDPaGagStyle = AddTextOption("Gag Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaGagColour = AddTextOption("Gag Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseSuit = AddMenuOption("Suit Settings", DDGeneralPermissionList[DDPaUseSuit])
+					if DDPaUseSuit >= 1
+						oidDDPaSuitStyle = AddMenuOption("Suit Style", GetStyleMenuList("Suit")[GetStyleIndexFromList("Suit", DDPaSuitStyle)])
+						oidDDPaSuitColour = AddMenuOption("Suit Colour", GetColourMenuList("Suit", DDPaSuitStyle)[GetColourIndexFromList("Suit", DDPaSuitStyle, DDPaSuitColour)])
+;						if oidDDPaSuitStyle == "Any"
+;							oidDDPaSuitColour = AddTextOption("Suit Colour", "Any")
+;						else
+;							oidDDPaSuitColour = AddMenuOption("Suit Colour", GetColourMenuList("Suit", DDPaSuitStyle)[GetColourIndexFromList("Suit", DDPaSuitStyle, DDPaSuitColour)])
+;						endif
+					else
+						oidDDPaSuitStyle = AddTextOption("Suit Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaSuitColour = AddTextOption("Suit Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseHood = AddMenuOption("Head Gear Settings", DDGeneralPermissionList[DDPaUseHood])
+					if DDPaUseHood >= 1
+						oidDDPaHoodStyle = AddMenuOption("Head Gear Style", GetStyleMenuList("Hood")[GetStyleIndexFromList("Hood", DDPaHoodStyle)])
+						oidDDPaHoodColour = AddMenuOption("Head Gear Colour", GetColourMenuList("Hood", DDPaHoodStyle)[GetColourIndexFromList("Hood", DDPaHoodStyle, DDPaHoodColour)])
+;						if oidDDPaHoodStyle == "Any"
+;							oidDDPaHoodColour = AddTextOption("Head Gear Colour", "Any")
+;						else
+;							oidDDPaHoodColour = AddMenuOption("Head Gear Colour", GetColourMenuList("Hood", DDPaHoodStyle)[GetColourIndexFromList("Hood", DDPaHoodStyle, DDPaHoodColour)])
+;						endif
+					else
+						oidDDPaHoodStyle = AddTextOption("Head Gear Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaHoodColour = AddTextOption("Head Gear Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseChastityBelt = AddMenuOption("Belt Settings", DDGeneralPermissionList[DDPaUseChastityBelt])
+					if DDPaUseChastityBelt >= 1
+						oidDDPaChastityBeltStyle = AddMenuOption("Belt Style", GetStyleMenuList("Belt")[GetStyleIndexFromList("Belt", DDPaChastityBeltStyle)])
+						oidDDPaChastityBeltColour = AddMenuOption("Belt Colour", GetColourMenuList("Belt", DDPaChastityBeltStyle)[GetColourIndexFromList("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour)])
+;						if oidDDPaChastityBeltStyle == "Any"
+;							oidDDPaChastityBeltColour = AddTextOption("Belt Colour", "Any")
+;						else
+;							oidDDPaChastityBeltColour = AddMenuOption("Belt Colour", GetColourMenuList("Belt", DDPaChastityBeltStyle)[GetColourIndexFromList("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour)])
+;						endif
+					else
+						oidDDPaChastityBeltStyle = AddTextOption("Belt Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaChastityBeltColour = AddTextOption("Belt Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseChastityBra = AddMenuOption("Bra Settings", DDGeneralPermissionList[DDPaUseChastityBra])
+					if DDPaUseChastityBra >= 1
+						oidDDPaChastityBraStyle = AddMenuOption("Bra Style", GetStyleMenuList("Bra")[GetStyleIndexFromList("Bra", DDPaChastityBraStyle)])
+						oidDDPaChastityBraColour = AddMenuOption("Bra Colour", GetColourMenuList("Bra", DDPaChastityBraStyle)[GetColourIndexFromList("Bra", DDPaChastityBraStyle, DDPaChastityBraColour)])
+;						if oidDDPaChastityBraStyle == "Any"
+;							oidDDPaChastityBraColour = AddTextOption("Bra Colour", "Any")
+;						else
+;							oidDDPaChastityBraColour = AddMenuOption("Bra Colour", GetColourMenuList("Bra", DDPaChastityBraStyle)[GetColourIndexFromList("Bra", DDPaChastityBraStyle, DDPaChastityBraColour)])
+;						endif
+					else
+						oidDDPaChastityBraStyle = AddTextOption("Bra Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaChastityBraColour = AddTextOption("Bra Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseHarness = AddMenuOption("Harness Settings", DDGeneralPermissionList[DDPaUseHarness])
+					if DDPaUseHarness >= 1
+						oidDDPaHarnessStyle = AddMenuOption("Harness Style", GetStyleMenuList("Harness")[GetStyleIndexFromList("Harness", DDPaHarnessStyle)])
+						oidDDPaHarnessColour = AddMenuOption("Harness Colour", GetColourMenuList("Harness", DDPaHarnessStyle)[GetColourIndexFromList("Harness", DDPaHarnessStyle, DDPaHarnessColour)])
+;						if oidDDPaHarnessStyle == "Any"
+;							oidDDPaHarnessColour = AddTextOption("Harness Colour", "Any")
+;						else
+;							oidDDPaHarnessColour = AddMenuOption("Harness Colour", GetColourMenuList("Harness", DDPaHarnessStyle)[GetColourIndexFromList("Harness", DDPaHarnessStyle, DDPaHarnessColour)])
+;						endif
+					else
+						oidDDPaHarnessStyle = AddTextOption("Harness Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaHarnessColour = AddTextOption("Harness Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseCorset = AddMenuOption("Corset Settings", DDGeneralPermissionList[DDPaUseCorset])
+					if DDPaUseCorset >= 1
+						oidDDPaCorsetStyle = AddMenuOption("Corset Style", GetStyleMenuList("Corset")[GetStyleIndexFromList("Corset", DDPaCorsetStyle)])
+						oidDDPaCorsetColour = AddMenuOption("Corset Colour", GetColourMenuList("Corset", DDPaCorsetStyle)[GetColourIndexFromList("Corset", DDPaCorsetStyle, DDPaCorsetColour)])
+;						if oidDDPaCorsetStyle == "Any"
+;							oidDDPaCorsetColour = AddTextOption("Corset Colour", "Any")
+;						else
+;							oidDDPaCorsetColour = AddMenuOption("Corset Colour", GetColourMenuList("Corset", DDPaCorsetStyle)[GetColourIndexFromList("Corset", DDPaCorsetStyle, DDPaCorsetColour)])
+;						endif
+					else
+						oidDDPaCorsetStyle = AddTextOption("Corset Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaCorsetColour = AddTextOption("Corset Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseCollar = AddMenuOption("Collar Settings", DDGeneralPermissionList[DDPaUseCollar])
+					if DDPaUseCollar >= 1
+						oidDDPaCollarStyle = AddMenuOption("Collar Style", GetStyleMenuList("Collar")[GetStyleIndexFromList("Collar", DDPaCollarStyle)])
+						oidDDPaCollarColour = AddMenuOption("Collar Colour", GetColourMenuList("Collar", DDPaCollarStyle)[GetColourIndexFromList("Collar", DDPaCollarStyle, DDPaCollarColour)])
+;						if oidDDPaCollarStyle == "Any"
+;							oidDDPaCollarColour = AddTextOption("Collar Colour", "Any")
+;						else
+;							oidDDPaCollarColour = AddMenuOption("Collar Colour", GetColourMenuList("Collar", DDPaCollarStyle)[GetColourIndexFromList("Collar", DDPaCollarStyle, DDPaCollarColour)])
+;						endif
+					else
+						oidDDPaCollarStyle = AddTextOption("Collar Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaCollarColour = AddTextOption("Collar Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					SetCursorPosition(51)
+					AddHeaderOption("(Devious Devices) Equip Devices")
+					oidDDPaPlugsWithBelt = AddToggleOption("Use Plugs with Belts", DDPaPlugsWithBelt)
+					oidDDPaArmAndLegShacklesChance = AddSliderOption("Use Arm and Leg Shackles", DDPaArmAndLegShacklesChance, "{0} %")
+					oidDDPaConsistantStyle = AddToggleOption("Use Consistent Devices", DDPaConsistantStyle)
+					oidDDPaTestingEquipDevices = AddTextOption("TEST Devices", "Equip Devices")
+					AddEmptyOption()
+					oidDDPaUsePlugVaginal = AddMenuOption("Plug(Vaginal) Settings", DDGeneralPermissionList[DDPaUsePlugVaginal])
+					if DDPaUsePlugVaginal >= 1
+						oidDDPaPlugVaginalStyle = AddMenuOption("Plug(Vaginal) Style", GetStyleMenuList("PlugVaginal")[GetStyleIndexFromList("PlugVaginal", DDPaPlugVaginalStyle)])
+						oidDDPaPlugVaginalColour = AddMenuOption("Plug(Vaginal) Colour", GetColourMenuList("PlugVaginal", DDPaPlugVaginalStyle)[GetColourIndexFromList("PlugVaginal", DDPaPlugVaginalStyle, DDPaPlugVaginalColour)])
+;						if oidDDPaPlugVaginalStyle == "Any"
+;							oidDDPaPlugVaginalColour = AddTextOption("Plug(Vaginal) Colour", "Any")
+;						else
+;							oidDDPaPlugVaginalColour = AddMenuOption("Plug(Vaginal) Colour", GetColourMenuList("PlugVaginal", DDPaPlugVaginalStyle)[GetColourIndexFromList("PlugVaginal", DDPaPlugVaginalStyle, DDPaPlugVaginalColour)])
+;						endif
+					else
+						oidDDPaPlugVaginalStyle = AddTextOption("Plug(Vaginal) Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaPlugVaginalColour = AddTextOption("Plug(Vaginal) Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUsePlugAnal= AddMenuOption("Plug(Anal) Settings", DDGeneralPermissionList[DDPaUsePlugAnal])
+					if DDPaUsePlugAnal >= 1
+						oidDDPaPlugAnalStyle = AddMenuOption("Plug(Anal) Style", GetStyleMenuList("PlugAnal")[GetStyleIndexFromList("PlugAnal", DDPaPlugAnalStyle)])
+						oidDDPaPlugAnalColour = AddMenuOption("Plug(Anal) Colour", GetColourMenuList("PlugAnal", DDPaPlugAnalStyle)[GetColourIndexFromList("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour)])
+;						if oidDDPaPlugAnalStyle == "Any"
+;							oidDDPaPlugAnalColour = AddTextOption("Plug(Anal) Colour", "Any")
+;						else
+;							oidDDPaPlugAnalColour = AddMenuOption("Plug(Anal) Colour", GetColourMenuList("PlugAnal", DDPaPlugAnalStyle)[GetColourIndexFromList("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour)])
+;						endif
+					else
+						oidDDPaPlugAnalStyle = AddTextOption("Plug(Anal) Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaPlugAnalColour = AddTextOption("Plug(Anal) Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUsePiercingVaginal = AddMenuOption("Piercing(Vaginal) Settings", DDGeneralPermissionList[DDPaUsePiercingVaginal])
+					if DDPaUsePiercingVaginal >= 1
+						oidDDPaPiercingVaginalStyle = AddMenuOption("Piercing(Vaginal) Style", GetStyleMenuList("PiercingVaginal")[GetStyleIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle)])
+						oidDDPaPiercingVaginalColour = AddMenuOption("Piercing(Vaginal) Colour", GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle)[GetColourIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour)])
+;						if oidDDPaPiercingVaginalStyle == "Any"
+;							oidDDPaPiercingVaginalColour = AddTextOption("Piercing(Vaginal) Colour", "Any")
+;						else
+;							oidDDPaPiercingVaginalColour = AddMenuOption("Piercing(Vaginal) Colour", GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle)[GetColourIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour)])
+;						endif
+					else
+						oidDDPaPiercingVaginalStyle = AddTextOption("Piercing(Vaginal) Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaPiercingVaginalColour = AddTextOption("Piercing(Vaginal) Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUsePiercingNipple = AddMenuOption("Piercing(Nipple) Settings", DDGeneralPermissionList[DDPaUsePiercingNipple])
+					if DDPaUsePiercingNipple >= 1
+						oidDDPaPiercingNippleStyle = AddMenuOption("Piercing(Nipple) Style", GetStyleMenuList("PiercingNipple")[GetStyleIndexFromList("PiercingNipple", DDPaPiercingNippleStyle)])
+						oidDDPaPiercingNippleColour = AddMenuOption("Piercing(Nipple) Colour", GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle)[GetColourIndexFromList("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour)])
+;						if oidDDPaPiercingNippleStyle == "Any"
+;							oidDDPaPiercingNippleColour = AddTextOption("Piercing(Nipple) Colour", "Any")
+;						else
+;							oidDDPaPiercingNippleColour = AddMenuOption("Piercing(Nipple) Colour", GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle)[GetColourIndexFromList("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour)])
+;						endif
+					else
+						oidDDPaPiercingNippleStyle = AddTextOption("Piercing(Nipple) Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaPiercingNippleColour = AddTextOption("Piercing(Nipple) Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseBoots = AddMenuOption("Boots Settings", DDGeneralPermissionList[DDPaUseBoots])
+					if DDPaUseBoots >= 1
+						oidDDPaBootsStyle = AddMenuOption("Boots Style", GetStyleMenuList("Boots")[GetStyleIndexFromList("Boots", DDPaBootsStyle)])
+						oidDDPaBootsColour = AddMenuOption("Boots Colour", GetColourMenuList("Boots", DDPaBootsStyle)[GetColourIndexFromList("Boots", DDPaBootsStyle, DDPaBootsColour)])
+;						if oidDDPaBootsStyle == "Any"
+;							oidDDPaBootsColour = AddTextOption("Boots Colour", "Any")
+;						else
+;							oidDDPaBootsColour = AddMenuOption("Boots Colour", GetColourMenuList("Boots", DDPaBootsStyle)[GetColourIndexFromList("Boots", DDPaBootsStyle, DDPaBootsColour)])
+;						endif
+					else
+						oidDDPaBootsStyle = AddTextOption("Boots Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaBootsColour = AddTextOption("Boots Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseGloves = AddMenuOption("Gloves Settings", DDGeneralPermissionList[DDPaUseGloves])
+					if DDPaUseGloves >= 1
+						oidDDPaGlovesStyle = AddMenuOption("Gloves Style", GetStyleMenuList("Gloves")[GetStyleIndexFromList("Gloves", DDPaGlovesStyle)])
+						oidDDPaGlovesColour = AddMenuOption("Gloves Colour", GetColourMenuList("Gloves", DDPaGlovesStyle)[GetColourIndexFromList("Gloves", DDPaGlovesStyle, DDPaGlovesColour)])
+;						if oidDDPaGlovesStyle == "Any"
+;							oidDDPaGlovesColour = AddTextOption("Gloves Colour", "Any")
+;						else
+;							oidDDPaGlovesColour = AddMenuOption("Gloves Colour", GetColourMenuList("Gloves", DDPaGlovesStyle)[GetColourIndexFromList("Gloves", DDPaGlovesStyle, DDPaGlovesColour)])
+;						endif
+					else
+						oidDDPaGlovesStyle = AddTextOption("Gloves Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaGlovesColour = AddTextOption("Gloves Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseArmCuffs = AddMenuOption("Arm Cuffs Settings", DDGeneralPermissionList[DDPaUseArmCuffs])
+					if DDPaUseArmCuffs >= 1
+						oidDDPaArmCuffsStyle = AddMenuOption("Arm Cuffs Style", GetStyleMenuList("ArmCuffs")[GetStyleIndexFromList("ArmCuffs", DDPaArmCuffsStyle)])
+						oidDDPaArmCuffsColour = AddMenuOption("Arm Cuffs Colour", GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle)[GetColourIndexFromList("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour)])
+;						if oidDDPaArmCuffsStyle == "Any"
+;							oidDDPaArmCuffsColour = AddTextOption("Arm Cuffs Colour", "Any")
+;						else
+;							oidDDPaArmCuffsColour = AddMenuOption("Arm Cuffs Colour", GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle)[GetColourIndexFromList("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour)])
+;						endif
+					else
+						oidDDPaArmCuffsStyle = AddTextOption("Arm Cuffs Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaArmCuffsColour = AddTextOption("Arm Cuffs Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseLegCuffs = AddMenuOption("Leg Cuffs Settings", DDGeneralPermissionList[DDPaUseLegCuffs])
+					if DDPaUseLegCuffs >= 1
+						oidDDPaLegCuffsStyle = AddMenuOption("Leg Cuffs Style", GetStyleMenuList("LegCuffs")[GetStyleIndexFromList("LegCuffs", DDPaLegCuffsStyle)])
+						oidDDPaLegCuffsColour = AddMenuOption("Leg Cuffs Colour", GetColourMenuList("LegCuffs", DDPaLegCuffsStyle)[GetColourIndexFromList("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour)])
+;						if oidDDPaLegCuffsStyle == "Any"
+;							oidDDPaLegCuffsColour = AddTextOption("Leg Cuffs Colour", "Any")
+;						else
+;							oidDDPaLegCuffsColour = AddMenuOption("Leg Cuffs Colour", GetColourMenuList("LegCuffs", DDPaLegCuffsStyle)[GetColourIndexFromList("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour)])
+;						endif
+					else
+						oidDDPaLegCuffsStyle = AddTextOption("Leg Cuff Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaLegCuffsColour = AddTextOption("Leg Cuff Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+				endif
+			else
+				oidPAfrequency[7] = AddSliderOption("$Event Chance", PAfrequency[7], "{0} %", OPTION_FLAG_DISABLED)
+			endif
 		Else
 			AddTextOption("$Disabled", none)
 		Endif
@@ -1610,6 +2519,7 @@ Event OnPageReset(String page)
 		If (OnOffPvic == "$Enabled")
 			AddHeaderOption("$(Base) Death Alternative")
 			oidDAsChance = AddSliderOption("$Event Chance", DAsChance, "{0} %", DAFlag)
+			AddEmptyOption()
 			AddHeaderOption("$(Base) Jailed")
 			oidPAbEnabled[0] = AddToggleOption("$Enabled", PAbEnabled[0])
 			AddEmptyOption()
@@ -1620,6 +2530,29 @@ Event OnPageReset(String page)
 			oidPAfrequency[1] = AddSliderOption("$Event Chance", PAfrequency[1], "{0} %")
 			oidPAbOnlyEnemy[1] = AddToggleOption("$Only enemy factions", PAbOnlyEnemy[1])
 			oidPAbOnlyRaped[1] = AddToggleOption("$Only after a sexual assault", PAbOnlyRaped[1])
+			AddHeaderOption("-----------------------------------------------------------")
+			AddHeaderOption("(Misc) SD Dreamworld")
+			if RessConfig.SanguinesDebaucheryON
+				oidPAfrequency[3] = AddSliderOption("$Event Chance", PAfrequency[3], "{0} %")
+			else
+				oidPAfrequency[3] = AddSliderOption("$Event Chance", PAfrequency[3], "{0} %", OPTION_FLAG_DISABLED)
+			endif
+			AddHeaderOption("-----------------------------------------------------------")
+			AddHeaderOption("(Misc) SD Enslavement")
+			if RessConfig.SanguinesDebaucheryON
+				oidPAfrequency[4] = AddSliderOption("$Event Chance", PAfrequency[4], "{0} %")
+			else
+				oidPAfrequency[4] = AddSliderOption("$Event Chance", PAfrequency[4], "{0} %", OPTION_FLAG_DISABLED)
+			endif
+			AddHeaderOption("-----------------------------------------------------------")
+			AddHeaderOption("(Misc) LeashGame")
+			if RessConfig.LeashGameON
+				oidPAfrequency[5] = AddSliderOption("$Event Chance", PAfrequency[5], "{0} %")
+			else
+				oidPAfrequency[5] = AddSliderOption("$Event Chance", PAfrequency[5], "{0} %", OPTION_FLAG_DISABLED)
+			endif
+			AddEmptyOption()
+			AddEmptyOption()
 			AddHeaderOption("-----------------------------------------------------------")
 		Endif
 	Elseif (Page == "$NPC vs NPC")
@@ -1657,12 +2590,17 @@ Event OnPageReset(String page)
 			oidNVNKillPA = AddSliderOption("$Post-assault kill", NVNKillPA, "{0} %")
 			oidbRedressNVN = AddToggleOption("$Redress", bRedressNVN)
 			AddHeaderOption("$Strip options")
+
 			oidSSNVNSet[0] = AddTextOption("$Weapon", SSNVNSet[0])
-			oidSSNVNSet[1] = AddTextOption("$Armor piece 01", SSNVNSet[1])
-			oidSSNVNSet[2] = AddTextOption("$Armor piece 02", SSNVNSet[2])
-			oidSSNVNSet[3] = AddTextOption("$Armor piece 03", SSNVNSet[3])
-			oidSSNVNSet[4] = AddTextOption("$Armor piece 04", SSNVNSet[4])
-			oidSSNVNSet[5] = AddTextOption("$Armor piece 05", SSNVNSet[5])
+
+			Int iNumSlots = SSNVNSet.Length
+			Int iSlot = 1
+			String strSlot
+			While iSlot < iNumSlots
+				strSlot = "$Armor piece " + iSlot
+				oidSSNVNSet[iSlot] = AddTextOption(strSlot, SSNVNSet[iSlot]);Bane Updated to use Array Length in V18112023 interface file edit needed
+				iSlot +=1
+			EndWhile
 		Else
 			AddTextOption("$Disabled", none)
 		Endif
@@ -1701,9 +2639,10 @@ Event OnPageReset(String page)
 			oidbRedressFollower = AddToggleOption("$Redress", bRedressFollower)
 			AddHeaderOption("")
 			oidCheckSlots = AddTextOption("$Check equipped item slots", "$CLICK")
+			
 			Int i
-			While (i < 5)
-				oidSSNVN[i] = AddSliderOption(">>>>>", SSNVN[i], "{0}"+SlotNames[(SSNVN[i] As Int) - 30])
+			While (i < oidSSNVN.Length)
+				oidSSNVN[i] = AddSliderOption(">>>>>", SSNVN[i], "{0}"+SlotNames[(SSNVN[i] As Int) - 30]) ;Bane Updated to use Array Length in V18112023
 				i += 1
 			EndWhile
 		Endif
@@ -1870,6 +2809,61 @@ Event OnPageReset(String page)
 				AddToggleOptionST("oidMultipleIgnoreGTNVN", "$Multiple - Ignore gender tag", MultipleIgnoreGTNVN)
 			Endif
 		Endif
+	Elseif (Page == "Misc Options")
+		SetCursorFillMode(TOP_TO_BOTTOM)
+		If (ModStatus == "$Enabled")
+			AddHeaderOption("Devious Belt Settings")
+			oidAllowUnequipBelt = AddToggleOption("Allow to unequip Belts", AllowUnequipBelt)
+			oidUnequipBeltChance = AddSliderOption("Chance to unequip Belt", UnequipBeltChance)
+			oidUnequipBeltWithPlayerKeysOnly = AddToggleOption("Use Player keys only", UnequipBeltWithPlayerKeysOnly)
+			oidUnequipBeltNotificationChance = AddSliderOption("Show Notification Chance", UnequipBeltNotificationChance)
+			AddHeaderOption("Devious Gag Settings")
+			oidAllowUnequipGag = AddToggleOption("Allow to unequip Gags", AllowUnequipGag)
+			oidUnequipGagChance = AddSliderOption("Chance to unequip Gag", UnequipGagChance)
+			oidUnequipGagWithPlayerKeysOnly = AddToggleOption("Use Player keys only", UnequipGagWithPlayerKeysOnly)
+			oidUnequipGagNotificationChance = AddSliderOption("Show Notification Chance", UnequipGagNotificationChance)
+			AddHeaderOption("Devious Harness Settings")
+			oidAllowUnequipHarness = AddToggleOption("Allow to unequip Harness", AllowUnequipHarness)
+			oidUnequipHarnessChance = AddSliderOption("Chance to unequip Harness", UnequipHarnessChance)
+			oidUnequipHarnessWithPlayerKeysOnly = AddToggleOption("Use Player keys only", UnequipHarnessWithPlayerKeysOnly)
+			oidUnequipHarnessNotificationChance = AddSliderOption("Show Notification Chance", UnequipHarnessNotificationChance)
+			AddEmptyOption()
+			AddHeaderOption("Vulnerability Settings (Current: " + PlayerScr.DefVulnScr.CalculateVulnerability() as int + ")")
+			oidVulnerabilityValueGag = AddSliderOption(IsDeviceEquipped(0) + "Vulnerability - Gag", VulnerabilityValueGag, "{1}")
+			oidVulnerabilityValueVagPlug = AddSliderOption(IsDeviceEquipped(1) + "Vulnerability - Plug(Vaginal)", VulnerabilityValueVagPlug, "{1}")
+			oidVulnerabilityValueAnalPlug = AddSliderOption(IsDeviceEquipped(2) + "Vulnerability - Plug(Anal)", VulnerabilityValueAnalPlug, "{1}")
+			oidVulnerabilityValueBelt = AddSliderOption(IsDeviceEquipped(3) + "Vulnerability - Belt", VulnerabilityValueBelt, "{1}")
+			oidVulnerabilityValueBra = AddSliderOption(IsDeviceEquipped(4) + "Vulnerability - Bra", VulnerabilityValueBra, "{1}")
+			oidVulnerabilityValueCollar = AddSliderOption(IsDeviceEquipped(5) + "Vulnerability - Collar", VulnerabilityValueCollar, "{1}")
+			oidVulnerabilityValueArmCuffs = AddSliderOption(IsDeviceEquipped(6) + "Vulnerability - Arm Cuffs", VulnerabilityValueArmCuffs, "{1}")
+			oidVulnerabilityValueLegCuffs = AddSliderOption(IsDeviceEquipped(7) + "Vulnerability - Leg Cuffs", VulnerabilityValueLegCuffs, "{1}")
+			SetCursorPosition(1)
+			AddHeaderOption("Devious Suit Settings")
+			oidAllowUnequipSuit = AddToggleOption("Allow to unequip Suit", AllowUnequipSuit)
+			oidUnequipSuitChance = AddSliderOption("Chance to unequip Suit", UnequipSuitChance)
+			oidUnequipSuitWithPlayerKeysOnly = AddToggleOption("Use Player keys only", UnequipSuitWithPlayerKeysOnly)
+			oidUnequipSuitNotificationChance = AddSliderOption("Show Notification Chance", UnequipSuitNotificationChance)
+			AddHeaderOption("Heavy Bondage Settings")
+			oidAllowUnequipHeavyBondage = AddToggleOption("Allow to unequip Heavy Bondage Devices", AllowUnequipHeavyBondage)
+			oidUnequipHeavyBondageChance = AddSliderOption("Chance to unequip Heavy Bondage Devices", UnequipHeavyBondageChance)
+			oidUnequipHeavyBondageWithPlayerKeysOnly = AddToggleOption("Use Player keys only", UnequipHeavyBondageWithPlayerKeysOnly)
+			oidUnequipHeavyBondageNotificationChance = AddSliderOption("Show Notification Chance", UnequipHeavyBondageNotificationChance)
+			AddHeaderOption("Misc")
+			oidUseDDFilter = AddToggleOption("Use DD Animation Filter", UseDDFilter)
+			oidEnableLog = AddToggleOption("Enable Log", EnableLog)
+			AddEmptyOption()
+			AddEmptyOption()
+			AddEmptyOption()
+			AddHeaderOption("Vulnerability Settings (Current: " + PlayerScr.DefVulnScr.CalculateVulnerability() as int + ")")
+			oidVulnerabilityValueHeavyBond = AddSliderOption(IsDeviceEquipped(8) + "Vulnerability - Heavy Bondage", VulnerabilityValueHeavyBond, "{1}")
+			oidVulnerabilityValueDisableKick = AddSliderOption(IsDeviceEquipped(9) + "Vulnerability - Ankle Shackles", VulnerabilityValueDisableKick, "{1}")
+			oidVulnerabilityValueBlindfold = AddSliderOption(IsDeviceEquipped(10) + "Vulnerability - Blindfold", VulnerabilityValueBlindfold, "{1}")
+			oidVulnerabilityValueBoots = AddSliderOption(IsDeviceEquipped(11) + "Vulnerability - Boots", VulnerabilityValueBoots, "{1}")
+			oidVulnerabilityValueCorset = AddSliderOption(IsDeviceEquipped(12) + "Vulnerability - Corset", VulnerabilityValueCorset, "{1}")
+			oidVulnerabilityValueHarness = AddSliderOption(IsDeviceEquipped(13) + "Vulnerability - Harness", VulnerabilityValueHarness, "{1}")
+			oidVulnerabilityValueFullChastity = AddSliderOption(IsDeviceEquipped(14) + "Vulnerability - Full Chastity", VulnerabilityValueFullChastity, "{1}")
+			oidVulnerabilityValueHelpless = AddSliderOption(IsDeviceEquipped(15) + "Vulnerability - Helpless", VulnerabilityValueHelpless, "{1}")
+		endif
 	Endif	
 EndEvent
 
@@ -3500,6 +4494,475 @@ State oidMultipleIgnoreGTNVN
 	EndEvent
 EndState
 
+Event OnOptionMenuOpen(Int Option)
+	if (Option == oidAllowCreaturePostAssault)
+		SetMenuDialogOptions(AllowCreaturePostAssault)
+		SetMenuDialogStartIndex(AllowCreaturePostAssaultSelection)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseArmbinder)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseArmbinder)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaArmbinderStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Armbinder"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Armbinder", DDPaArmbinderStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaArmbinderColour)
+		SetMenuDialogOptions(GetColourMenuList("Armbinder", DDPaArmbinderStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Armbinder", DDPaArmbinderStyle, DDPaArmbinderColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseGag)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseGag)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaGagStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Gag"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Gag", DDPaGagStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaGagColour)
+		SetMenuDialogOptions(GetColourMenuList("Gag", DDPaGagStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Gag", DDPaGagStyle, DDPaGagColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseSuit)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseSuit)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaSuitStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Suit"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Suit", DDPaSuitStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaSuitColour)
+		SetMenuDialogOptions(GetColourMenuList("Suit", DDPaSuitStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Suit", DDPaSuitStyle, DDPaSuitColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseHood)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseHood)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaHoodStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Hood"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Hood", DDPaHoodStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaHoodColour)
+		SetMenuDialogOptions(GetColourMenuList("Hood", DDPaHoodStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Hood", DDPaHoodStyle, DDPaHoodColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseChastityBelt)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseChastityBelt)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaChastityBeltStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Belt"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Belt", DDPaChastityBeltStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaChastityBeltColour)
+		SetMenuDialogOptions(GetColourMenuList("Belt", DDPaChastityBeltStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseChastityBra)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseChastityBra)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaChastityBraStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Bra"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Bra", DDPaChastityBraStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaChastityBraColour)
+		SetMenuDialogOptions(GetColourMenuList("Bra", DDPaChastityBraStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Bra", DDPaChastityBraStyle, DDPaChastityBraColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseHarness)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseHarness)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaHarnessStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Harness"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Harness", DDPaHarnessStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaHarnessColour)
+		SetMenuDialogOptions(GetColourMenuList("Harness", DDPaHarnessStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Harness", DDPaHarnessStyle, DDPaHarnessColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseCorset)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseCorset)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaCorsetStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Corset"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Corset", DDPaCorsetStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaCorsetColour)
+		SetMenuDialogOptions(GetColourMenuList("Corset", DDPaCorsetStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Corset", DDPaCorsetStyle, DDPaCorsetColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseCollar)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseCollar)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaCollarStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Collar"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Collar", DDPaCollarStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaCollarColour)
+		SetMenuDialogOptions(GetColourMenuList("Collar", DDPaCollarStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Collar", DDPaCollarStyle, DDPaCollarColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUsePlugVaginal)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUsePlugVaginal)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPlugVaginalStyle)
+		SetMenuDialogOptions(GetStyleMenuList("PlugVaginal"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("PlugVaginal", DDPaPlugVaginalStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPlugVaginalColour)
+		SetMenuDialogOptions(GetColourMenuList("PlugVaginal", DDPaPlugVaginalStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("PlugVaginal", DDPaPlugVaginalStyle, DDPaPlugVaginalColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUsePlugAnal)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUsePlugAnal)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPlugAnalStyle)
+		SetMenuDialogOptions(GetStyleMenuList("PlugAnal"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("PlugAnal", DDPaPlugAnalStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPlugAnalColour)
+		SetMenuDialogOptions(GetColourMenuList("PlugAnal", DDPaPlugAnalStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUsePiercingVaginal)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUsePiercingVaginal)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPiercingVaginalStyle)
+		SetMenuDialogOptions(GetStyleMenuList("PiercingVaginal"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPiercingVaginalColour)
+		SetMenuDialogOptions(GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUsePiercingNipple)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUsePiercingNipple)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPiercingNippleStyle)
+		SetMenuDialogOptions(GetStyleMenuList("PiercingNipple"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("PiercingNipple", DDPaPiercingNippleStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaPiercingNippleColour)
+		SetMenuDialogOptions(GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseBoots)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseBoots)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaBootsStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Boots"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Boots", DDPaBootsStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaBootsColour)
+		SetMenuDialogOptions(GetColourMenuList("Boots", DDPaBootsStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Boots", DDPaBootsStyle, DDPaBootsColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseGloves)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseGloves)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaGlovesStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Gloves"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Gloves", DDPaGlovesStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaGlovesColour)
+		SetMenuDialogOptions(GetColourMenuList("Gloves", DDPaGlovesStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Gloves", DDPaGlovesStyle, DDPaGlovesColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseArmCuffs)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseArmCuffs)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaArmCuffsStyle)
+		SetMenuDialogOptions(GetStyleMenuList("ArmCuffs"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("ArmCuffs", DDPaArmCuffsStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaArmCuffsColour)
+		SetMenuDialogOptions(GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseLegCuffs)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseLegCuffs)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaLegCuffsStyle)
+		SetMenuDialogOptions(GetStyleMenuList("LegCuffs"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("LegCuffs", DDPaLegCuffsStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaLegCuffsColour)
+		SetMenuDialogOptions(GetColourMenuList("LegCuffs", DDPaLegCuffsStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaSelectLanguage)
+		SetMenuDialogOptions(GetAvailableLanguages())
+		SetMenuDialogStartIndex(GetLanguageIndexFromList(Language))
+		SetMenuDialogDefaultIndex(GetLanguageIndexFromList("English"))
+	Endif
+EndEvent
+
+Event OnOptionMenuAccept(Int Option, Int Index)
+	If (Option == oidAllowCreaturePostAssault)
+		AllowCreaturePostAssaultSelection = Index
+		SetMenuOptionValue(Option, AllowCreaturePostAssault[AllowCreaturePostAssaultSelection])
+	elseif (Option == oidDDPaUseArmbinder)
+		DDPaUseArmbinder = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseArmbinder])
+		ForcePageReset()
+	elseif (Option == oidDDPaArmbinderStyle)
+		DDPaArmbinderStyle = GetStyleNameByIndex("Armbinder", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Armbinder")[Index])
+;		if DDPaArmbinderStyle == "Any"
+;			DDPaArmbinderColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaArmbinderColour)
+		DDPaArmbinderColour = GetColourNameByIndex("Armbinder", DDPaArmbinderStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Armbinder", DDPaArmbinderStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseGag)
+		DDPaUseGag = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseGag])
+		ForcePageReset()
+	elseif (Option == oidDDPaGagStyle)
+		DDPaGagStyle = GetStyleNameByIndex("Gag", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Gag")[Index])
+;		if DDPaGagStyle == "Any"
+;			DDPaGagColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaGagColour)
+		DDPaGagColour = GetColourNameByIndex("Gag", DDPaGagStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Gag", DDPaGagStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseSuit)
+		DDPaUseSuit = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseSuit])
+		ForcePageReset()
+	elseif (Option == oidDDPaSuitStyle)
+		DDPaSuitStyle = GetStyleNameByIndex("Suit", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Suit")[Index])
+;		if DDPaSuitStyle == "Any"
+;			DDPaSuitColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaSuitColour)
+		DDPaSuitColour = GetColourNameByIndex("Suit", DDPaSuitStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Suit", DDPaSuitStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseHood)
+		DDPaUseHood = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseHood])
+		ForcePageReset()
+	elseif (Option == oidDDPaHoodStyle)
+		DDPaHoodStyle = GetStyleNameByIndex("Hood", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Hood")[Index])
+;		if DDPaHoodStyle == "Any"
+;			DDPaHoodColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaHoodColour)
+		DDPaHoodColour = GetColourNameByIndex("Hood", DDPaHoodStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Hood", DDPaHoodStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseChastityBelt)
+		DDPaUseChastityBelt = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseChastityBelt])
+		ForcePageReset()
+	elseif (Option == oidDDPaChastityBeltStyle)
+		DDPaChastityBeltStyle = GetStyleNameByIndex("Belt", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Belt")[Index])
+;		if DDPaChastityBeltStyle == "Any"
+;			DDPaChastityBeltColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaChastityBeltColour)
+		DDPaChastityBeltColour = GetColourNameByIndex("Belt", DDPaChastityBeltStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Belt", DDPaChastityBeltStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseChastityBra)
+		DDPaUseChastityBra = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseChastityBra])
+		ForcePageReset()
+	elseif (Option == oidDDPaChastityBraStyle)
+		DDPaChastityBraStyle = GetStyleNameByIndex("Bra", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Bra")[Index])
+;		if DDPaChastityBraStyle == "Any"
+;			DDPaChastityBraColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaChastityBraColour)
+		DDPaChastityBraColour = GetColourNameByIndex("Bra", DDPaChastityBraStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Bra", DDPaChastityBraStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseHarness)
+		DDPaUseHarness = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseHarness])
+		ForcePageReset()
+	elseif (Option == oidDDPaHarnessStyle)
+		DDPaHarnessStyle = GetStyleNameByIndex("Harness", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Harness")[Index])
+;		if DDPaHarnessStyle == "Any"
+;			DDPaHarnessColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaHarnessColour)
+		DDPaHarnessColour = GetColourNameByIndex("Harness", DDPaHarnessStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Harness", DDPaHarnessStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseCorset)
+		DDPaUseCorset = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseCorset])
+		ForcePageReset()
+	elseif (Option == oidDDPaCorsetStyle)
+		DDPaCorsetStyle = GetStyleNameByIndex("Corset", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Corset")[Index])
+;		if DDPaCorsetStyle == "Any"
+;			DDPaCorsetColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaCorsetColour)
+		DDPaCorsetColour = GetColourNameByIndex("Corset", DDPaCorsetStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Corset", DDPaCorsetStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseCollar)
+		DDPaUseCollar = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseCollar])
+		ForcePageReset()
+	elseif (Option == oidDDPaCollarStyle)
+		DDPaCollarStyle = GetStyleNameByIndex("Collar", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Collar")[Index])
+;		if DDPaCollarStyle == "Any"
+;			DDPaCollarColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaCollarColour)
+		DDPaCollarColour = GetColourNameByIndex("Collar", DDPaCollarStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Collar", DDPaCollarStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUsePlugVaginal)
+		DDPaUsePlugVaginal = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUsePlugVaginal])
+		ForcePageReset()
+	elseif (Option == oidDDPaPlugVaginalStyle)
+		DDPaPlugVaginalStyle = GetStyleNameByIndex("PlugVaginal", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("PlugVaginal")[Index])
+;		if DDPaPlugVaginalStyle == "Any"
+;			DDPaPlugVaginalColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaPlugVaginalColour)
+		DDPaPlugVaginalColour = GetColourNameByIndex("PlugVaginal", DDPaPlugVaginalStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("PlugVaginal", DDPaPlugVaginalStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUsePlugAnal)
+		DDPaUsePlugAnal = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUsePlugAnal])
+		ForcePageReset()
+	elseif (Option == oidDDPaPlugAnalStyle)
+		DDPaPlugAnalStyle = GetStyleNameByIndex("PlugAnal", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("PlugAnal")[Index])
+;		if DDPaPlugAnalStyle == "Any"
+;			DDPaPlugAnalColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaPlugAnalColour)
+		DDPaPlugAnalColour = GetColourNameByIndex("PlugAnal", DDPaPlugAnalStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("PlugAnal", DDPaPlugAnalStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUsePiercingVaginal)
+		DDPaUsePiercingVaginal = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUsePiercingVaginal])
+		ForcePageReset()
+	elseif (Option == oidDDPaPiercingVaginalStyle)
+		DDPaPiercingVaginalStyle = GetStyleNameByIndex("PiercingVaginal", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("PiercingVaginal")[Index])
+;		if DDPaPiercingVaginalStyle == "Any"
+;			DDPaPiercingVaginalColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaPiercingVaginalColour)
+		DDPaPiercingVaginalColour = GetColourNameByIndex("PiercingVaginal", DDPaPiercingVaginalStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUsePiercingNipple)
+		DDPaUsePiercingNipple = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUsePiercingNipple])
+		ForcePageReset()
+	elseif (Option == oidDDPaPiercingNippleStyle)
+		DDPaPiercingNippleStyle = GetStyleNameByIndex("PiercingNipple", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("PiercingNipple")[Index])
+;		if DDPaPiercingNippleStyle == "Any"
+;			DDPaPiercingNippleColour = "Any"
+;		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaPiercingNippleColour)
+		DDPaPiercingNippleColour = GetColourNameByIndex("PiercingNipple", DDPaPiercingNippleStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseBoots)
+		DDPaUseBoots = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseBoots])
+		ForcePageReset()
+	elseif (Option == oidDDPaBootsStyle)
+		DDPaBootsStyle = GetStyleNameByIndex("Boots", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Boots")[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaBootsColour)
+		DDPaBootsColour = GetColourNameByIndex("Boots", DDPaBootsStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Boots", DDPaBootsStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseGloves)
+		DDPaUseGloves = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseGloves])
+		ForcePageReset()
+	elseif (Option == oidDDPaGlovesStyle)
+		DDPaGlovesStyle = GetStyleNameByIndex("Gloves", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Gloves")[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaGlovesColour)
+		DDPaGlovesColour = GetColourNameByIndex("Gloves", DDPaGlovesStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Gloves", DDPaGlovesStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseArmCuffs)
+		DDPaUseArmCuffs = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseArmCuffs])
+		ForcePageReset()
+	elseif (Option == oidDDPaArmCuffsStyle)
+		DDPaArmCuffsStyle = GetStyleNameByIndex("ArmCuffs", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("ArmCuffs")[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaArmCuffsColour)
+		DDPaArmCuffsColour = GetColourNameByIndex("ArmCuffs", DDPaArmCuffsStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseLegCuffs)
+		DDPaUseLegCuffs = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseLegCuffs])
+		ForcePageReset()
+	elseif (Option == oidDDPaLegCuffsStyle)
+		DDPaLegCuffsStyle = GetStyleNameByIndex("LegCuffs", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("LegCuffs")[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaLegCuffsColour)
+		DDPaLegCuffsColour = GetColourNameByIndex("LegCuffs", DDPaLegCuffsStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("LegCuffs", DDPaLegCuffsStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaSelectLanguage)
+		Language = GetLanguagefromIndex(Index)
+		SetMenuOptionValue(Option, Language)
+		SetLanguageProperties()
+	Endif
+EndEvent
 
 ;=================================\MENU/=======================================
 ;/Event OnOptionMenuOpen(Int Option)
@@ -3512,6 +4975,11 @@ EndState
 		SetMenuDialogOptions(QTESecondaryS)
 		SetMenuDialogStartIndex(QTESecondarySIndex)
 		SetMenuDialogDefaultIndex(1)
+	Endif
+	if (Option == oidAllowCreaturePostAssault)
+		SetMenuDialogOptions(AllowCreaturePostAssault)
+		SetMenuDialogStartIndex(AllowCreaturePostAssaultSelection)
+		SetMenuDialogDefaultIndex(0)
 	Endif
 EndEvent
 Event OnOptionMenuAccept(Int Option, Int Index)
@@ -3552,6 +5020,10 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 		If (QTESecondarySO != QTEPrimarySO)
 			SetMenuOptionValue(oidQTESecondaryS, QTESecondaryS[QTESecondarySIndex])
 		Endif
+	Endif
+	If (Option == oidAllowCreaturePostAssault)
+		AllowCreaturePostAssaultSelection = Index
+		SetMenuOptionValue(opt, AllowCreaturePostAssault[AllowCreaturePostAssaultSelection])
 	Endif
 EndEvent/;
 Event OnOptionColorOpen(int option)
@@ -3611,6 +5083,107 @@ Event OnOptionSliderOpen(Int Option)
 			SetSliderDialogInterval(1.0)
 		Elseif Option == oidKnockOutSPvic
 			SetSliderDialogStartValue(KnockOutSPvic)
+			SetSliderDialogDefaultValue(0.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidVulnerabilityPvic
+			SetSliderDialogStartValue(VulnerabilityPvic)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidChanceOnHitPvicVulnerability
+			SetSliderDialogStartValue(ChanceOnHitPvicVulnerability)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidSStruggleVulnerabilityPvic
+			SetSliderDialogStartValue(SStruggleVulnerabilityPvic)
+			SetSliderDialogDefaultValue(0.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidKnockOutVulnerabilityPvic
+			SetSliderDialogStartValue(KnockOutVulnerabilityPvic)
+			SetSliderDialogDefaultValue(0.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		
+		Elseif Option == oidDynamicDefeatOnHitBase
+			SetSliderDialogStartValue(DynamicDefeatOnHitBase)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatOnHitOneHand
+			SetSliderDialogStartValue(DynamicDefeatOnHitOneHand)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatOnHitTwoHand
+			SetSliderDialogStartValue(DynamicDefeatOnHitTwoHand)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatOnHitBow
+			SetSliderDialogStartValue(DynamicDefeatOnHitBow)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatOnHitSpell
+			SetSliderDialogStartValue(DynamicDefeatOnHitSpell)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatLowHealthThreshold
+			SetSliderDialogStartValue(DynamicDefeatLowHealthThreshold)
+			SetSliderDialogDefaultValue(20.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatLowHealthMult
+			SetSliderDialogStartValue(DynamicDefeatLowHealthMult)
+			SetSliderDialogDefaultValue(1.0)
+			SetSliderDialogRange(1.0, 5.0)
+			SetSliderDialogInterval(0.1)
+		Elseif Option == oidDynamicDefeatLowStaminaThreshold
+			SetSliderDialogStartValue(DynamicDefeatLowStaminaThreshold)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatLowStaminaMult
+			SetSliderDialogStartValue(DynamicDefeatLowStaminaMult)
+			SetSliderDialogDefaultValue(1.0)
+			SetSliderDialogRange(1.0, 5.0)
+			SetSliderDialogInterval(0.1)
+		Elseif Option == oidDynamicDefeatPowerAttackMult
+			SetSliderDialogStartValue(DynamicDefeatPowerAttackMult)
+			SetSliderDialogDefaultValue(1.0)
+			SetSliderDialogRange(1.0, 5.0)
+			SetSliderDialogInterval(0.1)
+		Elseif Option == oidDynamicDefeatBackHitMult
+			SetSliderDialogStartValue(DynamicDefeatBackHitMult)
+			SetSliderDialogDefaultValue(1.0)
+			SetSliderDialogRange(1.0, 5.0)
+			SetSliderDialogInterval(0.1)
+		Elseif Option == oidDynamicDefeatVulnerabilityMult
+			SetSliderDialogStartValue(DynamicDefeatVulnerabilityMult)
+			SetSliderDialogDefaultValue(1.0)
+			SetSliderDialogRange(1.0, 5.0)
+			SetSliderDialogInterval(0.1)
+		Elseif Option == oidDynamicDefeatBlockReduction
+			SetSliderDialogStartValue(DynamicDefeatBlockReduction)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDynamicDefeatDepleteOverTime
+			SetSliderDialogStartValue(DynamicDefeatDepleteOverTime)
+			SetSliderDialogDefaultValue(2.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(0.1)
+		Elseif Option == oidKnockOutDynamicPvic
+			SetSliderDialogStartValue(KnockOutDynamicPvic)
+			SetSliderDialogDefaultValue(0.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidSStruggleDynamicPvic
+			SetSliderDialogStartValue(SStruggleDynamicPvic)
 			SetSliderDialogDefaultValue(0.0)
 			SetSliderDialogRange(0.0, 100.0)
 			SetSliderDialogInterval(1.0)
@@ -3709,6 +5282,31 @@ Event OnOptionSliderOpen(Int Option)
 			SetSliderDialogDefaultValue(50.0)
 			SetSliderDialogRange(0.0, 100.0)
 			SetSliderDialogInterval(5.0)
+		Elseif Option == oidCursedLootMinDevices
+			SetSliderDialogStartValue(CursedLootMinDevices)
+			SetSliderDialogDefaultValue(3.0)
+			SetSliderDialogRange(0.0, 14.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidCursedLootMaxDevices
+			SetSliderDialogStartValue(CursedLootMaxDevices)
+			SetSliderDialogDefaultValue(6.0)
+			SetSliderDialogRange(0.0, 14.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDDMinDevices
+			SetSliderDialogStartValue(DDMinDevices)
+			SetSliderDialogDefaultValue(3.0)
+			SetSliderDialogRange(0.0, DDMaxDevices as Float)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDDMaxDevices
+			SetSliderDialogStartValue(DDMaxDevices)
+			SetSliderDialogDefaultValue(6.0)
+			SetSliderDialogRange(DDMinDevices as Float, 17.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDDPaArmAndLegShacklesChance
+			SetSliderDialogStartValue(DDPaArmAndLegShacklesChance)
+			SetSliderDialogDefaultValue(25.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
 		Else
 			Int i = oidPAfrequency.Find(Option)
 			If (i != -1)
@@ -3972,6 +5570,138 @@ Event OnOptionSliderOpen(Int Option)
 			SetSliderDialogRange(0.0, 1000.0)
 			SetSliderDialogInterval(1.0)
 		Endif
+	Elseif (CurrentPage == "Misc Options")
+		if Option == oidUnequipBeltChance
+			SetSliderDialogStartValue(UnequipBeltChance)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option == oidUnequipBeltNotificationChance
+			SetSliderDialogStartValue(UnequipBeltNotificationChance)
+			SetSliderDialogDefaultValue(100.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option == oidUnequipGagChance
+			SetSliderDialogStartValue(UnequipGagChance)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option == oidUnequipGagNotificationChance
+			SetSliderDialogStartValue(UnequipGagNotificationChance)
+			SetSliderDialogDefaultValue(100.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidUnequipHeavyBondageChance
+			SetSliderDialogStartValue(UnequipHeavyBondageChance)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option == oidUnequipHeavyBondageNotificationChance
+			SetSliderDialogStartValue(UnequipHeavyBondageNotificationChance)
+			SetSliderDialogDefaultValue(100.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidUnequipHarnessChance
+			SetSliderDialogStartValue(UnequipHarnessChance)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option == oidUnequipHarnessNotificationChance
+			SetSliderDialogStartValue(UnequipHarnessNotificationChance)
+			SetSliderDialogDefaultValue(100.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidUnequipSuitChance
+			SetSliderDialogStartValue(UnequipSuitChance)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option == oidUnequipSuitNotificationChance
+			SetSliderDialogStartValue(UnequipSuitNotificationChance)
+			SetSliderDialogDefaultValue(100.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueGag
+			SetSliderDialogStartValue(VulnerabilityValueGag)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueVagPlug
+			SetSliderDialogStartValue(VulnerabilityValueVagPlug)
+			SetSliderDialogDefaultValue(5.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueAnalPlug
+			SetSliderDialogStartValue(VulnerabilityValueAnalPlug)
+			SetSliderDialogDefaultValue(5.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueBelt
+			SetSliderDialogStartValue(VulnerabilityValueBelt)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueBra
+			SetSliderDialogStartValue(VulnerabilityValueBra)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueCollar
+			SetSliderDialogStartValue(VulnerabilityValueCollar)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueArmCuffs
+			SetSliderDialogStartValue(VulnerabilityValueArmCuffs)
+			SetSliderDialogDefaultValue(5.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueLegCuffs
+			SetSliderDialogStartValue(VulnerabilityValueLegCuffs)
+			SetSliderDialogDefaultValue(5.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueHeavyBond
+			SetSliderDialogStartValue(VulnerabilityValueHeavyBond)
+			SetSliderDialogDefaultValue(15.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueDisableKick
+			SetSliderDialogStartValue(VulnerabilityValueDisableKick)
+			SetSliderDialogDefaultValue(15.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueBlindfold
+			SetSliderDialogStartValue(VulnerabilityValueBlindfold)
+			SetSliderDialogDefaultValue(15.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueBoots
+			SetSliderDialogStartValue(VulnerabilityValueBoots)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueCorset
+			SetSliderDialogStartValue(VulnerabilityValueCorset)
+			SetSliderDialogDefaultValue(5.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueHarness
+			SetSliderDialogStartValue(VulnerabilityValueHarness)
+			SetSliderDialogDefaultValue(5.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueFullChastity
+			SetSliderDialogStartValue(VulnerabilityValueFullChastity)
+			SetSliderDialogDefaultValue(10.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		elseif Option ==oidVulnerabilityValueHelpless
+			SetSliderDialogStartValue(VulnerabilityValueHelpless)
+			SetSliderDialogDefaultValue(30.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		endif
 	Endif
 EndEvent
 Event OnOptionSliderAccept(Int Option, Float Value)
@@ -3997,6 +5727,67 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 		Elseif Option == oidKnockOutSPvic
 			KnockOutSPvic = Value
 			SetSliderOptionValue(oidKnockOutSPvic, KnockOutSPvic, "{0} %")
+		Elseif Option == oidVulnerabilityPvic
+			VulnerabilityPvic = Value
+			SetSliderOptionValue(oidVulnerabilityPvic, VulnerabilityPvic, "{0}")
+		Elseif Option == oidChanceOnHitPvicVulnerability
+			ChanceOnHitPvicVulnerability = Value
+			SetSliderOptionValue(oidChanceOnHitPvicVulnerability, ChanceOnHitPvicVulnerability, "{0} %")
+		Elseif Option == oidSStruggleVulnerabilityPvic
+			SStruggleVulnerabilityPvic = Value
+			SetSliderOptionValue(oidSStruggleVulnerabilityPvic, SStruggleVulnerabilityPvic, "{0} %")
+		Elseif Option == oidKnockOutVulnerabilityPvic
+			KnockOutVulnerabilityPvic = Value
+			SetSliderOptionValue(oidKnockOutVulnerabilityPvic, KnockOutVulnerabilityPvic, "{0} %")
+		
+		Elseif Option == oidDynamicDefeatOnHitBase
+			DynamicDefeatOnHitBase = Value
+			SetSliderOptionValue(oidDynamicDefeatOnHitBase, DynamicDefeatOnHitBase, "{1}")
+		Elseif Option == oidDynamicDefeatOnHitOneHand
+			DynamicDefeatOnHitOneHand = Value
+			SetSliderOptionValue(oidDynamicDefeatOnHitOneHand, DynamicDefeatOnHitOneHand, "{1}")
+		Elseif Option == oidDynamicDefeatOnHitTwoHand
+			DynamicDefeatOnHitTwoHand = Value
+			SetSliderOptionValue(oidDynamicDefeatOnHitTwoHand, DynamicDefeatOnHitTwoHand, "{1}")
+		Elseif Option == oidDynamicDefeatOnHitBow
+			DynamicDefeatOnHitBow = Value
+			SetSliderOptionValue(oidDynamicDefeatOnHitBow, DynamicDefeatOnHitBow, "{1}")
+		Elseif Option == oidDynamicDefeatOnHitSpell
+			DynamicDefeatOnHitSpell = Value
+			SetSliderOptionValue(oidDynamicDefeatOnHitSpell, DynamicDefeatOnHitSpell, "{1}")
+		Elseif Option == oidDynamicDefeatLowHealthThreshold
+			DynamicDefeatLowHealthThreshold = Value
+			SetSliderOptionValue(oidDynamicDefeatLowHealthThreshold, DynamicDefeatLowHealthThreshold, "{0} %")
+		Elseif Option == oidDynamicDefeatLowHealthMult
+			DynamicDefeatLowHealthMult = Value
+			SetSliderOptionValue(oidDynamicDefeatLowHealthMult, DynamicDefeatLowHealthMult, "{1}")
+		Elseif Option == oidDynamicDefeatLowStaminaThreshold
+			DynamicDefeatLowStaminaThreshold = Value
+			SetSliderOptionValue(oidDynamicDefeatLowStaminaThreshold, DynamicDefeatLowStaminaThreshold, "{0} %")
+		Elseif Option == oidDynamicDefeatLowStaminaMult
+			DynamicDefeatLowStaminaMult = Value
+			SetSliderOptionValue(oidDynamicDefeatLowStaminaMult, DynamicDefeatLowStaminaMult, "{1}")
+		Elseif Option == oidDynamicDefeatPowerAttackMult
+			DynamicDefeatPowerAttackMult = Value
+			SetSliderOptionValue(oidDynamicDefeatPowerAttackMult, DynamicDefeatPowerAttackMult, "{1}")
+		Elseif Option == oidDynamicDefeatBackHitMult
+			DynamicDefeatBackHitMult = Value
+			SetSliderOptionValue(oidDynamicDefeatBackHitMult, DynamicDefeatBackHitMult, "{1}")
+		Elseif Option == oidDynamicDefeatVulnerabilityMult
+			DynamicDefeatVulnerabilityMult = Value
+			SetSliderOptionValue(oidDynamicDefeatVulnerabilityMult, DynamicDefeatVulnerabilityMult, "{1}")
+		Elseif Option == oidDynamicDefeatBlockReduction
+			DynamicDefeatBlockReduction = Value
+			SetSliderOptionValue(oidDynamicDefeatBlockReduction, DynamicDefeatBlockReduction, "{0} %")
+		Elseif Option == oidDynamicDefeatDepleteOverTime
+			DynamicDefeatDepleteOverTime = Value
+			SetSliderOptionValue(oidDynamicDefeatDepleteOverTime, DynamicDefeatDepleteOverTime, "{1}")
+		Elseif Option == oidKnockOutDynamicPvic
+			KnockOutDynamicPvic = Value
+			SetSliderOptionValue(oidKnockOutDynamicPvic, KnockOutDynamicPvic, "{0}")
+		Elseif Option == oidSStruggleDynamicPvic
+			SStruggleDynamicPvic = Value
+			SetSliderOptionValue(oidSStruggleDynamicPvic, SStruggleDynamicPvic, "{0}")
 		Elseif Option == oidKDWayPowerAtkCOH											
 			KDWayPowerAtkCOH = Value
 			SetSliderOptionValue(oidKDWayPowerAtkCOH, KDWayPowerAtkCOH, "{0} %")
@@ -4062,11 +5853,29 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 		Elseif Option == oidDAsChance
 			DAsChance = Value
 			SetSliderOptionValue(oidDAsChance, DAsChance, "{0} %")
+		Elseif Option == oidCursedLootMinDevices
+			CursedLootMinDevices = Value as int
+			SetSliderOptionValue(oidCursedLootMinDevices, CursedLootMinDevices)
+		Elseif Option == oidCursedLootMaxDevices
+			CursedLootMaxDevices = Value as int
+			SetSliderOptionValue(oidCursedLootMaxDevices, CursedLootMaxDevices)
+		Elseif Option == oidDDMinDevices
+			DDMinDevices = Value as int
+			SetSliderOptionValue(oidDDMinDevices, DDMinDevices)
+		Elseif Option == oidDDMaxDevices
+			DDMaxDevices = Value as int
+			SetSliderOptionValue(oidDDMaxDevices, DDMaxDevices)
+		Elseif Option == oidDDPaArmAndLegShacklesChance
+			DDPaArmAndLegShacklesChance = Value as int
+			SetSliderOptionValue(oidDDPaArmAndLegShacklesChance, DDPaArmAndLegShacklesChance, "{0} %")
 		Else
 			Int i = oidPAfrequency.Find(Option)
 			If (i != -1)
 				PAfrequency[i] = Value
 				SetSliderOptionValue(oidPAfrequency[i], PAfrequency[i], "{0} %")
+				if i == 7
+					ForcePageReset()
+				endif
 			Endif
 		Endif
 	Elseif (CurrentPage == "$Player/Follower aggressor")
@@ -4229,6 +6038,118 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 			StruggleBar.Y = Value
 			SetSliderOptionValue(oidAxisY, AxisY, "{0}")
 		Endif
+	elseif (CurrentPage == "Misc options")
+		If Option == oidUnequipBeltChance											
+			UnequipBeltChance = Value as int
+			SetSliderOptionValue(oidUnequipBeltChance, UnequipBeltChance, "{0}")
+		Elseif Option == oidUnequipBeltNotificationChance											
+			UnequipBeltNotificationChance = Value as int
+			SetSliderOptionValue(oidUnequipBeltNotificationChance, UnequipBeltNotificationChance, "{0}")
+		Elseif Option == oidUnequipGagChance
+			UnequipGagChance = Value as int
+			SetSliderOptionValue(oidUnequipGagChance, UnequipGagChance, "{0}")
+		Elseif Option == oidUnequipGagNotificationChance											
+			UnequipGagNotificationChance = Value as int
+			SetSliderOptionValue(oidUnequipGagNotificationChance, UnequipGagNotificationChance, "{0}")
+		Elseif Option == oidUnequipHeavyBondageChance
+			UnequipHeavyBondageChance = Value as int
+			SetSliderOptionValue(oidUnequipHeavyBondageChance, UnequipHeavyBondageChance, "{0}")
+		Elseif Option == oidUnequipHeavyBondageNotificationChance											
+			UnequipHeavyBondageNotificationChance = Value as int
+			SetSliderOptionValue(oidUnequipHeavyBondageNotificationChance, UnequipHeavyBondageNotificationChance, "{0}")
+		Elseif Option == oidUnequipHarnessChance
+			UnequipHarnessChance = Value as int
+			SetSliderOptionValue(oidUnequipHarnessChance, UnequipHarnessChance, "{0}")
+		Elseif Option == oidUnequipHarnessNotificationChance											
+			UnequipHarnessNotificationChance = Value as int
+			SetSliderOptionValue(oidUnequipHarnessNotificationChance, UnequipHarnessNotificationChance, "{0}")
+		Elseif Option == oidUnequipSuitChance
+			UnequipSuitChance = Value as int
+			SetSliderOptionValue(oidUnequipSuitChance, UnequipSuitChance, "{0}")
+		Elseif Option == oidUnequipSuitNotificationChance											
+			UnequipSuitNotificationChance = Value as int
+			SetSliderOptionValue(oidUnequipSuitChance, UnequipSuitNotificationChance, "{0}")
+		Elseif Option == oidVulnerabilityValueGag
+			VulnerabilityValueGag = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueGag, VulnerabilityValueGag, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueVagPlug
+			VulnerabilityValueVagPlug = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueVagPlug, VulnerabilityValueVagPlug, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueAnalPlug
+			VulnerabilityValueAnalPlug = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueAnalPlug, VulnerabilityValueAnalPlug, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueBelt
+			VulnerabilityValueBelt = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueBelt, VulnerabilityValueBelt, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueBra
+			VulnerabilityValueBra = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueBra, VulnerabilityValueBra, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueCollar
+			VulnerabilityValueCollar = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueCollar, VulnerabilityValueCollar, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueArmCuffs
+			VulnerabilityValueArmCuffs = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueArmCuffs, VulnerabilityValueArmCuffs, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueLegCuffs
+			VulnerabilityValueLegCuffs = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueLegCuffs, VulnerabilityValueLegCuffs, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueHeavyBond
+			VulnerabilityValueHeavyBond = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueHeavyBond, VulnerabilityValueHeavyBond, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueDisableKick
+			VulnerabilityValueDisableKick = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueDisableKick, VulnerabilityValueDisableKick, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueBlindfold
+			VulnerabilityValueBlindfold = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueBlindfold, VulnerabilityValueBlindfold, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueBoots
+			VulnerabilityValueBoots = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueBoots, VulnerabilityValueBoots, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueCorset
+			VulnerabilityValueCorset = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueCorset, VulnerabilityValueCorset, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueHarness
+			VulnerabilityValueHarness = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueHarness, VulnerabilityValueHarness, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueFullChastity
+			VulnerabilityValueFullChastity = Value
+			PlayerScr.DefVulnScr.RegisterForSingleUpdate(0.1)
+			SetSliderOptionValue(oidVulnerabilityValueFullChastity, VulnerabilityValueFullChastity, "{1}")
+			ForcePageReset()
+		Elseif Option == oidVulnerabilityValueHelpless
+			VulnerabilityValueHelpless = Value
+			Float UnusedFloat = PlayerScr.DefVulnScr.CalculateVulnerability()
+			SetSliderOptionValue(oidVulnerabilityValueHelpless, VulnerabilityValueHelpless, "{1}")
+			ForcePageReset()
+		endif
 	Endif
 EndEvent
 
@@ -4261,6 +6182,37 @@ Event OnOptionSelect(Int Option)
 		Elseif Option == oidKDStaminaBlock
 			KDStaminaBlock = !KDStaminaBlock
 			SetToggleOptionValue(Option, KDStaminaBlock)
+		Elseif Option == oidKDWayVulnerability	
+			KDWayVulnerability	 = !KDWayVulnerability	
+			If KDWayVulnerability	
+			    KDwayVulnerabilityFlag = OPTION_FLAG_NONE
+			Else
+			    KDwayVulnerabilityFlag = OPTION_FLAG_DISABLED
+			Endif
+			SetTextOptionValue(Option, KDWayVulnerability)
+			ForcePageReset()
+		Elseif Option == oidKDWayVulnerabilityUseDFW	
+			KDWayVulnerabilityUseDFW = !KDWayVulnerabilityUseDFW
+			SetToggleOptionValue(Option, KDWayVulnerabilityUseDFW)
+		Elseif Option == oidKDWayVulnerabilityOB
+			KDWayVulnerabilityOB = !KDWayVulnerabilityOB
+			SetToggleOptionValue(Option, KDWayVulnerabilityOB)
+		Elseif Option == oidKDVulnerabilityBlock
+			KDVulnerabilityBlock = !KDVulnerabilityBlock
+			SetToggleOptionValue(Option, KDVulnerabilityBlock)	
+		
+		Elseif Option == oidKDWayDynamic	
+			KDWayDynamic = !KDWayDynamic	
+			If KDWayDynamic	
+			    KDwayDynamicDefeatFlag = OPTION_FLAG_NONE
+			Else
+			    KDwayDynamicDefeatFlag = OPTION_FLAG_DISABLED
+			Endif
+			SetTextOptionValue(Option, KDWayDynamic)
+			ForcePageReset()
+		Elseif Option == oidDynamicDefeatUseDFWVulnerability	
+			DynamicDefeatUseDFWVulnerability = !DynamicDefeatUseDFWVulnerability	
+			SetToggleOptionValue(Option, DynamicDefeatUseDFWVulnerability)
 		Elseif Option == oidKDPowerABlock
 			KDPowerABlock = !KDPowerABlock
 			SetToggleOptionValue(Option, KDPowerABlock)
@@ -4430,6 +6382,15 @@ Event OnOptionSelect(Int Option)
 		Elseif Option == oidRobTimeLimit
 			RobTimeLimit = !RobTimeLimit
 			SetToggleOptionValue(Option, RobTimeLimit)
+		Elseif Option == oidDDPaPlugsWithBelt
+			DDPaPlugsWithBelt = !DDPaPlugsWithBelt
+			SetToggleOptionValue(Option, DDPaPlugsWithBelt)
+		Elseif Option == oidDDPaConsistantStyle
+			DDPaConsistantStyle = !DDPaConsistantStyle
+			SetToggleOptionValue(Option, DDPaConsistantStyle)
+		Elseif Option == oidDDPaTestingEquipDevices
+			Debug.Messagebox("Equipping. Please close MCM Menu.")
+			TestEquipDevices()
 		Else
 			Int i = oidPAbEnabled.Find(Option)
 			If (i != -1)
@@ -4685,7 +6646,7 @@ Event OnOptionSelect(Int Option)
 			ShowMessage("$Desc_CleanUp", False)
 			RessConfig.Cleanup()		
 		Elseif Option == oidModList
-			ShowMessage(AModList[0]+"\n"+AModList[1]+"\n"+AModList[2]+"\n"+AModList[3]+"\n"+AModList[4]+"\n"+AModList[5]+"\n"+AModList[6]+"\n"+AModList[7], False)
+			ShowMessage(AModList[0]+"\n"+AModList[1]+"\n"+AModList[2]+"\n"+AModList[3]+"\n"+AModList[4]+"\n"+AModList[5]+"\n"+AModList[6]+"\n"+AModList[7]+"\n"+AModList[8]+"\n"+AModList[9]+"\n"+AModList[10]+"\n"+AModList[11], False)
 		Elseif Option == oidModCheck
 			RessConfig.CheckForMods()
 			ShowMessage("$Desc_ModCheckMess", False)
@@ -4706,6 +6667,44 @@ Event OnOptionSelect(Int Option)
 				AnimationSettingsPage = Page
 				ForcePageReset()
 			Endif
+		Endif
+	Elseif (CurrentPage == "Misc Options")
+		If Option == oidAllowUnequipBelt
+			AllowUnequipBelt = !AllowUnequipBelt
+			SetToggleOptionValue(oidAllowUnequipBelt, AllowUnequipBelt)
+		Elseif Option == oidUnequipBeltWithPlayerKeysOnly
+			UnequipBeltWithPlayerKeysOnly = !UnequipBeltWithPlayerKeysOnly
+			SetToggleOptionValue(oidUnequipBeltWithPlayerKeysOnly, UnequipBeltWithPlayerKeysOnly)
+		Elseif Option == oidAllowUnequipGag
+			AllowUnequipGag = !AllowUnequipGag
+			SetToggleOptionValue(oidAllowUnequipGag, AllowUnequipGag)
+		Elseif Option == oidUnequipGagWithPlayerKeysOnly
+			UnequipGagWithPlayerKeysOnly = !UnequipGagWithPlayerKeysOnly
+			SetToggleOptionValue(oidUnequipGagWithPlayerKeysOnly, UnequipGagWithPlayerKeysOnly)
+		Elseif Option == oidAllowUnequipHeavyBondage
+			AllowUnequipHeavyBondage = !AllowUnequipHeavyBondage
+			SetToggleOptionValue(oidAllowUnequipHeavyBondage, AllowUnequipHeavyBondage)
+		Elseif Option == oidUnequipHeavyBondageWithPlayerKeysOnly
+			UnequipHeavyBondageWithPlayerKeysOnly = !UnequipHeavyBondageWithPlayerKeysOnly
+			SetToggleOptionValue(oidUnequipHeavyBondageWithPlayerKeysOnly, UnequipHeavyBondageWithPlayerKeysOnly)
+		Elseif Option == oidAllowUnequipHarness
+			AllowUnequipHarness = !AllowUnequipHarness
+			SetToggleOptionValue(oidAllowUnequipHarness, AllowUnequipHarness)
+		Elseif Option == oidUnequipHarnessWithPlayerKeysOnly
+			UnequipHarnessWithPlayerKeysOnly = !UnequipHarnessWithPlayerKeysOnly
+			SetToggleOptionValue(oidUnequipHarnessWithPlayerKeysOnly, UnequipHarnessWithPlayerKeysOnly)
+		Elseif Option == oidAllowUnequipSuit
+			AllowUnequipSuit = !AllowUnequipSuit
+			SetToggleOptionValue(oidAllowUnequipSuit, AllowUnequipSuit)
+		Elseif Option == oidUnequipSuitWithPlayerKeysOnly
+			UnequipSuitWithPlayerKeysOnly = !UnequipSuitWithPlayerKeysOnly
+			SetToggleOptionValue(oidUnequipSuitWithPlayerKeysOnly, UnequipSuitWithPlayerKeysOnly)
+		Elseif Option == oidUseDDFilter
+			UseDDFilter = !UseDDFilter
+			SetToggleOptionValue(oidUseDDFilter, UseDDFilter)
+		Elseif Option == oidEnableLog
+			EnableLog = !EnableLog
+			SetToggleOptionValue(oidEnableLog, EnableLog)
 		Endif
 	Endif
 	If Option == oidCheckSlots
@@ -4778,7 +6777,60 @@ Event OnOptionHighlight(Int Option)
 		Elseif Option == oidSStruggleExhaustionPvic
 			SetInfoText("$Desc_SStrugglePvic")
 		Elseif Option == oidKnockOutSPvic
-			SetInfoText("$Desc_KnockOutPvic")			
+			SetInfoText("$Desc_KnockOutPvic")
+		Elseif Option == oidKDWayVulnerability
+			SetInfoText("The player can be knocked down on hit using a vulnerability threshold. Check 'Misc Options' page for settings.")
+		Elseif Option == oidKDWayVulnerabilityUseDFW
+			SetInfoText("Use Devious Framework to evaluate Vulnerability. Requires DeviousFramework.esm to be installed.")
+		Elseif Option == oidVulnerabilityPvic
+			SetInfoText("If your Vulnerability exceeds this value you can be knocked down on hit.")
+		Elseif Option == oidChanceOnHitPvicVulnerability
+			SetInfoText("Vulnerability - Chance on hit")
+		Elseif Option == oidSStruggleVulnerabilityPvic
+			SetInfoText("Chance for the player to resist before the knock down.\n The struggle will only happen if the aggressor is close, isn't a creature and is sexually attracted by the player and if 'The player can resist' is enabled.")
+		Elseif Option == oidKnockOutVulnerabilityPvic
+			SetInfoText("Vulnerability - Knock out chance")
+		Elseif Option == oidKDWayVulnerabilityOB
+			SetInfoText("If enabled, only attacks coming from behind will count.")
+		Elseif Option == oidKDVulnerabilityBlock
+			SetInfoText("If enabled, only unblocked attacks will count.\nNote: Magic can't be blocked except with a shield.")
+			
+		Elseif Option == oidKDWayDynamic
+			SetInfoText("Enable Defeat Bar. Beeing hit will fill up Defeat Bar. Once Defeat Bar is fully filled Player will be defeated.")
+		Elseif Option == oidDynamicDefeatOnHitBase
+			SetInfoText("Defeat Base Damage for unspecified weapons. Beeing hit with other than melee weapons, arrows or spells will fill Defeat Bar by this amount.")
+		Elseif Option == oidDynamicDefeatOnHitOneHand
+			SetInfoText("Defeat Base Damage for One-Handed weapons. Beeing hit with a One-Handed weapon will fill Defeat Bar by this amount.")
+		Elseif Option == oidDynamicDefeatOnHitTwoHand
+			SetInfoText("Defeat Base Damage for Two-Handed weapons. Beeing hit with a Two-Handed weapon will fill Defeat Bar by this amount.")
+		Elseif Option == oidDynamicDefeatOnHitBow
+			SetInfoText("Defeat Base Damage for Bows. Beeing hit with an arrow or crossbolt will fill Defeat Bar by this amount.")
+		Elseif Option == oidDynamicDefeatOnHitSpell
+			SetInfoText("Defeat Base Damage for Spells. Beeing hit with a hostile spell will fill Defeat Bar by this amount.")
+		Elseif Option == oidDynamicDefeatLowHealthThreshold
+			SetInfoText("Apply Low Health Multiplier if Players Health is below this amount.")
+		Elseif Option == oidDynamicDefeatLowHealthMult
+			SetInfoText(GetDefeatDamageString(1) + " additional damage. Low Healh Multiplier will increase Damage by this amount. Set to 1.0 to disable.")
+		Elseif Option == oidDynamicDefeatLowStaminaThreshold
+			SetInfoText("Apply Low Stamina Multiplier if Players Stamina is below this amount.")
+		Elseif Option == oidDynamicDefeatLowStaminaMult
+			SetInfoText(GetDefeatDamageString(2) + " additional damage. Low Stamina Multiplier will increase Base Damage by this amount. Set to 1.0 to disable.")
+		Elseif Option == oidDynamicDefeatPowerAttackMult
+			SetInfoText(GetDefeatDamageString(3) + " additional damage. Beeing hit by Power Atack will increase Base Damage by this amount. Set to 1.0 to disable.")
+		Elseif Option == oidDynamicDefeatVulnerabilityMult
+			SetInfoText(GetDefeatDamageString(4) + " additional damage from Vulnerability.")
+		Elseif Option == oidDynamicDefeatDepleteOverTime
+			SetInfoText("Defeat Bar will deplete every few seconds by this amount. Defeat Bar depletes faster out of combat.")
+		Elseif Option == oidKnockOutDynamicPvic
+			SetInfoText("Dynamic Defeat - Knock out chance")
+		Elseif Option == oidSStruggleDynamicPvic
+			SetInfoText("Chance for the player to resist before the knock down.\n The struggle will only happen if the aggressor is close, isn't a creature and is sexually attracted by the player and if 'The player can resist' is enabled.")
+		Elseif Option == oidDynamicDefeatUseDFWVulnerability
+			SetInfoText("Use Devious Framework to evaluate Vulnerability. Requires DeviousFramework.esm to be installed")
+		Elseif Option == oidDynamicDefeatBackHitMult
+			SetInfoText(GetDefeatDamageString(5) + " additional damage. Beeing hit in the back will increase Base Damage by this amount. Set to 1.0 to disable.")
+		Elseif Option == oidDynamicDefeatBlockReduction
+			SetInfoText("Successfully blocking an attack will decrease incoming Defeat Damage by this amount. Set to 100 to completely mitigate damage.")
 		Elseif Option == oidKDWayPowerAtkCOH
 			SetInfoText("$Desc_ChanceOnHit")
 		Elseif Option == oidPowerAtkStagger
@@ -4904,6 +6956,8 @@ Event OnOptionHighlight(Int Option)
 			SetInfoText("$Desc_DAsChance")
 		Elseif Option == oidbEscape
 			SetInfoText("$Desc_bEscape")
+		Elseif Option == oidAllowCreaturePostAssault
+			SetInfoText("Allow creatures to trigger Post-Assault Events.")
 		Elseif Option == oidfRobbing
 			SetInfoText("$Desc_fRobbing")
 		Elseif Option == oidvRobbing
@@ -4918,6 +6972,136 @@ Event OnOptionHighlight(Int Option)
 			SetInfoText("$Desc_Defeated")
 		Elseif Option == oidPAfrequency[2]
 			SetInfoText("$Desc_SimpleSlavery")
+		Elseif Option == oidPAfrequency[3]
+			SetInfoText("Travel to Dreamworld. Requires 'SanguinesDebauchery.esp' to be installed. Note: must meet SD+ conditions for this event to work.")
+		Elseif Option == oidPAfrequency[4]
+			SetInfoText("Start Sanguines Debauchery enslavement. Requires 'SanguinesDebauchery.esp' to be installed.")
+		Elseif Option == oidPAfrequency[5]
+			SetInfoText("Start Leash Game. Requires 'Leash SimpleSlavery.esp' to be installed.")
+		Elseif Option == oidPAfrequency[6]
+			SetInfoText("Equip random Devious Devices. Requires 'Devious Cursed Loot.esp' to be installed.")
+		Elseif Option == oidPAfrequency[7]
+			SetInfoText("Equip random Devious Devices. Requires 'Devious Devices' to be installed. Settings are hidden if 'Event Chance' is set to 0.")
+		Elseif Option == oidCursedLootMinDevices
+			SetInfoText("Minimum number of Devices that will be equipped.")
+		Elseif Option == oidCursedLootMaxDevices
+			SetInfoText("Maximum number of Devices that will be equipped.")
+		Elseif Option == oidDDMinDevices
+			SetInfoText("Minimum number of Devices that will be equipped.")
+		Elseif Option == oidDDMaxDevices
+			SetInfoText("Maximum number of Devices that will be equipped.")
+		Elseif Option == oidDDPaSelectLanguage
+			SetInfoText("Defeat will check Player equipped Devices names to determine their style and colour. Selecting the language of your Devious Device localisation will allow it to properly process non-English named Devices.")
+		Elseif Option == oidDDPaPlugsWithBelt
+			SetInfoText("Equip Plugs only when wearing Devious Belt or other orifice blocking Devices.")
+		Elseif Option == oidDDPaConsistantStyle
+			SetInfoText("Try to equip Devices that match the Style and Colour of already worn Devices. This option will work only if equippable Device Style and Colour are set to 'Any'.")
+		Elseif Option == oidDDPaArmAndLegShacklesChance
+			SetInfoText("Chance to equip Arm and Leg Shackles. These restraints will prevent Player from fighting and running")
+		Elseif Option == oidDDPaTestingEquipDevices
+			SetInfoText("For testing purposes. Equip Devices in accordance with settings.")
+		Elseif Option == oidDDPaUseArmbinder
+			SetInfoText("Determines whether Armbinders are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseGag
+			SetInfoText("Determines whether Gags are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseSuit
+			SetInfoText("Determines whether Suits and Straitjackets are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseHood
+			SetInfoText("Determines whether head gear (Hoods, Blindfolds and Gas Masks) are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseChastityBelt
+			SetInfoText("Determines whether Chastity Belts are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseChastityBra
+			SetInfoText("Determines whether Chastity Bras are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseHarness
+			SetInfoText("Determines whether Harnesses are allowed to be equipped. Note: Harness and Corset can't be equipped at the same time. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseCorset
+			SetInfoText("Determines whether Corsets are allowed to be equipped. Note: Corset and Harness can't be equipped at the same time. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseCollar
+			SetInfoText("Determines whether Collars are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUsePlugVaginal
+			SetInfoText("Determines whether Vaginal Plugs are allowed to be equipped. Plugs are not affected by Min/Max Settings. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUsePlugAnal
+			SetInfoText("Determines whether Anal plugs are allowed to be equipped. Plugs are not affected by Min/Max Settings. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUsePiercingVaginal
+			SetInfoText("Determines whether Vaginal Piercings are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUsePiercingNipple
+			SetInfoText("Determines whether Nipple Piercings are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseBoots
+			SetInfoText("Determines whether Boots are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseGloves
+			SetInfoText("Determines whether Gloves are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseArmCuffs
+			SetInfoText("Determines whether Arm Cuffs are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseLegCuffs
+			SetInfoText("Determines whether Leg Cuffs are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaArmbinderStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaArmbinderColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaGagStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaGagColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaSuitStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaSuitColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaHoodStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaHoodColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaChastityBeltStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaChastityBeltColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaChastityBraStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaChastityBraColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaHarnessStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaHarnessColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaCorsetStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaCorsetColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaCollarStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaCollarColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaPlugVaginalStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaPlugVaginalColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaPlugAnalStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaPlugAnalColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaPiercingVaginalStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaPiercingVaginalColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaPiercingNippleStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaPiercingNippleColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaBootsStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaBootsColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaGlovesStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaGlovesColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaArmCuffsStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaArmCuffsColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
+		Elseif Option == oidDDPaLegCuffsStyle
+			SetInfoText("Choose prefered Device Style or Type. 'Any' - Allow random Style.")
+		Elseif Option == oidDDPaLegCuffsColour
+			SetInfoText("Choose prefered Device colour. 'Any' - Allow random colour.")
 ;		Elseif Option == oidPAfrequency[3]
 ;			SetInfoText("$Desc_FollowerKidnapping")
 		Elseif Option == oidPAbEnabled[0]
@@ -5172,6 +7356,84 @@ Event OnOptionHighlight(Int Option)
 		Elseif Option == oidCombatInterrupt
 			SetInfoText("$Desc_CombatInterrupt")
 		Endif
+	Elseif (CurrentPage == "Misc Options")
+		if Option == oidAllowUnequipBelt
+			SetInfoText("Allow aggressor to unequip Devious Belt from the Player before sexual assault. Device will be re-equipped afterwards. Note: only Generic Devices (non-quest) can be uneqipped.")
+		elseif Option == oidUnequipBeltChance
+			SetInfoText("Chance to unequip Belt. Note: if Player has corresponding key in inventory chance will always be 100%.")
+		elseif Option == oidUnequipBeltNotificationChance
+			SetInfoText("Chance to show a notification about Belt unequipping attempt. Set to 0 to disable.")
+		elseif Option == oidUnequipBeltWithPlayerKeysOnly
+			SetInfoText("Unequip Belt ONLY if player has necessary key in inventory.")
+		elseif Option == oidAllowUnequipGag
+			SetInfoText("Allow aggressor to unequip Devious Gag from the Player before sexual assault. Device will be re-equipped afterwards. Note: only Generic Devices (non-quest) can be uneqipped.")
+		elseif Option == oidUnequipGagChance
+			SetInfoText("Chance to unequip Gag. Note: if Player has corresponding key in inventory chance will always be 100%.")
+		elseif Option == oidUnequipGagNotificationChance
+			SetInfoText("Chance to show a notification about Gag unequipping attempt. Set to 0 to disable.")
+		elseif Option == oidUnequipGagWithPlayerKeysOnly
+			SetInfoText("Unequip Gag ONLY if player has necessary key in inventory.")
+		elseif Option == oidAllowUnequipHeavyBondage
+			SetInfoText("Allow aggressor to unequip Heavy Bondage Devices (Armbinders, Yokes, etc.) from the Player before sexual assault. Device will be re-equipped afterwards. Note: only Generic Devices (non-quest) can be uneqipped.")
+		elseif Option == oidUnequipHeavyBondageChance
+			SetInfoText("Chance to unequip Heavy Bondage Device. Note: if Player has corresponding key in inventory chance will always be 100%.")
+		elseif Option == oidUnequipHeavyBondageNotificationChance
+			SetInfoText("Chance to show a notification about Device unequipping attempt. Set to 0 to disable.")
+		elseif Option == oidUnequipHeavyBondageWithPlayerKeysOnly
+			SetInfoText("Unequip Device ONLY if player has necessary key in inventory.")
+		elseif Option == oidAllowUnequipHarness
+			SetInfoText("Allow aggressor to unequip Devious Harness from the Player before sexual assault. Device will be re-equipped afterwards. Note: only Generic Devices (non-quest) can be uneqipped.")
+		elseif Option == oidUnequipHarnessChance
+			SetInfoText("Chance to unequip Devious Harness. Note: if Player has corresponding key in inventory chance will always be 100%.")
+		elseif Option == oidUnequipHarnessNotificationChance
+			SetInfoText("Chance to show a notification about Harness unequipping attempt. Set to 0 to disable.")
+		elseif Option == oidUnequipHarnessWithPlayerKeysOnly
+			SetInfoText("Unequip Harness ONLY if player has necessary key in inventory.")
+		elseif Option == oidAllowUnequipSuit
+			SetInfoText("Allow aggressor to unequip Devious Suit from the Player before sexual assault. Device will be re-equipped afterwards. Note: only Generic Devices (non-quest) can be uneqipped.")
+		elseif Option == oidUnequipSuitChance
+			SetInfoText("Chance to unequip Devious Suit. Note: if Player has corresponding key in inventory chance will always be 100%.")
+		elseif Option == oidUnequipSuitNotificationChance
+			SetInfoText("Chance to show a notification about Suit unequipping attempt. Set to 0 to disable.")
+		elseif Option == oidUnequipSuitWithPlayerKeysOnly
+			SetInfoText("Unequip Suit ONLY if player has necessary key in inventory")
+		elseif Option == oidUseDDFilter
+			SetInfoText("Allow Devious Devices Framework to preselect animations used in Defeat. Works only for 'Player Victim' non-creature scenes.")
+		elseif Option == oidEnableLog
+			SetInfoText("Allow Defeat to write down information about some of its processes related to LRG Patch to your log file. Mainly used for debugging purposes.")
+		elseif Option == oidVulnerabilityValueAnalPlug
+			SetInfoText("Wearing Devious Anal Plug will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueArmCuffs
+			SetInfoText("Wearing Devious Arm Cuffs will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueBelt
+			SetInfoText("Wearing Devious Belt will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueBlindfold
+			SetInfoText("Wearing Devious Blindfold will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueBoots
+			SetInfoText("Wearing Devious Boots will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueBra
+			SetInfoText("Wearing Devious Bra will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueCollar
+			SetInfoText("Wearing Devious Collar will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueCorset
+			SetInfoText("Wearing Devious Corset will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueDisableKick
+			SetInfoText("Wearing Devious Ankle Shackles or other Devices that prevent you from kicking will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueFullChastity
+			SetInfoText("Wearing Belt, Bra and any Gag at the same time will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueGag
+			SetInfoText("Wearing Devious Gag will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueHarness
+			SetInfoText("Wearing Devious Harness will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueHeavyBond
+			SetInfoText("Wearing Devices that restrain your hands (Armbinders, Yokes and others) will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueHelpless
+			SetInfoText("Wearing a set of Devices that prevent you from fighting (Ankle Shackles and Heavy Bondage) will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueLegCuffs
+			SetInfoText("Wearing Devious Leg Cuffs will increase Vulnerability by this amount.")
+		elseif Option == oidVulnerabilityValueVagPlug
+			SetInfoText("Wearing Devious Vaginal Plug will increase Vulnerability by this amount.")
+		endif
 	Endif
 	If Option == oidCheckSlots
 		SetInfoText("$Desc_CheckSlots")
@@ -5195,6 +7457,789 @@ String Function SOTargetOrPlayerName()
 	Else
 		Return Player.GetleveledActorBase().GetName()
 	Endif
+EndFunction
+
+String Function GetDefeatDamageString(int DamageMultType)
+	string TempString
+	if DamageMultType == 1
+		TempString = "+" + (((DynamicDefeatLowHealthMult - 1) * DynamicDefeatOnHitOneHand) as int) + " (One-Handed) / " + \
+					 "+" + (((DynamicDefeatLowHealthMult - 1) * DynamicDefeatOnHitTwoHand) as int) + " (Two-Handed) / " + \
+					 "+" + (((DynamicDefeatLowHealthMult - 1) * DynamicDefeatOnHitBow) as int)     + " (Bow) / " + \
+					 "+" + (((DynamicDefeatLowHealthMult - 1) * DynamicDefeatOnHitSpell) as int)   + " (Spell) / " + \
+					 "+" + (((DynamicDefeatLowHealthMult - 1) * DynamicDefeatOnHitBase) as int)    + " (Other) "
+		return TempString
+	elseif DamageMultType == 2
+		TempString = "+" + (((DynamicDefeatLowStaminaMult - 1) * DynamicDefeatOnHitOneHand) as int) + " (One-Handed) / " + \
+					 "+" + (((DynamicDefeatLowStaminaMult - 1) * DynamicDefeatOnHitTwoHand) as int) + " (Two-Handed) / " + \
+					 "+" + (((DynamicDefeatLowStaminaMult - 1) * DynamicDefeatOnHitBow) as int)     + " (Bow) / " + \
+					 "+" + (((DynamicDefeatLowStaminaMult - 1) * DynamicDefeatOnHitSpell) as int)   + " (Spell) / " + \
+					 "+" + (((DynamicDefeatLowStaminaMult - 1) * DynamicDefeatOnHitBase) as int)    + " (Other) "
+		return TempString
+	elseif DamageMultType == 3
+		TempString = "+" + (((DynamicDefeatPowerAttackMult - 1) * DynamicDefeatOnHitOneHand) as int) + " (One-Handed) / " + \
+					 "+" + (((DynamicDefeatPowerAttackMult - 1) * DynamicDefeatOnHitTwoHand) as int) + " (Two-Handed) / " + \
+					 "+" + (((DynamicDefeatPowerAttackMult - 1) * DynamicDefeatOnHitBow) as int)     + " (Bow) / " + \
+					 "+" + (((DynamicDefeatPowerAttackMult - 1) * DynamicDefeatOnHitSpell) as int)   + " (Spell) / " + \
+					 "+" + (((DynamicDefeatPowerAttackMult - 1) * DynamicDefeatOnHitBase) as int)    + " (Other) "
+		return TempString
+	elseif DamageMultType == 4
+		if DynamicDefeatUseDFWVulnerability && RessConfig.DeviousFrameworkON
+			float PlayerVulnerability = DefeatUtil2.DFW_GetVulnerability(Player)
+			TempString = "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerVulnerability / 100 * DynamicDefeatOnHitOneHand) as int) + " (One-Handed) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerVulnerability / 100 * DynamicDefeatOnHitTwoHand) as int) + " (Two-Handed) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerVulnerability / 100 * DynamicDefeatOnHitBow) as int)     + " (Bow) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerVulnerability / 100 * DynamicDefeatOnHitSpell) as int)   + " (Spell) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerVulnerability / 100 * DynamicDefeatOnHitBase) as int)    + " (Other) "
+			return TempString
+		else
+			TempString = "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerScr.DefVulnScr.Vulnerability_Total / 100 * DynamicDefeatOnHitOneHand) as int) + " (One-Handed) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerScr.DefVulnScr.Vulnerability_Total / 100 * DynamicDefeatOnHitTwoHand) as int) + " (Two-Handed) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerScr.DefVulnScr.Vulnerability_Total / 100 * DynamicDefeatOnHitBow) as int)     + " (Bow) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerScr.DefVulnScr.Vulnerability_Total / 100 * DynamicDefeatOnHitSpell) as int)   + " (Spell) / " + \
+						 "+" + (((DynamicDefeatVulnerabilityMult - 1) * PlayerScr.DefVulnScr.Vulnerability_Total / 100 * DynamicDefeatOnHitBase) as int)    + " (Other) "
+			return TempString
+		endif
+	elseif DamageMultType == 5
+		TempString = "+" + (((DynamicDefeatBackHitMult - 1) * DynamicDefeatOnHitOneHand) as int) + " (One-Handed) / " + \
+					 "+" + (((DynamicDefeatBackHitMult - 1) * DynamicDefeatOnHitTwoHand) as int) + " (Two-Handed) / " + \
+					 "+" + (((DynamicDefeatBackHitMult - 1) * DynamicDefeatOnHitBow) as int)     + " (Bow) / " + \
+					 "+" + (((DynamicDefeatBackHitMult - 1) * DynamicDefeatOnHitSpell) as int)   + " (Spell) / " + \
+					 "+" + (((DynamicDefeatBackHitMult - 1) * DynamicDefeatOnHitBase) as int)    + " (Other) "
+		return TempString
+	endif
+EndFunction
+
+String Function IsDeviceEquipped(int DeviceID)
+	if DeviceID == 0
+		if PlayerScr.DefVulnScr.IsWearing_Gag
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 1
+		if PlayerScr.DefVulnScr.IsWearing_VaginalPlug
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 2
+		if PlayerScr.DefVulnScr.IsWearing_AnalPlug
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 3
+		if PlayerScr.DefVulnScr.IsWearing_Belt
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 4
+		if PlayerScr.DefVulnScr.IsWearing_Bra
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 5
+		if PlayerScr.DefVulnScr.IsWearing_Collar
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 6
+		if PlayerScr.DefVulnScr.IsWearing_ArmCuffs
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 7
+		if PlayerScr.DefVulnScr.IsWearing_LegCuffs
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 8
+		if PlayerScr.DefVulnScr.IsWearing_HeavyBondage
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 9
+		if PlayerScr.DefVulnScr.IsWearing_BoundCombatDisableKick
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 10
+		if PlayerScr.DefVulnScr.IsWearing_Blindfold
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 11
+		if PlayerScr.DefVulnScr.IsWearing_Boots
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 12
+		if PlayerScr.DefVulnScr.IsWearing_Corset
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 13
+		if PlayerScr.DefVulnScr.IsWearing_Harness
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 14
+		if PlayerScr.DefVulnScr.IsWearing_Bra && PlayerScr.DefVulnScr.IsWearing_Belt && PlayerScr.DefVulnScr.IsWearing_Gag
+			return "*"
+		else
+			return " "
+		endif
+	elseif DeviceID == 15
+		if PlayerScr.DefVulnScr.IsWearing_HeavyBondage && PlayerScr.DefVulnScr.IsWearing_BoundCombatDisableKick
+			return "*"
+		else
+			return " "
+		endif
+	endif
+EndFunction
+
+Function BuildDDSettingLists()
+	if StorageUtil.GetFloatValue(none, "Defeat_LRGPatch_MCMSettings_DD_Version") != 1.0
+		StorageUtil.SetFloatValue(none, "Defeat_LRGPatch_MCMSettings_DD_Version", 1.0)
+		DDGeneralPermissionList = new String[3]
+		DDGeneralPermissionList[0] = "Disallow"
+		DDGeneralPermissionList[1] = "Allow"
+		DDGeneralPermissionList[2] = "Always Use"
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Rope", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Rope", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Rope", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Rope", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Ball", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Ring", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ball", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ball", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ball", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ball", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ring", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ring", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ring", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ring", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", "Catsuit", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", "Hobbled", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", "Straitjacket", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Catsuit", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Catsuit", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Catsuit", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Catsuit", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Hobbled", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Hobbled", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Hobbled", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Hobbled", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Straitjacket", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Straitjacket", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Straitjacket", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Straitjacket", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood", "Hood", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood", "BlindFold", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood", "Gasmask", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Hood", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Hood", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Hood", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Hood", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "BlindFold", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "BlindFold", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "BlindFold", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "BlindFold", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Gasmask", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Gasmask", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Gasmask", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Gasmask", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Belt", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Gold", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Silver", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Gold", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Silver", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Rope", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Rope", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Rope", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Rope", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Rope", "Default", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Rope", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Rope", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Rope", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Rope", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Rope", "Default", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "Default", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Wood", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Soulgem", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Iron", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Wood", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Soulgem", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Leather", "Any", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Wood", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Soulgem", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Iron", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Wood", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Soulgem", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Leather", "Any", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingVaginal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingVaginal_" + "Any", "Any", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingNipple", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingNipple_" + "Any", "Any", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Metal", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Metal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Metal", "Iron", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Ebonite", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", "Metal", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Metal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Metal", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Metal", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Metal", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Metal", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Rope", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Rope", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Rope", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Rope", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Rope", "Default", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", "Metal", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Any", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Any", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Leather", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Ebonite", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Ebonite", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Ebonite", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Metal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Metal", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Metal", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Metal", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Metal", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "Default", False)
+	endif
+EndFunction
+
+String[] Function GetStyleMenuList(String DeviceType)
+	return StorageUtil.StringListToArray(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + DeviceType)
+EndFunction
+
+Int Function GetStyleIndexFromList(String DeviceType, String StyleName)
+	return StorageUtil.StringListFind(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + DeviceType, StyleName)
+EndFunction
+
+String Function GetStyleNameByIndex(String DeviceType, Int StyleIndex)
+	return StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + DeviceType, StyleIndex)
+EndFunction
+
+String[] Function GetColourMenuList(String DeviceType, String StyleName)
+	return StorageUtil.StringListToArray(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + DeviceType + "_" + StyleName)
+EndFunction
+
+Int Function GetColourIndexFromList(String DeviceType, String StyleName, String ColourName)
+	return StorageUtil.StringListFind(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + DeviceType + "_" + StyleName, ColourName)
+EndFunction
+
+String Function GetColourNameByIndex(String DeviceType, String StyleName, Int ColourIndex)
+	return StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + DeviceType + "_" + StyleName, ColourIndex)
+EndFunction
+
+String Function GetLanguageName(String FileName)
+	return (StringUtil.Split(FileName, "."))[0]
+EndFunction
+
+String Function GetLanguageFile(String LanguageName)
+	return (Language + ".json")
+EndFunction
+
+String[] Function GetAvailableLanguageFiles()
+	return MiscUtil.FilesInFolder("Data/SKSE/Plugins/Defeat/Localisation", ".json")
+EndFunction
+
+String[] Function GetAvailableLanguages()
+	StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCM_TempData_Languages")
+	StorageUtil.StringListCopy(none, "Defeat_LRGPatch_MCM_TempData_Languages", MiscUtil.FilesInFolder("Data/SKSE/Plugins/Defeat/Localisation", ".json"))
+	Int ArrayLength = StorageUtil.StringListCount(none, "Defeat_LRGPatch_MCM_TempData_Languages")
+	While ArrayLength > 0
+		ArrayLength -= 1
+		String TempStr = StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCM_TempData_Languages", ArrayLength)
+		StorageUtil.StringListSet(none, "Defeat_LRGPatch_MCM_TempData_Languages", ArrayLength, GetLanguageName(TempStr))
+	endwhile
+	return StorageUtil.StringListToArray(none, "Defeat_LRGPatch_MCM_TempData_Languages")
+EndFunction
+
+Int Function GetLanguageIndexFromList(String Language)
+	return GetAvailableLanguages().Find(Language)
+EndFunction
+
+String Function GetLanguagefromIndex(Int Index)
+	return GetAvailableLanguages()[Index]
+EndFunction
+
+Function SetLanguageProperties()
+	PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - Language: " + Language)
+	String FileName = GetLanguageFile(Language)
+	if JsonUtil.GetPathStringValue("../Defeat/Localisation/" + Language, "." + "NonDirect", "") == ""
+		LocalisedBlack = JsonUtil.GetPathStringValue("../Defeat/Localisation/" + Language, "." + "Black", "Black")
+		LocalisedWhite = JsonUtil.GetPathStringValue("../Defeat/Localisation/" + Language, "." + "ColourWhite", "111")
+		LocalisedRed = JsonUtil.GetPathStringValue("../Defeat/Localisation/" + Language, "." + "Red", "Red")
+		LocalisedLeather = JsonUtil.GetPathStringValue("../Defeat/Localisation/" + Language, "." + "Leather", "Leather")
+		LocalisedEbonite = JsonUtil.GetPathStringValue("../Defeat/Localisation/" + Language, "." + "Ebonite", "Ebonite")
+		LocalisedRope = JsonUtil.GetPathStringValue("../Defeat/Localisation/" + Language, "." + "Rope", "Rope")
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedBlack: " + LocalisedBlack)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedWhite: " + LocalisedWhite)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedRed: " + LocalisedRed)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedLeather: " + LocalisedLeather)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedEbonite: " + LocalisedEbonite)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedRope: " + LocalisedRope)
+	else
+		LocalisedBlack = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Black") as Armor).GetName()
+		LocalisedWhite = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "ColourWhite") as Armor).GetName()
+		LocalisedRed = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Red") as Armor).GetName()
+		LocalisedLeather = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Leather") as Armor).GetName()
+		LocalisedEbonite = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Ebonite") as Armor).GetName()
+		if JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Ebonite2")
+			LocalisedEbonite2 = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Ebonite2") as Armor).GetName()
+		else
+			LocalisedEbonite2 = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Ebonite") as Armor).GetName()
+		endif
+		LocalisedRope = (JsonUtil.GetPathFormValue("../Defeat/Localisation/" + Language, "." + "Rope") as Armor).GetName()
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedBlack: " + LocalisedBlack)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedWhite: " + LocalisedWhite)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedRed: " + LocalisedRed)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedLeather: " + LocalisedLeather)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedEbonite: " + LocalisedEbonite)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedEbonite2: " + LocalisedEbonite2)
+		PlayerScr.DefeatLog("[Defeat] - SetLanguageProperties - LocalisedRope: " + LocalisedRope)
+	endif
+EndFunction
+
+Function TestEquipDevices()
+	DefeatPAscr PostAssault = (Quest.GetQuest("DefeatPAQst") As DefeatPAscr)
+	StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip")
+	StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip")
+	StorageUtil.FormListClear(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords")
+	StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip")
+	StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip")
+	Keyword TempDDKeywordHeavyBondage = Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword ; HeavyBondage
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage)
+		if DDPaUseArmbinder == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Armbinder")
+		elseif DDPaUseArmbinder == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Armbinder")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage, False)
+	endif
+	Keyword TempDDKeywordGag = Game.GetFormFromFile(0x7EB8, "Devious Devices - Assets.esm") as Keyword ; Gag
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordGag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGag)
+		if DDPaUseGag == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Gag")
+		elseif DDPaUseGag == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Gag")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGag, False)
+	endif
+	Keyword TempDDKeywordSuit = Game.GetFormFromFile(0x2AFA3, "Devious Devices - Assets.esm") as Keyword ; Suit
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordSuit) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordSuit)
+		if DDPaUseSuit == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Suit")
+		elseif DDPaUseSuit == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Suit")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordSuit, False)
+	endif
+	Keyword TempDDKeywordHood = Game.GetFormFromFile(0x2AFA2, "Devious Devices - Assets.esm") as Keyword ; Hood
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHood) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHood)
+		if DDPaUseHood == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Hood")
+		elseif DDPaUseHood == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Hood")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHood, False)
+	endif
+	Keyword TempDDKeywordBelt = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordBelt) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBelt)
+		if DDPaUseChastityBelt == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Belt")
+		elseif DDPaUseChastityBelt == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Belt")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBelt, False)
+	endif
+	Keyword TempDDKeywordBra = Game.GetFormFromFile(0x3DFA, "Devious Devices - Assets.esm") as Keyword ; Bra
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordBra) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBra)
+		if DDPaUseChastityBra == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Bra")
+		elseif DDPaUseChastityBra == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Bra")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBra, False)
+	endif
+	Keyword TempDDKeywordHarness = Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword ; Harness
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHarness) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHarness)
+		if DDPaUseHarness == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Harness")
+		elseif DDPaUseHarness == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Harness")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHarness, False)
+	endif
+	Keyword TempDDKeywordCorset = Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword ; Corset
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordCorset) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCorset)
+		if DDPaUseCorset == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Corset")
+		elseif DDPaUseCorset == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Corset")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCorset, False)
+	endif
+	Keyword TempDDKeywordCollar = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordCollar) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCollar)
+		if DDPaUseCollar == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Collar")
+		elseif DDPaUseCollar == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Collar")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCollar, False)
+	endif
+	Keyword TempDDKeywordPlugVag = Game.GetFormFromFile(0x1DD7C, "Devious Devices - Assets.esm") as Keyword ; PlugVaginal
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPlugVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugVag)
+		if DDPaUsePlugVaginal == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugVaginal")
+		elseif DDPaUsePlugVaginal == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugVaginal")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugVag, False)
+	endif
+	Keyword TempDDKeywordPlugAnal = Game.GetFormFromFile(0x1DD7D, "Devious Devices - Assets.esm") as Keyword ; PlugAnal
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPlugAnal) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugAnal)
+		if DDPaUsePlugAnal == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugAnal")
+		elseif DDPaUsePlugAnal == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugAnal")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugAnal, False)
+	endif
+	Keyword TempDDKeywordPiercingVag = Game.GetFormFromFile(0x23E70, "Devious Devices - Assets.esm") as Keyword ; PiercingVaginal
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPiercingVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingVag)
+		if DDPaUsePiercingVaginal == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PiercingVaginal")
+		elseif DDPaUsePiercingVaginal == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PiercingVaginal")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingVag, False)
+	endif
+	Keyword TempDDKeywordPiercingNipp = Game.GetFormFromFile(0xCA39, "Devious Devices - Assets.esm") as Keyword ; PiercingNipple
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPiercingNipp) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingNipp)
+		if DDPaUsePiercingNipple == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PiercingNipple")
+		elseif DDPaUsePiercingNipple == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PiercingNipple")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingNipp, False)
+	endif
+	Keyword TempDDKeywordBoots = Game.GetFormFromFile(0x27F29, "Devious Devices - Assets.esm") as Keyword ; Boots
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordBoots) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBoots)
+		if DDPaUseBoots == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Boots")
+		elseif DDPaUseBoots == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Boots")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBoots, False)
+	endif
+	Keyword TempDDKeywordGloves = Game.GetFormFromFile(0x2AFA1, "Devious Devices - Assets.esm") as Keyword ; Gloves
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordGloves) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves)
+		if DDPaUseGloves == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Gloves")
+		elseif DDPaUseGloves == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Gloves")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves, False)
+	endif
+	Keyword TempDDKeywordArmCuffs = Game.GetFormFromFile(0x3DF9, "Devious Devices - Assets.esm") as Keyword ; ArmCuffs
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordArmCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordArmCuffs)
+		if DDPaUseArmCuffs == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "ArmCuffs")
+		elseif DDPaUseArmCuffs == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "ArmCuffs")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordArmCuffs, False)
+	endif
+	Keyword TempDDKeywordLegCuffs = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordLegCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordLegCuffs)
+		if DDPaUseLegCuffs == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "LegCuffs")
+		elseif DDPaUseLegCuffs == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "LegCuffs")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordLegCuffs, False)
+	endif
+	if DDPaArmAndLegShacklesChance >= Utility.RandomInt(0, 100)
+		if !PostAssault.Player.WornHasKeyword(TempDDKeywordHeavyBondage)
+			if !PostAssault.Player.WornHasKeyword(TempDDKeywordLegCuffs) && !PostAssault.Player.WornHasKeyword(TempDDKeywordCollar)
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", "ArmLegShackles")
+			elseif !PostAssault.Player.WornHasKeyword(TempDDKeywordLegCuffs)
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", "ArmShackles")
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", "LegShackles")
+			endif
+		endif
+	endif
+	if DDPaConsistantStyle
+		PostAssault.BuildConsistantData()
+	endif
+	Int NumberOfDevicesEquipped = 0
+	Int NumberOfDevicesTotal = Utility.RandomInt(DDMinDevices, DDMaxDevices)
+	Debug.Trace("[Defeat] - NumberOfDevicesTotal: " + NumberOfDevicesTotal)
+	Debug.Trace("[Defeat] - Random: " + StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip"))
+	Debug.Trace("[Defeat] - Random: " + StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip"))
+	While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip") > 0
+		if PostAssault.EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip", 0, ""))
+			Debug.Trace("[Defeat] - NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+		endif
+	endwhile
+	While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip") > 0
+		Int TempListIndex = Utility.RandomInt(0, StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip") - 1)
+		if StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", TempListIndex) == "PlugVaginal" && DDPaPlugsWithBelt
+			StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugVaginal")
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugVaginal")
+		elseif StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", TempListIndex) == "PlugAnal" && DDPaPlugsWithBelt
+			StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "PlugAnal")
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugAnal")
+		else
+			if PostAssault.EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", TempListIndex, ""))
+				NumberOfDevicesEquipped += 1
+				Debug.Trace("[Defeat] - NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+			endif
+		endif
+	endwhile
+	While NumberOfDevicesEquipped < NumberOfDevicesTotal
+		if StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip") > 0
+			Int TempListIndex = Utility.RandomInt(0, StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip") - 1)
+			if StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", TempListIndex) == "PlugVaginal" && DDPaPlugsWithBelt
+				StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugVaginal")
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugVaginal")
+			elseif StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", TempListIndex) == "PlugAnal" && DDPaPlugsWithBelt
+				StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugAnal")
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", "PlugAnal")
+			else
+				if PostAssault.EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", TempListIndex, ""))
+					NumberOfDevicesEquipped += 1
+					Debug.Trace("[Defeat] - NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+				else
+				endif
+			endif
+		else
+			NumberOfDevicesEquipped = NumberOfDevicesTotal
+		endif
+	endwhile
+	While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip") > 0
+		if PostAssault.EquipPreferedDevice(StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip", 0, ""))
+			Debug.Trace("[Defeat] - NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+		endif
+	endwhile
 EndFunction
 
 ; Deprecated

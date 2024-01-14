@@ -2,8 +2,16 @@ Scriptname DefeatPlayerBleedOut extends ReferenceAlias
 
 DefeatPlayer Property PlayerScr Auto
 
+Actor kPlayer
+Location kLocation
+
 Event OnEnterBleedOut()
-	if (GetReference() as actor).GetCurrentLocation().GetName() != "Apocrypha"
+	kPlayer = GetReference() As actor
+	If kPlayer
+		kLocation = kPlayer.GetCurrentLocation()
+		If kLocation && kLocation.GetName() == "Apocrypha"
+			Return
+		EndIf
 		PlayerScr.TriggerBleedOut()
-	endif
+	Endif
 EndEvent

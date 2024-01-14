@@ -609,6 +609,7 @@ EndFunction
 Function Strip() ;===== STRIP
 	RessConfig.SetEmptyOutfit(Victim)
 	Form BodyArmor = Victim.GetWornForm(0x00000004)
+	Int iNumSlots 
 	If (BodyArmor && BodyArmor.HasKeyWordString("BU_Equip"))
 		If DefeatUtil.BUIsNotFullyBroken(BodyArmor)
 			DefeatUtil.BUBreakArmor(Victim, BodyArmor)
@@ -617,7 +618,8 @@ Function Strip() ;===== STRIP
 		If ((IsFollower && McmConfig.bRedressFollower) || (!IsFollower && McmConfig.bRedressNVN))
 			Form Clothes
 			Int i
-			While (i < 5)
+			iNumSlots = McmConfig.SSNVN.Length - 1 
+			While (i < iNumSlots)    ;Bane Updated to use Array Length in V26092023 - Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
 				If (McmConfig.SSNVNSet[i+1] == "$UNEQUIP")
 					Clothes = Victim.GetWornForm(Armor.GetMaskForSlot(McmConfig.SSNVN[i] As Int))
 					If Clothes
@@ -629,14 +631,16 @@ Function Strip() ;===== STRIP
 		Endif
 		Float zOffset = Aggressor.GetHeadingAngle(Victim)
 		Aggressor.SetAngle(0.0, 0.0, Aggressor.GetAngleZ() + zOffset)
-		Int i
-		While (i < 5)
+
+		iNumSlots = McmConfig.SSNVN.Length - 1  ;Bane Updated to use Array Length in V26092023 - Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
+		Int iSlot
+		While iSlot < iNumSlots
 			If ActorValid(Aggressor) && ActorValid(Victim)
-				PieceToStrip(McmConfig.SSNVNSet[i + 1], Armor.GetMaskForSlot(McmConfig.SSNVN[i] As Int))
+				PieceToStrip(McmConfig.SSNVNSet[iSlot + 1], Armor.GetMaskForSlot(McmConfig.SSNVN[iSlot] As Int))
 			Else
 				Return
 			Endif
-			i += 1
+			iSlot += 1
 		EndWhile
 		Weapon Equipped = Victim.GetEquippedWeapon()
 		If !PieceToStrip(McmConfig.SSNVNSet[0], 0, Equipped)
@@ -662,12 +666,23 @@ Function PieceToStrip(String Way, Int Slot, Form Weapons = None, Float WaitTime 
 	Endif
 	If (Equipped && (Way != "$Disabled"))
 		If !Equipped.HasKeyWordString("SexLabNoStrip")
+			;If (Slot == 0x00000004)
+			;	Animation = "DefeatStripAnim"
+			;	WaitTime = 2.5
+			;Endif
+			;SendAnimationEvent(Aggressor, Animation)
+			;Wait(WaitTime)
+			
 			If (Slot == 0x00000004)
 				Animation = "DefeatStripAnim"
-				WaitTime = 2.5
+				SendAnimationEvent(Aggressor, Animation) ;*
+				Wait(2.5) ;*
+				;WaitTime = 2.5
+			Else ;*
+				SendAnimationEvent(Aggressor, Animation);*
+				Wait(WaitTime);*
 			Endif
-			SendAnimationEvent(Aggressor, Animation)
-			Wait(WaitTime)
+
 			If (Way == "$UNEQUIP")
 				Victim.UnequipItem(Equipped, False, True)
 			Elseif (Way == "$STRIP")

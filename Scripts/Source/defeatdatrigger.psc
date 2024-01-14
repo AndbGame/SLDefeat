@@ -15,6 +15,7 @@ EndFunction
 
 Bool Function QuestStart(Location CurrentLocation, Actor akAggressor, Actor akFollower)
 {Starts the quest and returns true on success.}
+	Player.SheatheWeapon() ;Added by Bane -> slightly less clunky handover animations between DA and Defeat
 	Debug.Trace("Defeat DA Trigger selected")
 	Aggressor = akAggressor
 	RegisterForModEvent("da_PlayerRecovered", "StartDefeat")

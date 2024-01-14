@@ -144,6 +144,7 @@ Faction[] Property FollowerFactions Auto Hidden
 Form Gold
 Outfit DefeatEmptyOutfit
 GlobalVariable PlayerMoan
+
 Function SetPlayerMoan(Int OnOff)
 	PlayerMoan.Setvalue(OnOff)
 EndFunction
@@ -166,11 +167,49 @@ Bool Property UIEon = False Auto Hidden Conditional 			; UIExtensions
 Bool Property PAHon = False Auto Hidden Conditional 			; Paradise Halls
 Bool Property SimpleSlaveryon = False Auto Hidden Conditional 	; Simple Slavery
 ;Bool Property SARon = False Auto Hidden Conditional 			; SexLab Aroused
+Bool Property SanguinesDebaucheryON = False Auto Hidden Conditional ; Sanguines Debauchery
+Bool Property DeviousFrameworkON = False Auto Hidden Conditional ; Devious Framework
+Bool Property DeviouslyCursedLootON = False Auto Hidden Conditional ; Deviosly Cursed Loot
+Bool Property LeashGameON = False Auto Hidden Conditional ; Leash Game
+Int Property DDVersion Auto ; DD Version ( 4 or 5)
+
+Float Property DefeatPatchVersion Auto
 
 ; ==============================================
 
 Function CheckForMods()
 	Int i
+	if McmConfig.AModList.length < 12
+		McmConfig.AModList = New String[12]
+		McmConfig.AModList[0] = "Dawnguard : OFF"
+		McmConfig.AModList[1] = "Dragonborn : OFF"
+		McmConfig.AModList[2] = "ZaZ Animation Pack : OFF"
+		McmConfig.AModList[3] = "Devious Devices : OFF"
+		McmConfig.AModList[4] = "Death Alternative : OFF"
+		McmConfig.AModList[5] = "UIExtensions : OFF"
+		McmConfig.AModList[6] = "Paradise Halls : OFF"
+		McmConfig.AModList[7] = "Simple Slavery : OFF"
+		McmConfig.AModList[8] = "Sanguines Debauchery : OFF"
+		McmConfig.AModList[9] = "Devious Framework : OFF"
+		McmConfig.AModList[10] = "Deviously Cursed Loot : OFF"
+		McmConfig.AModList[11] = "Leash Game : OFF"
+	endif
+	if McmConfig.Pages.Length < 7
+		McmConfig.Pages = New String[7]
+		McmConfig.Pages[0] = "$General settings"
+		McmConfig.Pages[1] = "$Animation settings"
+		McmConfig.Pages[2] = "$Player/Follower aggressor"
+		McmConfig.Pages[3] = "$Player as victim"
+		McmConfig.Pages[4] = "$Player Post-Assault"
+		McmConfig.Pages[5] = "$NPC vs NPC"
+		McmConfig.Pages[6] = "Misc Options"
+	endif
+	if McmConfig.AllowCreaturePostAssault.Length < 3
+		McmConfig.AllowCreaturePostAssault = new string[3]
+		McmConfig.AllowCreaturePostAssault[0] = "Allow All"
+		McmConfig.AllowCreaturePostAssault[1] = "Falmer Only"
+		McmConfig.AllowCreaturePostAssault[2] = "No Creatures"
+	endif
 	While (i < GetModCount())
 		String ModName = GetModName(i)
 		If (ModName == "Dawnguard.esm")
@@ -199,6 +238,14 @@ Function CheckForMods()
 			DDon = True
 			DefeatFactions[2] = (GetFormFromFile(0x29567, "Devious Devices - Integration.esm") As Faction)
 			McmConfig.AModList[3] = "Devious Devices : ON"
+			PlayerScr.DefVulnScr.RegisterForModEvent("Defeat_EnableVulnerability", "OnEnableVulnerability")
+			SendModEvent("Defeat_EnableVulnerability")
+			String CheckDDVersion = DefeatUtil2.GetDDVersion()
+			if CheckDDVersion == "5.2" || CheckDDVersion == "5.1" || CheckDDVersion == "5.0"
+				DDVersion = 5
+			else
+				DDVersion = 4
+			endif
 			Log("Devious Devices detected.")
 		Elseif (ModName == "daymoyl.esm")
 			DAon = True
@@ -217,6 +264,22 @@ Function CheckForMods()
 			SimpleSlaveryon = True
 			McmConfig.AModList[7] = "Simple Slavery : ON"
 			Log("Simple slavery detected.")
+		Elseif (ModName == "sanguinesDebauchery.esp")
+			SanguinesDebaucheryON = True
+			McmConfig.AModList[8] = "Sanguines Debauchery : ON"
+			Log("Sanguines Debauchery detected.")
+		Elseif (ModName == "DeviousFramework.esm")
+			DeviousFrameworkON = True
+			McmConfig.AModList[9] = "Devious Framework : ON"
+			Log("Devious Framework detected.")
+		Elseif (ModName == "Deviously Cursed Loot.esp")
+			DeviouslyCursedLootON = True
+			McmConfig.AModList[10] = "Deviously Cursed Loot : ON"
+			Log("Deviously Cursed Loot detected.")
+		Elseif (ModName == "Leash SimpleSlavery.esp")
+			LeashGameON = True
+			McmConfig.AModList[11] = "Leash Game : ON"
+			Log("Leash - SimpleSlavery detected.")
 ;		Elseif (ModName == "EFFCore.esm")
 ;			EFFon = True
 ;			McmConfig.AModList[5] = "Extensible Follower Framework : ON"
@@ -229,6 +292,14 @@ Function CheckForMods()
 		Endif
 		i += 1
 	EndWhile
+	 ;Bane 06/01/2023 Create a Stringlist of available Surrender Animations for use in DefeatStateMonitoringEFFscr.psc
+	StringListClear(Player, "defeat_SurrenderAnims")
+	StringListAdd(Player, "defeat_SurrenderAnims", "IdleCowering", False)
+	StringListAdd(Player, "defeat_SurrenderAnims", "IdleWounded_03", False)
+	If Zazon
+		StringListAdd(Player, "defeat_SurrenderAnims", "ZapYokePose07", False)
+		StringListAdd(Player, "defeat_SurrenderAnims", "ZapWriPose07", False)
+	EndIf
 EndFunction
 
 Function Maintenance(Bool Updated = False, Int Vers = 0)
@@ -273,6 +344,15 @@ Function Maintenance(Bool Updated = False, Int Vers = 0)
 					DefeatFactions[2] = None
 					McmConfig.AModList[3] = "Devious Devices : OFF"
 					DDon = False
+					SendModEvent("Defeat_DisableVulnerability")
+				else
+					SendModEvent("Defeat_EnableVulnerability")
+					String CheckDDVersion = DefeatUtil2.GetDDVersion()
+					if CheckDDVersion == "5.2" || CheckDDVersion == "5.1" || CheckDDVersion == "5.0"
+						DDVersion = 5
+					else
+						DDVersion = 4
+					endif
 				Endif
 			Endif
 			If DAon
@@ -295,9 +375,43 @@ Function Maintenance(Bool Updated = False, Int Vers = 0)
 				Endif
 			Endif
 			If SimpleSlaveryon
-				If !GetFormFromFile(0x300492E, "SimpleSlavery.esp")
+				If !GetFormFromFile(0x00492E, "SimpleSlavery.esp") 				;Bane Fixed Id 05/11/2023
 					McmConfig.AModList[7] = "Simple Slavery : OFF"
 					SimpleSlaveryon = False
+				Endif
+			Endif
+			If SanguinesDebaucheryON
+				if Game.GetModByName("sanguinesDebauchery.esp") != 255
+					If !GetFormFromFile(0x92327, "sanguinesDebauchery.esp")
+						McmConfig.AModList[8] = "Sanguines Debauchery : OFF"
+						SanguinesDebaucheryON = False
+					Endif
+				else
+					McmConfig.AModList[8] = "Sanguines Debauchery : OFF"
+					SanguinesDebaucheryON = False
+				endif
+			Endif
+			If DeviousFrameworkON
+				if Game.GetModByName("DeviousFramework.esm") != 255
+					If !GetFormFromFile(0xD62, "DeviousFramework.esm")
+						McmConfig.AModList[9] = "Devious Framework : OFF"
+						DeviousFrameworkON = False
+					Endif
+				else
+					McmConfig.AModList[9] = "Devious Framework : OFF"
+					DeviousFrameworkON = False
+				endif
+			Endif
+			If DeviouslyCursedLootON
+				If !GetFormFromFile(0x24495, "Deviously Cursed Loot.esp")
+					McmConfig.AModList[10] = "Deviously Cursed Loot : OFF"
+					DeviouslyCursedLootON = False
+				Endif
+			Endif
+			If LeashGameON
+				If !GetFormFromFile(0xD62, "Leash SimpleSlavery.esp")
+					McmConfig.AModList[10] = "Leash Game : OFF"
+					LeashGameON = False
 				Endif
 			Endif
 ;			If EFFon
@@ -340,8 +454,8 @@ Function Update(Int Vers = 0)
 	Endif
 	Install(True)
 	McmConfig.OnConfigInit()
-	Notification("Defeat updated to version v5.3.5")
-	Log("Defeat updated to version v5.3.5")
+	Notification("Defeat updated to v5.3.6 18112023")
+	Log("Defeat updated to v5.3.6 18112023")
 EndFunction
 
 Function Uninstall(Int loop = 0)
@@ -393,6 +507,7 @@ Endfunction
 Function Install(Bool Reconfigure = False)
 	If !Reconfigure
 		Start()
+		HotKeyInts = New Int[4] ;Patched by Bane 29112022
 		McmConfig.Install()
 		McmConfig.ModStatus = "$Enabled"
 	Endif
@@ -446,8 +561,8 @@ Function Install(Bool Reconfigure = False)
 	Killmoves[9] = (GetFormFromFile(0xF469D, "Skyrim.esm") As Idle) ; ShortD Sword to throat 				PA
 	Killmoves[10] = (GetFormFromFile(0xF9958, "Skyrim.esm") As Idle) ; Combo 3 punches						PA
 	Killmoves[11] = (GetFormFromFile(0x108A45, "Skyrim.esm") As Idle) ; ShortJ Push ground stomp head 		PA
-	Killmoves[12] = (GetFormFromFile(0x3131B30, "SexLabDefeat.esp") As Idle) ; DefeatPAvampfeedfront
-	Killmoves[13] = (GetFormFromFile(0x3131B2F, "SexLabDefeat.esp") As Idle) ; DefeatPAvampfeedback
+	Killmoves[12] = (GetFormFromFile(0x131B30, "SexLabDefeat.esp") As Idle) ; DefeatPAvampfeedfront 		;Bane Fixed Id 05/11/2023
+	Killmoves[13] = (GetFormFromFile(0x131B2F, "SexLabDefeat.esp") As Idle) ; DefeatPAvampfeedback			;Bane Fixed Id 05/11/2023
 	MiscIdles = New Idle[2]
 	MiscIdles[0] = (GetFormFromFile(0x13ECC, "Skyrim.esm") As Idle) 	; BleedoutStart
 	MiscIdles[1] = (GetFormFromFile(0x13ECE, "Skyrim.esm") As Idle) 	; BleedoutStop
@@ -469,11 +584,11 @@ Function Install(Bool Reconfigure = False)
 	TopicToSay[14] = (GetFormFromFile(0x26EC9, "Skyrim.esm") As Topic) ; Follower Agree
 	TopicToSay[15] = (GetFormFromFile(0x26EC3, "Skyrim.esm") As Topic) ; Follower Refuse
 	TopicToSay[16] = (GetFormFromFile(0x26E7D, "Skyrim.esm") As Topic) ; Follower MoralRefusal
-	TopicToSay[17] = (GetFormFromFile(0x31057DB, "SexLabDefeat.esp") As Topic)  ; Player victim commentaries
-	TopicToSay[18] = (GetFormFromFile(0x31057DD, "SexLabDefeat.esp") As Topic)  ; Forgive
-	TopicToSay[19] = (GetFormFromFile(0x311C7C2, "SexLabDefeat.esp") As Topic)  ; Witness comment
-	TopicToSay[20] = (GetFormFromFile(0x3108301, "SexLabDefeat.esp") As Topic)  ; Can I join comment
-	TopicToSay[21] = (GetFormFromFile(0x313BCE4, "SexLabDefeat.esp") As Topic)  ; CollateralComments
+	TopicToSay[17] = (GetFormFromFile(0x1057DB, "SexLabDefeat.esp") As Topic)  ; Player victim commentaries ;Bane Fixed Id 05/11/2023
+	TopicToSay[18] = (GetFormFromFile(0x1057DD, "SexLabDefeat.esp") As Topic)  ; Forgive					;Bane Fixed Id 05/11/2023
+	TopicToSay[19] = (GetFormFromFile(0x11C7C2, "SexLabDefeat.esp") As Topic)  ; Witness comment 			;Bane Fixed Id 05/11/2023
+	TopicToSay[20] = (GetFormFromFile(0x108301, "SexLabDefeat.esp") As Topic)  ; Can I join comment 		;Bane Fixed Id 05/11/2023
+	TopicToSay[21] = (GetFormFromFile(0x13BCE4, "SexLabDefeat.esp") As Topic)  ; CollateralComments 		;Bane Fixed Id 05/11/2023
 	SoundToPlay = New Sound[9]
 	SoundToPlay[0] = (GetFormFromFile(0x1E68D, "Skyrim.esm") As Sound) ; Sand throwing			 AMBDustDropImpactSD
 	SoundToPlay[1] = (GetFormFromFile(0x2A4A1, "Skyrim.esm") As Sound) ; Bow					 WPNBowFireSD
@@ -511,12 +626,15 @@ Function Install(Bool Reconfigure = False)
 	MiscVoicetypes[1] = (GetFormFromFile(0x1F1D2, "Skyrim.esm") As VoiceType)	; FalmerV CrFalmerVoice
 	MiscVoicetypes[2] = (GetFormFromFile(0x1F21D, "Skyrim.esm") As VoiceType)	; SpiderV CrFrostbiteSpiderVoice
 	MiscVoicetypes[3] = None 							; Riekling
-	HotKeyInts = New Int[4]
-	HotKeyInts[0] = 11	; Option key
-	HotKeyInts[1] = 42	; Modifier key
-	HotKeyInts[2] = 34	; Action key
-	HotKeyInts[3] = 37	; Surrender key
-	DefeatFactions
+
+	;Bane 04/01/2023  Leaves Hotkeys & MCM in an Inconsistent state after Reconfig - Init moved to defeatmcmscript *NB as a result Hotkeys are no longer reset to default values by Reconfig*
+	;HotKeyInts = New Int[4]
+	;HotKeyInts[0] = 11	; Option key
+	;HotKeyInts[1] = 42	; Modifier key
+	;HotKeyInts[2] = 34	; Action key
+	;HotKeyInts[3] = 37	; Surrender key
+
+	;DefeatFactions
 	DefeatFactions = New Faction[3]
 	DefeatFactions[0] = (GetFormFromFile(0x1D92, "SexLabDefeat.esp") As Faction)	; DefeatFaction
 	DefeatFactions[1] = (GetFormFromFile(0x8C862, "SexLabDefeat.esp") As Faction) 	; AggFaction
@@ -531,7 +649,7 @@ Function Install(Bool Reconfigure = False)
 	MiscSpells[3] = (GetFormFromFile(0x6E96A, "SexLabDefeat.esp") As Spell)		; NVNAssautSPL
 	MiscSpells[4] = (GetFormFromFile(0x107D99, "SexLabDefeat.esp") As Spell)	; SexCrimeSPL
 	MiscSpells[5] = (GetFormFromFile(0xD44D0, "SexLabDefeat.esp") As Spell)		; ImmunitySPL
-	MiscSpells[6] = (GetFormFromFile(0x3138C54, "SexLabDefeat.esp") As Spell)	; CollateralSafetySPL
+	MiscSpells[6] = (GetFormFromFile(0x138C54, "SexLabDefeat.esp") As Spell)	; CollateralSafetySPL		;Bane Fixed Id 05/11/2023
 	MiscMagicEffects = New MagicEffect[5]
 	MiscMagicEffects[0] = (GetFormFromFile(0xD44CF, "SexLabDefeat.esp") As MagicEffect) ; ImmunityEFF
 	MiscMagicEffects[1] = (GetFormFromFile(0x4DE88, "SexLabDefeat.esp") As MagicEffect) ; HKActionEFF
@@ -552,8 +670,8 @@ Function Install(Bool Reconfigure = False)
 	MiscPackages[10] = (GetFormFromFile(0x86C3D, "SexLabDefeat.esp") As Package) ; NVNAgressorPck10
 
 	Gold = (GetFormFromFile(0x0F, "Skyrim.esm") As MiscObject) ; Gold
-	DefeatEmptyOutfit = (GetFormFromFile(0x3148F4E, "SexLabDefeat.esp") As Outfit)
-	PlayerMoan = (GetFormFromFile(0x3149F75, "SexLabDefeat.esp") As GlobalVariable)	
+	DefeatEmptyOutfit = (GetFormFromFile(0x148F4E, "SexLabDefeat.esp") As Outfit)					;Bane Fixed Id 05/11/2023
+	PlayerMoan = (GetFormFromFile(0x149F75, "SexLabDefeat.esp") As GlobalVariable)					;Bane Fixed Id 05/11/2023
 
 	; Sellout stuff v
 	ArgonianRace = (GetFormFromFile(0x13740, "Skyrim.esm") As Race)
@@ -575,21 +693,21 @@ Function Install(Bool Reconfigure = False)
 	ThalmorFaction = (GetFormFromFile(0x39F26, "Skyrim.esm") As Faction) ; Wants CWImperialFaction
 	CWImperialFaction = (GetFormFromFile(0x2BF9A, "Skyrim.esm") As Faction) ; Wants stormcloak
 
-	SOLevel = (GetFormFromFile(0x3135674, "SexLabDefeat.esp") As GlobalVariable)
-	SOUnique = (GetFormFromFile(0x3135672, "SexLabDefeat.esp") As GlobalVariable)
-	SOPure = (GetFormFromFile(0x3135BD8, "SexLabDefeat.esp") As GlobalVariable)
-	SORaceBonus = (GetFormFromFile(0x3136BFF, "SexLabDefeat.esp") As GlobalVariable)
-	SOFactionBonus = (GetFormFromFile(0x3136C00, "SexLabDefeat.esp") As GlobalVariable)
-	SOSexCombination = (GetFormFromFile(0x313C7B1, "SexLabDefeat.esp") As GlobalVariable)
-	SOWitness = (GetFormFromFile(0x313C7B0, "SexLabDefeat.esp") As GlobalVariable)
-	SORelation = (GetFormFromFile(0x31402FE, "SexLabDefeat.esp") As GlobalVariable)
-	SOMorality = (GetFormFromFile(0x31402FF, "SexLabDefeat.esp") As GlobalVariable)
-	SOAlreadyProstituedTo = (GetFormFromFile(0x3143E44, "SexLabDefeat.esp") As GlobalVariable) 
+	SOLevel = (GetFormFromFile(0x135674, "SexLabDefeat.esp") As GlobalVariable)					;Bane Fixed Id 05/11/2023
+	SOUnique = (GetFormFromFile(0x135672, "SexLabDefeat.esp") As GlobalVariable)				;Bane Fixed Id 05/11/2023
+	SOPure = (GetFormFromFile(0x135BD8, "SexLabDefeat.esp") As GlobalVariable)					;Bane Fixed Id 05/11/2023
+	SORaceBonus = (GetFormFromFile(0x136BFF, "SexLabDefeat.esp") As GlobalVariable)				;Bane Fixed Id 05/11/2023
+	SOFactionBonus = (GetFormFromFile(0x136C00, "SexLabDefeat.esp") As GlobalVariable)			;Bane Fixed Id 05/11/2023
+	SOSexCombination = (GetFormFromFile(0x13C7B1, "SexLabDefeat.esp") As GlobalVariable)		;Bane Fixed Id 05/11/2023
+	SOWitness = (GetFormFromFile(0x13C7B0, "SexLabDefeat.esp") As GlobalVariable)				;Bane Fixed Id 05/11/2023
+	SORelation = (GetFormFromFile(0x1402FE, "SexLabDefeat.esp") As GlobalVariable)				;Bane Fixed Id 05/11/2023
+	SOMorality = (GetFormFromFile(0x1402FF, "SexLabDefeat.esp") As GlobalVariable)				;Bane Fixed Id 05/11/2023
+	SOAlreadyProstituedTo = (GetFormFromFile(0x143E44, "SexLabDefeat.esp") As GlobalVariable) 	;Bane Fixed Id 05/11/2023
 
-	SOValue = (GetFormFromFile(0x3135673, "SexLabDefeat.esp") As GlobalVariable)
-	SOValuePimp = (GetFormFromFile(0x31376C9, "SexLabDefeat.esp") As GlobalVariable)
-	SOValuePimp2 = (GetFormFromFile(0x314BFD3, "SexLabDefeat.esp") As GlobalVariable)
-	SOValueGuard = (GetFormFromFile(0x31376CA, "SexLabDefeat.esp") As GlobalVariable)
+	SOValue = (GetFormFromFile(0x135673, "SexLabDefeat.esp") As GlobalVariable)					;Bane Fixed Id 05/11/2023
+	SOValuePimp = (GetFormFromFile(0x1376C9, "SexLabDefeat.esp") As GlobalVariable)				;Bane Fixed Id 05/11/2023
+	SOValuePimp2 = (GetFormFromFile(0x14BFD3, "SexLabDefeat.esp") As GlobalVariable)			;Bane Fixed Id 05/11/2023
+	SOValueGuard = (GetFormFromFile(0x1376CA, "SexLabDefeat.esp") As GlobalVariable)			;Bane Fixed Id 05/11/2023
 	SOLastInSack = (MiscQuests[2].GetAliasByName("LastInSack") As ReferenceAlias)
 	SOLastInSackAggressor = (MiscQuests[2].GetAliasByName("LastInSackAggressor") As ReferenceAlias)	; PlayerActionQst
 	SOLastInSackTimer = (MiscQuests[2].GetAliasByName("LastInSackHandOverTimer") As ReferenceAlias) ; PlayerActionQst
@@ -1623,11 +1741,12 @@ Function SurrenderData(Actor Victim, Actor Aggressor)
 	Endif
 ;	PlayerScr.SetSexualAssault(IsThereSexAggressor)
 	SexAggressor = IsSexualTension(Aggressor, None, False)
-	If SexAggressor
+	If SexAggressor ; Bane 04/01/2023 This function causes the actors to be orphaned in Collateral[0] excluding them from assault scenes and causing PlayerScr.StillBusy() to remain true, hanging the mod when the assaults end
 		PlayerScr.CollaAgg[0].ForceRefTo(Aggressor)
 		PlayerScr.CollaVic[0].ForceRefTo(SexAggressor)
 		FollowerClothed = IsClothed(PlayerScr.CollaVic[0].GetReference() As Actor)
 		IsThereCollateralVictim = True
+		SetIntValue(Player, "defeat_SurrenderFlag", 1) ; Bane 04/01/2023 Set a flag to allow the aliases to be cleared on the first run of PlayerScr.Collateral() following the Surrender scene
 	Else
 		PlayerScr.CollaAgg[0].Clear()
 		PlayerScr.CollaVic[0].Clear()
@@ -2370,10 +2489,10 @@ Function DefeatMoan(Actor Speaker, Actor Target, String Comment, Bool ballow = T
 	TopicToSay[14] = (GetForm(0x26EC9) As Topic) ; Follower Agree
 	TopicToSay[15] = (GetForm(0x26EC3) As Topic) ; Follower Refuse
 	TopicToSay[16] = (GetForm(0x26E7D) As Topic) ; Follower MoralRefusal
-	TopicToSay[17] = (GetFormFromFile(0x31057DB, "SexLabDefeat.esp") As Topic)  ; Player victim commentaries
-	TopicToSay[18] = (GetFormFromFile(0x31057DD, "SexLabDefeat.esp") As Topic)  ; Forgive
-	TopicToSay[19] = (GetFormFromFile(0x311C7C2, "SexLabDefeat.esp") As Topic)  ; Witness comment
-	TopicToSay[20] = (GetFormFromFile(0x3108301, "SexLabDefeat.esp") As Topic)  ; Can I join comment/;
+	TopicToSay[17] = (GetFormFromFile(0x1057DB, "SexLabDefeat.esp") As Topic)  ; Player victim commentaries ;Bane Fixed Id 05/11/2023
+	TopicToSay[18] = (GetFormFromFile(0x1057DD, "SexLabDefeat.esp") As Topic)  ; Forgive					;Bane Fixed Id 05/11/2023
+	TopicToSay[19] = (GetFormFromFile(0x11C7C2, "SexLabDefeat.esp") As Topic)  ; Witness comment 			;Bane Fixed Id 05/11/2023
+	TopicToSay[20] = (GetFormFromFile(0x108301, "SexLabDefeat.esp") As Topic)  ; Can I join comment/; 		;Bane Fixed Id 05/11/2023
 EndFunction
 
 Function DefeatPlayAnimation(Actor Target, String AnimType) ; Play an animation depending of the situation of the player.
@@ -3000,6 +3119,18 @@ String Function SetTags(String Tag)
 	Else
 		TagList = SexLab.GetAllAnimationTags()
 	Endif
+	StorageUtil.StringListCopy(none, "Defeat_TagList", TagList)
+	Int ArrayLength = StorageUtil.StringListCount(none, "Defeat_TagList")
+	Int ArrayIndex = -1
+	StorageUtil.StringListAdd(none, "Defeat_NewTagList", "Clear Tags")
+	while ArrayLength > 0
+		ArrayLength -= 1
+		ArrayIndex += 1
+		StorageUtil.StringListAdd(none, "Defeat_NewTagList", StringListGet(none, "Defeat_TagList", ArrayIndex))
+	endwhile
+	StorageUtil.StringListResize(none, "Defeat_TagList", ArrayLength + 1)
+	StorageUtil.StringListInsert(none, "Defeat_TagList", ArrayLength, "ClearTags")
+	TagList = StorageUtil.StringListToArray(none, "Defeat_NewTagList")
 	Int Result
 	If (Tag != "")
 		Result = UILIB.ShowList("$Choose a tag", TagList, -1, -1)
@@ -3008,6 +3139,9 @@ String Function SetTags(String Tag)
 	Endif
 	If (Result != -1)
 		String TheText = TagList[Result]
+		if TheText == "Clear Tags"
+			Return ""
+		endif
 		If (Tag != "")
 			Tag = Tag+","+TheText
 		Else
@@ -3112,9 +3246,17 @@ sslThreadModel Function SexLabScene(Actor Target, Actor Actor1, Actor Actor2 = N
 		Else
 			If !Make.HasCreature
 				If IgnoreGT
-					Anims = SexLab.GetAnimationsByType(ActorCount, Aggressive = False)
+					if McmConfig.UseDDFilter && DDon
+						Anims = PickDDAnimationsByTag(Positions, ActorCount)
+					else
+						Anims = SexLab.GetAnimationsByType(ActorCount, Aggressive = False)
+					endif
 				Else
-					Anims = SexLab.GetAnimationsByTags(ActorCount, GenderTag+","+Tags, SupressTags, TagsRequireAll)
+					if McmConfig.UseDDFilter && DDon
+						Anims = PickDDAnimationsByTag(Positions, ActorCount, GenderTag+","+Tags, SupressTags, TagsRequireAll)
+					else
+						Anims = SexLab.GetAnimationsByTags(ActorCount, GenderTag+","+Tags, SupressTags, TagsRequireAll)
+					endif
 				Endif
 			Else
 				Actor TheCreature
@@ -3138,9 +3280,17 @@ sslThreadModel Function SexLabScene(Actor Target, Actor Actor1, Actor Actor2 = N
 			Anims = CustomAnimations
 		Elseif !Make.HasCreature
 			If (Tags == "") && IsAggressive
-				Anims = SexLab.GetAnimationsByType(ActorCount, Aggressive = True)
+				if McmConfig.UseDDFilter && DDon
+					Anims = PickDDAnimationsByTag(Positions, ActorCount, "Aggressive")
+				else
+					Anims = SexLab.GetAnimationsByType(ActorCount, Aggressive = True)
+				endif
 			Else
-				Anims = SexLab.GetAnimationsByTags(ActorCount, Tags, SupressTags, TagsRequireAll)
+				if McmConfig.UseDDFilter && DDon
+					Anims = PickDDAnimationsByTag(Positions, ActorCount, Tags, SupressTags, TagsRequireAll)
+				else
+					Anims = SexLab.GetAnimationsByTags(ActorCount, Tags, SupressTags, TagsRequireAll)
+				endif
 			Endif
 		Else
 			Actor TheCreature
@@ -3158,8 +3308,11 @@ sslThreadModel Function SexLabScene(Actor Target, Actor Actor1, Actor Actor2 = N
 	If (Anims.length == 0)
 		Log("SexLabScene - No animations were found, the script will set default aggressive animations")
 		If !Make.HasCreature
-			Anims = SexLab.GetAnimationsByType(ActorCount, Aggressive = True)
-		Else
+			if McmConfig.UseDDFilter && DDon
+				Anims = PickDDAnimationsByTag(Positions, ActorCount, "Aggressive")
+			else
+				Anims = SexLab.GetAnimationsByType(ActorCount, Aggressive = True)
+			endif
 			Actor TheCreature
 			Int i = Positions.length
 			While (i > 0)
@@ -3201,6 +3354,14 @@ sslThreadModel Function SexLabScene(Actor Target, Actor Actor1, Actor Actor2 = N
 	Make.SetAnimations(Anims)	
 	Make.DisableBedUse()
 ;	CustomAnimations = New sslBaseAnimation[1]
+;	Not Used
+;	StorageUtil.FormListAdd(none, "Sexlab_ForceAggressorUnequip", Make, False)
+;	StorageUtil.IntListAdd(none, "Sexlab_ForceAggressorUnequipSlots_" + Make, 32, false)
+;	StorageUtil.FormListAdd(none, "SO_SecretSetting_Thread", Make) ; SLSO addon. Not used
+;	StorageUtil.SetIntValue(none, "SO_SecretSetting_MaxStage_" + Make, 50)
+;	StorageUtil.SetIntValue(none, "SO_SecretSetting_MinStage_" + Make, 10)
+;	StorageUtil.SetIntValue(none, "SO_SecretSetting_Victim_MinOrgasms_" + Make, 4)
+;	StorageUtil.SetIntValue(none, "SO_SecretSetting_Aggressor_MinOrgasms_" + Make, 4)																				 																	   
 ;	log("SexLabScene / IgnoreGT - "+IgnoreGT+" / SortActors - "+SortActors+" / Tags - "+Tags+" / SupressTags - "+SupressTags+" / TagsRequireAll - "+TagsRequireAll+" / FemaleFirst - "+FemaleFirst+" / IsAggressive - "+IsAggressive)
 	Return Make
 EndFunction
@@ -3274,7 +3435,7 @@ Faction CWImperialFaction
 Faction CrimeFactionSons
 
 Function SOCleanUp()
-	Scene SOProstitute = (GetFormFromFile(0x313F2C9, "SexLabDefeat.esp") As Scene)
+	Scene SOProstitute = (GetFormFromFile(0x13F2C9, "SexLabDefeat.esp") As Scene) 			;Bane Fixed Id 05/11/2023
 	If SOProstitute.IsPlaying()
 		SOProstitute.Stop()
 	Endif
@@ -3687,4 +3848,41 @@ Function SOSetXRaceValues()
 			Endif
 		Endif
 	Endif
+EndFunction
+Bool Function CheckActorsBound(actor[] Actors)
+	if DefeatUtil2.CheckBound(Actors)
+		return True
+	else
+		return False
+	endif
+EndFunction
+
+sslBaseAnimation[] Function PickDDAnimationsByTag(actor[] TargetActors, Int ActorCount, string Tags = "", string SupressedTags = "", Bool RequireAll = False)
+	PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - Start")
+	sslBaseAnimation[] Anims
+	if !CheckActorsBound(TargetActors)
+		PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - No bound actors")
+		Anims = SexLab.GetAnimationsByTags(ActorCount, Tags, SupressedTags, RequireAll)
+		PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - Animations return: " + Anims.Length)
+		return Anims
+	endif
+	sslBaseAnimation[] Anims2
+	if RequireAll == True
+		PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - RequireAll")
+		Anims = DefeatUtil2.SelectValidDDAnimations(actors = TargetActors, count = ActorCount, forceaggressive = False, includetag = Tags, suppresstag = SupressedTags)
+		PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - Animations return: " + Anims.Length)
+		return Anims
+	else
+		String[] tagArray = PapyrusUtil.StringSplit(Tags, ",")
+		int Arraylength = tagArray.length
+		PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - Number of Tags: " + Arraylength)
+	while Arraylength > 0
+		Anims2 = DefeatUtil2.SelectValidDDAnimations(actors=TargetActors, count=ActorCount, forceaggressive = False, includetag = tagArray[Arraylength - 1], suppresstag = SupressedTags)
+		PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - Animations for Tag '" + tagArray[Arraylength - 1] + "': " + Anims2.Length)
+		Arraylength -= 1
+		Anims = SexLab.MergeAnimationLists(Anims2, Anims)
+	endwhile
+		PlayerScr.DefeatLog("[Defeat] - DefeatConfig - PickDDAnimationsByTag - Animations return: " + Anims.Length)
+		return Anims
+	endif
 EndFunction

@@ -6,7 +6,7 @@ Scriptname defe_TIF__03115112 Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-ActionScr.TheRape(AkSpeaker, Player, None, True)
+ActionScr.OptionRape(AkSpeaker, Player, None, True)
 ;END CODE
 EndFunction
 ;END FRAGMENT
