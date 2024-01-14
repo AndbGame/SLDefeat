@@ -23,6 +23,7 @@ Event OnWidgetReset()
 	Y				= McmConfig.AxisY ; 650.0
 	FillDirection 	= "Right"
 	UI.Invoke(HUD_MENU, WidgetRoot + ".initCommit")
+	defeat_skse_api.DefeatQTEMeterInit(WidgetRoot)
 EndEvent
 ; @overrides SKI_WidgetBase
 String Function GetWidgetSource()

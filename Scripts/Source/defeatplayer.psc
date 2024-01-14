@@ -88,6 +88,9 @@ FormList[] Property MiscFormLists Auto Hidden
 Scene[] Property MiscScenes Auto Hidden
 Message[] Property MiscMessages Auto Hidden
 
+Event OnKnockDown(string eventName, string argString, float argNum, form sender)
+EndEvent
+
 Event OnDeath(Actor akKiller)
 	Clean()
 Endevent
@@ -234,7 +237,36 @@ State Running
 			Player.Kill()
 		Endif
 	EndFunction
+
+	Event OnKnockDown(string eventName, string argString, float argNum, form sender)
+		Detect.Start()
+		DefeatLog(Utility.GetCurrentRealTime() + " [Defeat] - OnKnockDown")
+		Actor Aggressor = (sender As Actor)
+		IsAggressorValid(Aggressor) ; set isCreature
+		LastHitAggressor = Aggressor
+		if argString == "KNONKOUT"
+			IsKnockout = true
+		Elseif argString == "STANDING_STRUGGLE"
+			StandingStruggle = true
+		Else
+		EndIf
+
+		If IsKnockout
+			SceneSettings(ForceStayDown = 1, ForceResist = 0, ForceRelation = 1, ForceWitness = 0)
+			TheKnockDown(Aggressor)
+		Elseif (StandingStruggle && !IsCreature && (Aggressor.GetDistance(Player) < 500.0) && RessConfig.SexInterest(Aggressor, True, False))
+			SceneSettings(ForceResist = 0, ForceRelation = 0)
+			KnockDownQTE(Aggressor)
+		Else
+			SceneSettings()
+			TheKnockDown(Aggressor)
+		Endif
+		Detect.Stop()		
+	EndEvent
+
 	Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
+		return
+		
 		if !OnHitBusy
 			ProcessOnHit(akAggressor, akSrc, akProjectile, abPowerAttack, abSneakAttack, abBashAttack, abHitBlocked)
 		else
@@ -3158,6 +3190,8 @@ Event OnPlayerLoadGame()
 	zbfWornDevice = KeyWord.GetKeyword("zbfWornDevice")
 	ToysToy = KeyWord.GetKeyword("ToysToy")
 
+	RegisterForModEvent("Defeat_SKSE_On_Knock_Down", "OnKnockDown")
+	DefeatLog(Utility.GetCurrentRealTime() + " [Defeat] - OnKnockDown registered")
 EndEvent
 
 Function RapeUnequipBelt(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
@@ -4039,4 +4073,8 @@ Function DefeatLog(string TargetString)
 	if McmConfig.EnableLog
 		Debug.Trace(TargetString)
 	endif
+EndFunction
+
+Function NextStep(string Step)
+	Debug.Trace("[Defeat] - NextStep " + Step + " not implemented or obsolete!!!")
 EndFunction
