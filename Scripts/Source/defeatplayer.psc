@@ -88,7 +88,7 @@ FormList[] Property MiscFormLists Auto Hidden
 Scene[] Property MiscScenes Auto Hidden
 Message[] Property MiscMessages Auto Hidden
 
-Event OnKnockDown(string eventName, string argString, float argNum, form sender)
+Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
 EndEvent
 
 Event OnDeath(Actor akKiller)
@@ -238,15 +238,16 @@ State Running
 		Endif
 	EndFunction
 
-	Event OnKnockDown(string eventName, string argString, float argNum, form sender)
+	Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
+		DefeatLog("[Defeat] - OnSLDefeatPlayerKnockDown " + eventName + " from " + akAggressor)
 		Detect.Start()
 		DefeatLog(Utility.GetCurrentRealTime() + " [Defeat] - OnKnockDown")
-		Actor Aggressor = (sender As Actor)
+		Actor Aggressor = (akAggressor As Actor)
 		IsAggressorValid(Aggressor) ; set isCreature
 		LastHitAggressor = Aggressor
-		if argString == "KNONKOUT"
+		if eventName == "KNONKOUT"
 			IsKnockout = true
-		Elseif argString == "STANDING_STRUGGLE"
+		Elseif eventName == "STANDING_STRUGGLE"
 			StandingStruggle = true
 		Else
 		EndIf
@@ -3190,8 +3191,6 @@ Event OnPlayerLoadGame()
 	zbfWornDevice = KeyWord.GetKeyword("zbfWornDevice")
 	ToysToy = KeyWord.GetKeyword("ToysToy")
 
-	RegisterForModEvent("Defeat_SKSE_On_Knock_Down", "OnKnockDown")
-	DefeatLog(Utility.GetCurrentRealTime() + " [Defeat] - OnKnockDown registered")
 EndEvent
 
 Function RapeUnequipBelt(Actor Target, Actor Aggressor, Armor WornItem, Armor RenderedItem = None)
