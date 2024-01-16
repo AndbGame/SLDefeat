@@ -12,35 +12,37 @@ Event OnInit()
 	Actor Victim = (MiscAliasRefs[0].GetReference() As Actor)
 	Actor Aggressor = (MiscAliasRefs[1].GetReference() As Actor)
 	Actor Witness = (MiscAliasRefs[2].GetReference() As Actor)
-	If ((Witness == MiscAliasRefs[5].GetReference()) || (Witness == MiscAliasRefs[6].GetReference())) ; Friend & Follower
-		RessConfig.AWitness = Witness
-		DefeatConfig.Log("Witness type friend/follower found - "+Witness+" / Name - "+Witness.GetLeveledActorBase().GetName())
-		If Victim.HasKeywordString("SexLabActive")
-			RessConfig.UILib.ShowNotification("${"+Witness.GetLeveledActorBase().GetName()+"} witnesses what is happenning!", "#CD4C4C")
-			Witness.Say(RessConfig.TopicToSay[19], Victim) ; Witness comment
-			Witness.StartCombat(Aggressor)
-;			Aggressor.StartCombat(Witness)
-		Endif
-	Elseif (Witness == MiscAliasRefs[4].GetReference()) ; Guard
-		RessConfig.AWitness = Witness
-		DefeatConfig.Log("Witness type guard found - "+Witness+" / Name - "+Witness.GetLeveledActorBase().GetName())
-		If Victim.HasKeywordString("SexLabActive")
-			RessConfig.UILib.ShowNotification("${"+Witness.GetLeveledActorBase().GetName()+"} witnesses what is happenning!", "#CD4C4C")
-			Witness.Say(RessConfig.TopicToSay[19], Victim) ; Witness comment
-			Witness.StartCombat(Aggressor)
-		Endif
-	Elseif (Witness == MiscAliasRefs[3].GetReference()) ; Accomplice
-		If Victim.HasKeywordString("SexLabActive")
-			DefeatConfig.Log("Witness type accomplice - "+Witness+" / Name - "+Witness.GetLeveledActorBase().GetName())
-			Int Slot = PlayerScr.GetAggressors().Find(None)
-			If (Slot != -1)
-				If RessConfig.IsSexualAssaulter(Witness, Player, True)
-					RessConfig.UILib.ShowNotification("${"+Witness.GetLeveledActorBase().GetName()+"} witnesses what is happenning and decide to join!", "#CD4C4C")
-					PlayerScr.AddAggressor(Witness, Slot)
-					Witness.Say(RessConfig.TopicToSay[20], Player) ; Can I join
+	If Witness ; Added check for None 02/03/22
+		If ((Witness == MiscAliasRefs[5].GetReference()) || (Witness == MiscAliasRefs[6].GetReference())) ; Friend & Follower
+			RessConfig.AWitness = Witness
+			DefeatConfig.Log("Witness type friend/follower found - "+Witness+" / Name - "+Witness.GetLeveledActorBase().GetName())
+			If Victim.HasKeywordString("SexLabActive")
+				RessConfig.UILib.ShowNotification("${"+Witness.GetLeveledActorBase().GetName()+"} notices what is happening!", "#CD4C4C")
+				Witness.Say(RessConfig.TopicToSay[19], Victim) ; Witness comment
+				Witness.StartCombat(Aggressor)
+	;			Aggressor.StartCombat(Witness)
+			Endif
+		Elseif (Witness == MiscAliasRefs[4].GetReference()) ; Guard
+			RessConfig.AWitness = Witness
+			DefeatConfig.Log("Witness type guard found - "+Witness+" / Name - "+Witness.GetLeveledActorBase().GetName())
+			If Victim.HasKeywordString("SexLabActive")
+				RessConfig.UILib.ShowNotification("${"+Witness.GetLeveledActorBase().GetName()+"} notices what is happening!", "#CD4C4C")
+				Witness.Say(RessConfig.TopicToSay[19], Victim) ; Witness comment
+				Witness.StartCombat(Aggressor)
+			Endif
+		Elseif (Witness == MiscAliasRefs[3].GetReference()) ; Accomplice
+			If Victim.HasKeywordString("SexLabActive")
+				DefeatConfig.Log("Witness type accomplice - "+Witness+" / Name - "+Witness.GetLeveledActorBase().GetName())
+				Int Slot = PlayerScr.GetAggressors().Find(None)
+				If (Slot != -1)
+					If RessConfig.IsSexualAssaulter(Witness, Player, True)
+						RessConfig.UILib.ShowNotification("${"+Witness.GetLeveledActorBase().GetName()+"} sees what is happening and decides to join in!", "#CD4C4C")
+						PlayerScr.AddAggressor(Witness, Slot)
+						Witness.Say(RessConfig.TopicToSay[20], Player) ; Can I join
+					Endif
 				Endif
 			Endif
 		Endif
-	Endif
+	EndIf
 	Stop()
 EndEvent

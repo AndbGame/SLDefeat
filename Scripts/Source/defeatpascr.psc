@@ -16,6 +16,7 @@ FormList Property ForbiddenLocList Auto
 String CustomEvent
 GlobalVariable GameHour
 
+Quest daymoyl_Monitor ;Bane 18/11/2023
 ;;
 ImageSpaceModifier Property ISFadeOut Auto
 
@@ -26,6 +27,7 @@ Function Install()
 	PostAssaultQsts[2] = (GetFormFromFile(0x10EFF0, "SexLabDefeat.esp") As Quest) 	; SequesteredQST
 	PostAssaultQsts[3] = (GetFormFromFile(0xF8B09, "SexLabDefeat.esp") As Quest) 	; FollowerKidnappingQST
 	GameHour = (GetFormFromFile(0x00038, "Skyrim.esm") As GlobalVariable)
+	daymoyl_Monitor = Quest.GetQuest("daymoyl_Monitor") ;Bane 18/11/2023
 EndFunction
 Function Configure()
 EndFunction
@@ -66,7 +68,7 @@ Function PickEvent()
 			Return
 		Endif
 		
-		If Defeat.DAon
+		If daymoyl_Monitor.IsRunning()  ;Bane 18/11/2023 - Was using Defeat.DAon but this only checked for a DAYMOYL install, not whether it was active
 			If (RandomInt(1, 100) < McmConfig.DAsChance)
 				RegisterForModEvent("da_StartRecoverSequence", "DARecoverSequence")
 				Int DA = ModEvent.Create("da_ForceBlackout")

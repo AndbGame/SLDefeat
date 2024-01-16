@@ -88,6 +88,26 @@ FormList[] Property MiscFormLists Auto Hidden
 Scene[] Property MiscScenes Auto Hidden
 Message[] Property MiscMessages Auto Hidden
 
+KeyWord SexLabNoStrip
+Keyword zad_Lockable
+Keyword zad_QuestItem
+Keyword _SLMC_MCDevice
+Keyword SOS_Underwear
+Keyword SOS_Genitals
+Keyword zbfWornDevice
+Keyword ToysToy
+
+Event OnPlayerLoadGame() 
+	SexLabNoStrip = KeyWord.GetKeyword("SexLabNoStrip") ;Bane - Keywords Added to provide full Strip Item Filtering in V26092023
+	zad_Lockable  = KeyWord.GetKeyword("zad_Lockable")
+	zad_QuestItem = KeyWord.GetKeyword("zad_QuestItem")
+	_SLMC_MCDevice = KeyWord.GetKeyword("_SLMC_MCDevice")
+	SOS_Underwear = KeyWord.GetKeyword("SOS_Underwear")
+	SOS_Genitals = KeyWord.GetKeyword("SOS_Genitals")
+	zbfWornDevice = KeyWord.GetKeyword("zbfWornDevice")
+	ToysToy = KeyWord.GetKeyword("ToysToy")
+EndEvent
+
 Event OnDeath(Actor akKiller)
 	Clean()
 Endevent
@@ -120,7 +140,7 @@ Function Install()
 	MiscScenes[1] = (GetFormFromFile(0xABD69, "SexLabDefeat.esp") As Scene) ; SCEscape
 	MiscScenes[2] = (GetFormFromFile(0xBD0C9, "SexLabDefeat.esp") As Scene) ; SCRobbing
 	MiscScenes[3] = none;(GetFormFromFile(0xB54B2, "SexLabDefeat.esp") As Scene) ; SCCollateral
-	ComeOverHereSPL = (GetFormFromFile(0x3145ED4, "SexLabDefeat.esp") As Spell)
+	ComeOverHereSPL = (GetFormFromFile(0x145ED4, "SexLabDefeat.esp") As Spell)						;Bane Fixed ID 05/11/2023
 	ComeOverHereAlias = (GetOwningQuest().GetAliasByName("ComeOverHere") As ReferenceAlias)
 EndFunction
 Function Uninstall()
@@ -136,6 +156,9 @@ Function Hkrefresh()
 	RegisterForKey(RessConfig.HotKeyInts[3]) ; Surrender key
 EndFunction
 State Inactive
+	;Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+	;EndEvent
 EndState
 
 String Property ForcedScene = "" Auto Hidden
@@ -161,6 +184,7 @@ Function SceneSettings( String ForceScenario = "",	String ForceEvent = "",		Int 
 			Scenario = McmConfig.KDScenario
 		Endif
 	Endif
+	SetStringValue(Player, "defeat_Scenario", scenario) ;Bane 08/01/2023 Save Scenario for use in DefeatPlayerFollowerScr.psc 
 	If (ForcePostAssaultOnly == 3)
 		AllowPostAssaultOnly = False
 	Else
@@ -211,6 +235,9 @@ EndFunction
 Function TriggerBleedOut()
 EndFunction
 State Running
+	;Event OnBeginState()
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+	;EndEvent
 	Function TriggerBleedOut()
 		If McmConfig.PlayerEssential && LastHitAggressor && CheckAggressor(LastHitAggressor) && (LastHitAggressor.GetDistance(Player) < FarMaxDist) && DefeatTriggerActive(LastHitAggressor)
 			Player.RestoreActorValue("Health", ((Player.GetActorValuePercentage("Health") * 100) - 80))
@@ -242,6 +269,7 @@ State Running
 								TheKnockDown(Aggressor)
 							Endif
 							Detect.Stop()
+							
 							Return
 						Endif
 					Endif
@@ -387,6 +415,8 @@ State ForceGreetWait																			;===== ForceGreetWait
 	Event OnBeginState()
 		Time = -1.0
 		RegisterForSingleUpdate(1.0)
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
 	EndEvent
 	Event OnUpdate()
 		Time += 1
@@ -499,6 +529,7 @@ Function TheKnockDown(Actor Aggressor = None)
 			TheRape.SetHook("DefeatPvic")
 			sslThreadController Thread = TheRape.StartThread()
 			If Thread
+				;FormListAdd(Player, "SexLabDefeat_Aggressors", TheNext) ;Bane - 18/11/2023
 				RessConfig.Weakenings(Player, RemoveSpl = True)
 				Player.AddSpell(RessConfig.MiscSpells[1], False) ; DebuffConsSPL
 				Raped = True
@@ -569,7 +600,10 @@ State KnockedOut
 		Wait(3)
 		RegisterForAnimationEvent(Player, "GetUpEnd")
 		SetPlayerAiDriven(False) ; makes the player get up during black screen
+
+			;ConsoleUtil.PrintMessage("State -> " + GetState())
 	EndEvent
+
 	Event OnAnimationEvent(ObjectReference akSource, string asEventName)
 		UnregisterForAnimationEvent(Player, "GetUpEnd")
 		KnockdownFollowers()
@@ -647,6 +681,7 @@ Function KnockoutProceed()
 			TheRape.SetHook("DefeatPvic")
 			sslThreadController Thread = TheRape.StartThread()
 			If Thread
+				;FormListAdd(Player, "SexLabDefeat_Aggressors", TheNext) ;Bane - 18/11/2023
 				RessConfig.Weakenings(Player, RemoveSpl = True)
 				Player.AddSpell(RessConfig.MiscSpells[1], False) ; DebuffConsSPL
 				Raped = True
@@ -844,6 +879,7 @@ Bool Function CheckActor(Actor Target = None)
 			TheAggressors[i].Clear()
 			NumAgg -= 1
 			DefeatConfig.Log("CheckActor Remove aggressor - "+Target+" / Slot - "+i)
+			FormListRemove(Player, "defeat_SceneAggressors", Target) ;Bane 08/01/2023 Remove from Non-Volatile Scene Aggressor List
 			Return False
 		Endif
 		i = Accomplices.Find(Target)
@@ -851,6 +887,7 @@ Bool Function CheckActor(Actor Target = None)
 			Accomplices[i] = None
 			TheAggressors[i + 5].Clear()
 			DefeatConfig.Log("CheckActor Remove accomplice - "+Target+" / Slot - "+i)
+			FormListRemove(Player, "defeat_SceneAccomplices", Target) ;Bane 08/01/2023 Remove from Non-Volatile Scene Accomplice List
 			Return False
 		Endif
 	Endif
@@ -893,6 +930,8 @@ Bool Function IsVampireLord()
 EndFunction
 ;=============================================================================================================================== NPCS HANDLING
 Function SetAggressors(Actor Agg = None)
+	FormListClear(Player, "defeat_SceneAggressors")  ;Bane 08/01/2023 - Reset Non-Volatile scene aggressor & accomplice Lists
+	FormListClear(Player, "defeat_SceneAccomplices")
 	If (Agg && Aggressors.Find(Agg) == -1)
 		AddAggressor(Agg, 0)
 	Endif
@@ -905,6 +944,7 @@ Function SetAggressors(Actor Agg = None)
 				Int Slot = Aggressors.Find(None)
 				If (RessConfig.SexCombination(Reference, Player, True) && (Slot != -1))
 					Aggressors[Slot] = Reference
+					FormListAdd(Player, "defeat_SceneAggressors", Reference, False) ;Bane 08/01/2023 Setting Non-Volatile Scene Follower List
 					TheAggressors[Slot].ForceRefTo(Reference)
 					DefeatConfig.Log("SetAggressors Aggressor / Slot filled - "+Slot+" // Aggressor -> "+Aggressors[Slot])
 					Reference.EvaluatePackage()
@@ -912,6 +952,7 @@ Function SetAggressors(Actor Agg = None)
 					Slot = Accomplices.Find(None)
 					If (Slot != -1)
 						Accomplices[Slot] = Reference
+						FormListAdd(Player, "defeat_SceneAccomplices", Reference, False) ;Bane 08/01/2023 Setting Non-Volatile Scene accomplice List
 						TheAggressors[Slot + 5].ForceRefTo(Reference)
 						DefeatConfig.Log("SetAggressors Accomplices / Slot filled - "+Slot+" // Accomplice -> "+Accomplices[Slot])
 						Reference.EvaluatePackage()
@@ -926,13 +967,15 @@ Function SetAggressors(Actor Agg = None)
 EndFunction
 Function SetFollowers()
 	Int i
+	FormListClear(Player, "defeat_SceneFollowers")							;Bane 08/01/2023 - Reset Non-Volatile Scene follower List
 	While (i < 5)
 		Actor Reference = (DParts[i].GetReference() As Actor)
 		If Reference
 			Followers[i] = Reference
+			FormListAdd(Player, "defeat_SceneFollowers", Reference, False)	;Bane 08/01/2023 Setting Non-Volatile Scene Follower List
 			TheFollowers[i].ForceRefTo(Reference)
-			DefeatConfig.Log("SetFollowers / Slot filled - "+i+" // Follower - "+Followers[i])
 			String TheState = RessConfig.VictimState(Reference)
+			DefeatConfig.Log("SetFollowers / Slot filled - "+i+" // Follower - "+Followers[i] + " in  State '" + TheState +"'")
 			If (TheState == "") ; The follower is doing well
 				If (IsSurrender && McmConfig.FollowerSurrender)
 					RessConfig.Surrender(Followers[i])
@@ -940,22 +983,27 @@ Function SetFollowers()
 					Int n
 					While (n < 5)
 						If (Aggressors[n] && CheckActor(Aggressors[n]) && !Aggressors[n].GetAnimationVariableBool("bIsSynced"))
-;							DefeatConfig.Log(Aggressors[n]+" attacks "+Reference)
+							DefeatConfig.Log(Aggressors[n]+" attacks "+Reference) ;!!!
 							Aggressors[n].StartCombat(Reference)
 							Reference.StartCombat(Aggressors[n])
+						ElseIf !CheckActor(Accomplices[n])
+							DefeatConfig.Log(Aggressors[n]+" Failed CheckActor");!!!!
 						Endif
 						If (Accomplices[n] && CheckActor(Accomplices[n]))
+							DefeatConfig.Log(Accomplices[n]+" attacks "+Reference) ;!!!
 							Accomplices[n].StartCombat(Reference)
 							Reference.StartCombat(Accomplices[n])
+						ElseIf !CheckActor(Accomplices[n])
+							DefeatConfig.Log(Accomplices[n]+" Failed CheckActor");!!!!
 						Endif
 						n += 1
 					EndWhile
 				Else ; "Original" scenario, every follower gets knocked down
-					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Player Victim")
+					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Follower")
 				Endif
 			Else
 				If (TheState == "BleedOut")
-					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Player Victim")
+					RessConfig.Knockdown(Reference, Duration = 60.0, Type = "Follower")
 				Endif
 			Endif
 		Endif
@@ -967,22 +1015,38 @@ Function KnockdownFollowers()
 	Int i
 	While (i < 5)
 		If Followers[i]
-			RessConfig.Knockdown(Followers[i], Duration = 60.0, Type = "Player Victim")
+			RessConfig.Knockdown(Followers[i], Duration = 60.0, Type = "Follower")
 		EndIf
 		i += 1
 	EndWhile
 EndFunction
 ;=============================================================================================================================== NPCS HANDLING
 Bool Function StillFighting()
+	Actor VictimAgg
+	Actor VictimAcc
 	Int i
 	While (i < 5)
 		If (Aggressors[i] && Aggressors[i].IsInCombat()) || (Accomplices[i] && Accomplices[i].IsInCombat()) || (Followers[i] && Followers[i].IsInCombat())
+			;CheckValidTarget(Aggressors[i])
+			;CheckValidTarget(Accomplices[i])
 			Return True
 		Endif
 		i += 1
 	EndWhile
 	Return False
 EndFunction
+
+Function CheckValidTarget(Actor akAggressor)
+	If akAggressor
+		Actor akVictim = akAggressor.GetCombatTarget()
+		If akVictim != Player && GetStringValue(akVictim, "DefeatState") == "Knockdown" ;This is a knocked down NPC - Stop hitting them!
+			akVictim.StopCombatAlarm()
+			;akAggressor.StopCombat()
+			;akAggressor.SetAlert()
+		Endif
+	EndIf
+EndFunction
+
 Actor Function IsThereGuard()
 	Int i
 	While (i < 5)
@@ -1026,6 +1090,9 @@ State Downed																					;===== STATE DOWNED
 		Endif
 	EndEvent
 	Event OnBeginState()
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
 		DownedTime = 15.0
 		Time = 0.0
 		IsBar = AllowResist
@@ -1145,6 +1212,9 @@ State MightRecover																			    ;===== STATE MIGHT RECOVER
 		Endif
 	EndEvent
 	Event OnBeginState()
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
 		Tied = RessConfig.Tied(Player) ; Check if the player is tied
 		TheLast = Aggressors[0]
 		If (!Aggressors[0] && Accomplices[0])
@@ -1222,6 +1292,9 @@ State Escape																					;===== STATE ESCAPE
 		FillThreshold = 0.060	
 		StruggleBar()
 		RegisterForSingleUpdate(1.0)
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
 	EndEvent
 	Event OnUpdate()
 		If (StruggleBar.Percent >= 1.0)
@@ -1259,6 +1332,9 @@ State AssaultMode 																				;===== STATE ASSAULT MODE
 		Endif
 	EndEvent
 	Event OnBeginState()
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
 		RegisterForSingleUpdate(0.50)
 	EndEvent
 	Event OnUpdate()
@@ -1318,7 +1394,7 @@ State AssaultMode 																				;===== STATE ASSAULT MODE
 						Wait(1.5)
 					Endif
 					If RessConfig.AWitness
-						RessConfig.UILib.ShowNotification("${"+RessConfig.AWitness.GetLeveledActorBase().GetName()+"} witnesses what is happenning.", "#CD4C4C")
+						RessConfig.UILib.ShowNotification("${"+RessConfig.AWitness.GetLeveledActorBase().GetName()+"} notices what is happening!", "#CD4C4C")
 						RessConfig.DefeatMoan(RessConfig.AWitness, Player, "Witness")
 						Wait(2.0)
 						RessConfig.MiscSpells[5].Cast(RessConfig.AWitness, Player) ; ImmunitySPL, forces the player to use the escape event
@@ -1369,6 +1445,11 @@ State Pursuit
 		Endif
 	EndEvent
 	Event OnBeginState()
+
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
+
 		Time = -1.0
 		RegisterForSingleUpdate(1.0)
 	EndEvent
@@ -1503,8 +1584,9 @@ Function PreDownRape()
 	TheRape.SetHook("DefeatPvic")
 	sslThreadController Thread = TheRape.StartThread()
 	If Thread
+		;FormListAdd(Player, "SexLabDefeat_Aggressors", TheNext) ;Bane - 18/11/2023
 		NumRapes += 1
-		Enough = (NumRapes >= (NumAgg * 2))
+		Enough = (NumRapes >= ( (NumAgg * 2) + RandomInt(0, NumAgg) ) ) ;Bane 04/01/2023 - Make number of Rapes less predictable by adding an additional random(0 to NumAgg) 
 		RessConfig.Weakenings(Player, RemoveSpl = True)
 		Player.AddSpell(RessConfig.MiscSpells[1], False) ; DebuffConsSPL
 		Raped = True
@@ -1552,7 +1634,16 @@ Function StartRobbingScene(Actor Victim, Actor Aggressor, String RobWay = "", Fl
 	Else
 		RobValue = McmConfig.vRobbing
 	ENdif
-	AliasLastAgg.ForceRefTo(Aggressor)
+	If Aggressor
+		AliasLastAgg.ForceRefTo(Aggressor)
+	Else ;Bane 18/11/2023 - Aggressor seems to be none sometimes - if so pick another
+		Aggressor = FormListGet(Player, "defeat_SceneAggressors", 0) as Actor
+		If Aggressor
+			AliasLastAgg.ForceRefTo(Aggressor)
+		Else
+			debug.trace("Defeat: Warning - unable to set Last Aggressor on Rob Event")
+		EndIf
+	EndIf
 	AliasLastVic.ForceRefTo(Victim)
 	MiscScenes[2].ForceStart() ; SCRobbing
 Endfunction
@@ -1734,6 +1825,7 @@ Int Function CollateralReturnSlot()
 	EndWhile
 	return -1
 EndFunction
+
 Actor[] Function CollateralGetActors()
 	Actor[] CollaActors = New Actor[3]
 	Int i
@@ -1931,10 +2023,11 @@ Function CollateralRape(Actor Victim, Actor Aggressor, Actor TheAdd = None)
 	TheRape.SetHook("Collateral")
 	sslThreadController Thread = TheRape.StartThread()
 	If Thread
+		;FormListAdd(Player, "SexLabDefeat_Aggressors", Aggressor) ;Bane 18/11/2023
 		RessConfig.CastImmune(Victim) ; to avoid redress
 		RessConfig.RemoveStates(Victim, False)
 		NumRapes += 1
-		Enough = (NumRapes >= (NumAgg * 2))
+		Enough = (NumRapes >= ( (NumAgg * 2) + RandomInt(0, NumAgg) ) ) ;Bane 04/01/2023 - Make number of Rapes less predictable by adding an additional random(0 to NumAgg) 
 	Else
 		Aggressor.SetFactionRank(RessConfig.DefeatFactions[1], 0) ; AggFaction
 		Victim.SetFactionRank(RessConfig.DefeatFactions[0], 0) ; DefeatFaction
@@ -2017,9 +2110,16 @@ Function Consensual(Actor Victim, Actor Aggressor)
 	RegisterForModEvent("AnimationEnd_DefeatPvic", "EndConsensual")
 	TheScene.SetHook("DefeatPvic")
 	sslThreadController Thread = TheScene.StartThread()
+	
 	If !Thread
 		Restored()
-	Endif
+	EndIf
+
+	;If Thread ;Bane 18/11/2023
+	;	FormListAdd(Player, "SexLabDefeat_Aggressors", Aggressor)
+	;Else
+	;	Restored()
+	;Endif
 EndFunction
 Event EndConsensual(string EventName, string argString, Float argNum, form sender)
 	RessConfig.SetSatisfied(TheNext, Type = "Player Victim")
@@ -2079,6 +2179,15 @@ Event EndBJ(string EventName, string argString, Float argNum, form sender)
 ;	UnregisterForModEvent("AnimationEnd_DefeatPvic")
 EndEvent
 Event CollaEnd(string EventName, string argString, Float argNum, form sender)
+	; Bane 04/01/2023 - Fix for Surrender with Followers resulting in Defeat hanging when assaults end. The aliases are set in DefeatConfig @ Line 1630 but not cleared if the follower is not first to be assaulted as the dialogue outcome
+	; Clear orphaned actors in Collateral[0] preventing them from being excluded from collateral assault scenes and ensures PlayerScr.StillBusy() does not get stuck as True - This was causing the Struggle State to hang when assaults ended
+	If Ressconfig.IsThereCollateralVictim
+		CollaVic[0].Clear()
+		CollaAgg[0].Clear()
+		CollaAggAdd[0].Clear()
+		Ressconfig.IsThereCollateralVictim = false
+	EndIf
+
 	Actor TheVic = SexLab.HookVictim(argString)
 	Int i 
 	While (i < 5)
@@ -2268,11 +2377,13 @@ Function Strip(Actor Vic, Actor Agg)
 			RessConfig.ActionQst.OptionOutOfBag(Player, True)
 		Endif
 		If !NoTrans
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[1], Armor.GetMaskForSlot(McmConfig.SSPvic[0] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[2], Armor.GetMaskForSlot(McmConfig.SSPvic[1] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[3], Armor.GetMaskForSlot(McmConfig.SSPvic[2] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[4], Armor.GetMaskForSlot(McmConfig.SSPvic[3] As Int))
-			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[5], Armor.GetMaskForSlot(McmConfig.SSPvic[4] As Int))
+			Int iNumSlots = McmConfig.SSPvic.Length - 1		;Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
+			Int iSlot
+			While iSlot < iNumSlots
+				PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[iSlot + 1], Armor.GetMaskForSlot(McmConfig.SSPvic[iSlot] As Int)) ;Bane Updated to use Array Length in V26092023
+				iSlot +=1
+			EndWhile
+
 			Weapon Equipped = Vic.GetEquippedWeapon()
 			PieceToStrip(Vic, Agg, McmConfig.SSPvicSet[0], 0, Equipped)
 			Equipped = Vic.GetEquippedWeapon(True)
@@ -2282,11 +2393,12 @@ Function Strip(Actor Vic, Actor Agg)
 		Endif
 	Endif
 EndFunction
-Function StripRegister(Actor Target)
+Function StripRegister(Actor Target) 
 	If McmConfig.bRedressPvic
 		Form Clothes
 		Int i
-		While (i < 5)
+		Int iNumSlots = McmConfig.SSNVN.Length - 1 	;Check for Armor uses one fewer MCM slots as Slot 0 by Weapon and our check uses [iSlot + 1] to account for this
+		While i < iNumSlots    						;Bane Updated to use Array Length in V26092023
 			If (McmConfig.SSNVNSet[i+1] == "$UNEQUIP")
 				Clothes = Target.GetWornForm(Armor.GetMaskForSlot(McmConfig.SSNVN[i] As Int))
 				If Clothes
@@ -2298,20 +2410,23 @@ Function StripRegister(Actor Target)
 	Endif
 EndFunction
 Function StripColla(Actor Vic, Actor Agg)
-	RessConfig.SetEmptyOutfit(Vic)
+	
 	StripRegister(Vic)
 	Agg.SetAngle(0.0, 0.0, Agg.GetAngleZ() + Agg.GetHeadingAngle(Vic))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[1], Armor.GetMaskForSlot(McmConfig.SSNVN[0] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[2], Armor.GetMaskForSlot(McmConfig.SSNVN[1] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[3], Armor.GetMaskForSlot(McmConfig.SSNVN[2] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[4], Armor.GetMaskForSlot(McmConfig.SSNVN[3] As Int))
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[5], Armor.GetMaskForSlot(McmConfig.SSNVN[4] As Int))	
-	Weapon Equipped = Vic.GetEquippedWeapon()
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Equipped)
-	Equipped = Vic.GetEquippedWeapon(True)
-	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Equipped)
+	Int iNumSlots = McmConfig.SSNVN.Length
+	Int iSlot
+	While iSlot < iNumSlots
+		PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[iSlot + 1], Armor.GetMaskForSlot(McmConfig.SSNVN[iSlot] As Int)) ;Bane Updated to use Array Length in V26092023
+		iSlot +=1
+	EndWhile
+
 	Armor Shield = Vic.GetEquippedShield()
 	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Shield)
+	Equipped = Vic.GetEquippedWeapon(True)
+	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Equipped)
+	Weapon Equipped = Vic.GetEquippedWeapon()
+	PieceToStrip(Vic, Agg, McmConfig.SSNVNSet[0], 0, Equipped) ;Bane V26092023 - Unequipping the Main hand causes Followers to stand so do this last
+	RessConfig.SetEmptyOutfit(Vic) ;Bane V26092023 - Set Outfit Post Strip (not pre as original)
 EndFunction
 Function PieceToStrip(Actor Vic, Actor Agg, String Way, Int Slot, Form Weapons = None, Float WaitTime = 1.5, String Animation = "DefeatPickUp")
 	Form Equipped
@@ -2321,16 +2436,28 @@ Function PieceToStrip(Actor Vic, Actor Agg, String Way, Int Slot, Form Weapons =
 		Equipped = Vic.GetWornForm(Slot)
 	Endif
 	If (Equipped && (Way != "$Disabled"))
-		If !Equipped.HasKeyWordString("SexLabNoStrip")
+		;If !Equipped.HasKeyWordString("SexLabNoStrip")
+			;If (Slot == 0x00000004)   ***and change Lengths to use shorter array not -1
+			;	Animation = "DefeatStripAnim"
+			;	WaitTime = 2.5
+			;Endif
+			;SendAnimationEvent(Agg, Animation)
+			;Wait(WaitTime)
+		If bIsStrippable(Equipped) ;Bane Updated to use filter all appropriate Keywords V26092023 :::	
 			If (Slot == 0x00000004)
 				Animation = "DefeatStripAnim"
-				WaitTime = 2.5
+				SendAnimationEvent(Agg, Animation) ;*
+				Wait(2.5) ;*
+				;WaitTime = 2.5
+			Else ;*
+				SendAnimationEvent(Agg, Animation);*
+				Wait(WaitTime);*
 			Endif
-			SendAnimationEvent(Agg, Animation)
-			Wait(WaitTime)
+
 			If (Way == "$UNEQUIP")
 				Vic.UnequipItem(Equipped, False, True)
 			Elseif ((Way == "$STEAL") && !IsCreature)
+				Vic.UnequipItem(Equipped, False, True) ;Bane - Added as Remove without Unequipping causes Followers to remove all outfit items V26092023
 				Vic.RemoveItem(Equipped, 1, True, Agg)
 			Else
 				MiscFormLists[1].AddForm(Equipped) ; StrippedStuff
@@ -2339,7 +2466,12 @@ Function PieceToStrip(Actor Vic, Actor Agg, String Way, Int Slot, Form Weapons =
 			Endif
 		Endif
 	Endif
-EndFunction	
+EndFunction
+
+Bool Function bIsStrippable(Form akForm) ;Bane Added full Strip Item Filtering V26092023
+	Return !( akForm.haskeyword(SexLabNoStrip) || akForm.HasKeyword(zad_Lockable) || akForm.HasKeyword(zad_QuestItem) || akForm.HasKeyword(_SLMC_MCDevice) || akForm.HasKeyword(SOS_Underwear) || akForm.HasKeyword(SOS_Genitals) || akForm.HasKeyword(zbfWornDevice) || akForm.HasKeyword(ToysToy) )
+EndFunction
+
 Function UnequipWeapons(Actor Target)
 	Int i = 5 ; Security for the loop to not be stuck just in case.
 	Form EquippedWeapon = Target.GetEquippedWeapon()
@@ -2387,6 +2519,9 @@ State FollowerWait
 			StruggleBar()
 		Endif
 		RegisterForSingleUpdate(1.0)
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
 	EndEvent
 	Event OnUpdate()
 		If (StruggleBar.Percent >= 1.0)
@@ -2429,7 +2564,7 @@ EndState
 Actor Function Supervisor()
 	Int i
 	While (i < 5)
-		If (Aggressors[i] && CheckActor(Aggressors[i]) && Aggressors[i].HasLOS(Player))
+		If (Aggressors[i] && CheckActor(Aggressors[i]) && Aggressors[i].HasLOS(Player)) && Aggressors[i].GetDistance(Player) < 384.0 ; Bane 09/01/2023 18' Range Limit added
 			If (!Aggressors[i].HasKeywordString("SexLabActive") || !Aggressors[i].HasKeywordString("DefeatCollateral"))
 				Return Aggressors[i]
 			Endif
@@ -2438,7 +2573,7 @@ Actor Function Supervisor()
 	EndWhile
 	i = 0
 	While (i < 5)
-		If (Accomplices[i] && CheckActor(Accomplices[i]) && Accomplices[i].HasLOS(Player))
+		If (Accomplices[i] && CheckActor(Accomplices[i]) && Accomplices[i].HasLOS(Player)) && Accomplices[i].GetDistance(Player) < 384.0 ; Bane 09/01/2023 18' Range Limit added
 			If (!Accomplices[i].HasKeywordString("SexLabActive") || !Accomplices[i].HasKeywordString("DefeatCollateral"))
 				Return Accomplices[i]
 			Endif
@@ -2452,7 +2587,7 @@ Bool Function StillBusy()
 	While (i < 5)
 		If (Accomplices[i] && CheckActor(Accomplices[i]))
 			Int FactionRank = Accomplices[i].GetFactionRank(RessConfig.DefeatFactions[1]) ; AggFaction
-;			DefeatConfig.Log("StillBusy Accomplices[i] - "+Accomplices[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Accomplices[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Accomplices[i].HasKeywordString("DefeatCollateral"))
+			DefeatConfig.Log("StillBusy Accomplices[i] - "+Accomplices[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Accomplices[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Accomplices[i].HasKeywordString("DefeatCollateral"))
 			If (FactionRank == 3 || Accomplices[i].HasKeywordString("SexLabActive") || Accomplices[i].HasKeywordString("DefeatCollateral"))
 				Return True
 			Endif
@@ -2463,7 +2598,7 @@ Bool Function StillBusy()
 	While (i < 5)
 		If (Aggressors[i] && CheckActor(Aggressors[i]))
 			Int FactionRank = Aggressors[i].GetFactionRank(RessConfig.DefeatFactions[1]) ; AggFaction
-;			DefeatConfig.Log("StillBusy Aggressors[i] - "+Aggressors[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Aggressors[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Aggressors[i].HasKeywordString("DefeatCollateral"))
+			DefeatConfig.Log("StillBusy Aggressors[i] - "+Aggressors[i]+" / FactionRank AggFaction - "+FactionRank+" / HasKeywordString SexLabActive - "+Aggressors[i].HasKeywordString("SexLabActive")+" / HasKeywordString DefeatCollateral - "+Aggressors[i].HasKeywordString("DefeatCollateral"))
 			If (FactionRank == 3 || Aggressors[i].HasKeywordString("SexLabActive") || Aggressors[i].HasKeywordString("DefeatCollateral"))
 				Return True
 			Endif
@@ -2474,7 +2609,7 @@ Bool Function StillBusy()
 	While (i < 5)
 		If (Followers[i] && CheckActor(Followers[i]))
 			Int FactionRank = Followers[i].GetFactionRank(RessConfig.DefeatFactions[0]) ; DefeatFaction
-;			DefeatConfig.Log("StillBusy Followers[i] HasKeywordString SexLabActive - "+Followers[i].HasKeywordString("SexLabActive"))
+			DefeatConfig.Log("StillBusy Followers[i] HasKeywordString SexLabActive - "+Followers[i].HasKeywordString("SexLabActive"))
 			If (FactionRank == 3) || Followers[i].HasKeywordString("SexLabActive")
 				Return True
 			Endif
@@ -2485,6 +2620,10 @@ Bool Function StillBusy()
 EndFunction
 State StruggleFree
 	Event OnBeginState()
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
+
 		FillDifficulty = 0.01
 		FillThreshold = 0.0
 		If !IsMovementControlsEnabled()
@@ -2506,9 +2645,17 @@ State StruggleFree
 			SendAnimationEvent(Player, "DefeatTieUpExit")
 			Wait(2)
 			Restored()
+		Elseif Supervisor()
+			If Input.IsKeyPressed(StrafeL) || Input.IsKeyPressed(StrafeR)
+				Notification("$An aggressor watches you.")
+				StruggleBar.Percent -= 0.2
+				If (StruggleBar.Percent < 0)
+					StruggleBar.Percent = 0
+				Endif
+			Endif
 		Endif
 		FillThreshold = StruggleBar.Percent
-		RegisterForSingleUpdate(1.0)
+		RegisterForSingleUpdate(2.0) ;Was 1.0
 	EndEvent
 	Event OnEndState()
 		StruggleBar(False)
@@ -2531,6 +2678,10 @@ State QTE 																	;===== STATE QTE : RESIST Function
 		Endif
 	EndEvent
 	Event OnBeginState()
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
+
 		If ((McmConfig.QTEHKType == "$Attack") || UsingGamepad())
 			StrafeL = Input.GetMappedKey("Left Attack/Block")
 			StrafeR = Input.GetMappedKey("Right Attack/Block")
@@ -2606,6 +2757,9 @@ Function StruggleBar(Bool Display = True)
 EndFunction
 State PushAway 																	;===== Resist during sexlab animation
 	Event OnBeginState()
+
+		;ConsoleUtil.PrintMessage("State -> " + GetState())
+
 		If ((McmConfig.QTEHKType == "$Attack") || UsingGamepad())
 			StrafeL = Input.GetMappedKey("Left Attack/Block")
 			StrafeR = Input.GetMappedKey("Right Attack/Block")
@@ -2659,8 +2813,9 @@ Function Restored()																		;===== RESTORED
 			CollaVic[i].Clear()
 			CollaAgg[i].Clear()
 			CollaAggAdd[i].Clear()
+			;FormListClear(Player, "SexLabDefeat_Aggressors") 	;Bane - 18/11/2023
  		Endif
-		i += 1
+		i +=1
 	EndWhile
 	i = 0
 	While (i < 4)
@@ -2770,8 +2925,11 @@ Actor Function GetWitness()
 EndFunction
 Function AddAggressor(Actor Target, Int Slot)
 	If !Aggressors[Slot]
+		NumAgg += 1 	;Bane 04/01/2023 - Allow another round so that the added aggressor has an opportunity to have a turn
+		Enough = False 	;
 		DefeatConfig.Log("AddAggressor, Target - "+Target+" / Slot - "+Slot)
 		Aggressors[Slot] = Target
+		FormListAdd(Player, "defeat_SceneAggressors", Target, False) ;Bane 08/01/2023 Add to Non-Volatile Scene Aggressor List
 		TheAggressors[Slot].ForceRefTo(Target)
 		Target.EvaluatePackage()
 	Endif

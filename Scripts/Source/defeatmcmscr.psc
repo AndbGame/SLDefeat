@@ -511,6 +511,37 @@ Event OnConfigInit()
 	If (CurrentVersion == 0) ; First install
 		Install()
 		Debug.Notification("$Defeat: MCM menu initiated.")
+	ElseIf CurrentVersion < 71 && SSPvicSet.Length != 11 ;V71 is Bane Version 230923 - Not the ideal method but using OnVersionUpdate would require a major rewrite of the original maintainence code
+		
+		oidSSPvicSet = New Int[11] ;Bane - Strip Player Increased to support 10 slots in V26092023
+		SSPvicSet = Utility.CreateStringArray(11, "$Disabled")
+		SSPvicSet[0] = "$Strip"
+		SSPvicSet[1] = "$Unequip"
+
+		oidSSPvic = New Int[10]
+		SSPvic = Utility.CreateFloatArray(10, 37.0)
+		SSPvic[0] = 32.0
+		SSPvic[1] = 33.0
+
+		oidSSPaggSet = New Int[11] ;Bane - Player/Follower Aggressor Strip Increased to support 10 slots in V26092023
+		SSPaggSet = Utility.CreateStringArray(11, "$Disabled")
+		SSPaggSet[0] = "$Strip"
+		SSPaggSet[1] = "$Unequip"
+
+		oidSSPagg = New Int[10]
+		SSPagg = Utility.CreateFloatArray(10, 37.0)
+		SSPagg[0] = 32.0
+		SSPagg[1] = 33.0
+
+		oidSSNVNSet = New Int[11] ;Bane - NPC vs NPC Strip Increased to support 10 slots in V26092023
+		SSNVNSet =  Utility.CreateStringArray(11, "$Disabled")
+		SSNVNSet[0] = "$Strip"
+		SSNVNSet[1] = "$Unequip"
+
+		oidSSNVN = New Int[10]
+		SSNVN = Utility.CreateFloatArray(10, 37.0)
+		SSNVN[0] = 32.0
+		SSNVN[1] = 33.0
 	Endif
 EndEvent
 Function Install()
@@ -555,53 +586,35 @@ Function Install()
 	PAbOnlyRaped[1] = False ; Defeated
 	PAbOnlyRaped[2] = False ; Simple slavery
 
-	oidSSPvicSet = New Int[6]
-	SSPvicSet = New String[6]
+	oidSSPvicSet = New Int[11] ;Bane - Strip Player Increased to support 10 slots in V26092023
+	SSPvicSet = Utility.CreateStringArray(11, "$Disabled")
 	SSPvicSet[0] = "$Strip"
 	SSPvicSet[1] = "$Unequip"
-	SSPvicSet[2] = "$Disabled"
-	SSPvicSet[3] = "$Disabled"
-	SSPvicSet[4] = "$Disabled"
-	SSPvicSet[5] = "$Disabled"
-	oidSSPvic = New Int[5]
-	SSPvic = New Float[5]
+
+	oidSSPvic = New Int[10]
+	SSPvic = Utility.CreateFloatArray(10, 37.0)
 	SSPvic[0] = 32.0
 	SSPvic[1] = 33.0
-	SSPvic[2] = 37.0
-	SSPvic[3] = 37.0
-	SSPvic[4] = 37.0
 
-	oidSSPaggSet = New Int[6]
-	SSPaggSet = New String[6]
+	oidSSPaggSet = New Int[11] ;Bane - Player/Follower Aggressor Strip Increased to support 10 slots in V26092023
+	SSPaggSet = Utility.CreateStringArray(11, "$Disabled")
 	SSPaggSet[0] = "$Strip"
 	SSPaggSet[1] = "$Unequip"
-	SSPaggSet[2] = "$Disabled"
-	SSPaggSet[3] = "$Disabled"
-	SSPaggSet[4] = "$Disabled"
-	SSPaggSet[5] = "$Disabled"
-	oidSSPagg = New Int[5]
-	SSPagg = New Float[5]
+
+	oidSSPagg = New Int[10]
+	SSPagg = Utility.CreateFloatArray(10, 37.0)
 	SSPagg[0] = 32.0
 	SSPagg[1] = 33.0
-	SSPagg[2] = 37.0
-	SSPagg[3] = 37.0
-	SSPagg[4] = 37.0
 
-	oidSSNVNSet = New Int[6]
-	SSNVNSet = New String[6]
+	oidSSNVNSet = New Int[11] ;Bane - NPC vs NPC Strip Increased to support 10 slots in V26092023
+	SSNVNSet =  Utility.CreateStringArray(11, "$Disabled")
 	SSNVNSet[0] = "$Strip"
 	SSNVNSet[1] = "$Unequip"
-	SSNVNSet[2] = "$Disabled"
-	SSNVNSet[3] = "$Disabled"
-	SSNVNSet[4] = "$Disabled"
-	SSNVNSet[5] = "$Disabled"
-	oidSSNVN = New Int[5]
-	SSNVN = New Float[5]
+
+	oidSSNVN = New Int[10]
+	SSNVN = Utility.CreateFloatArray(10, 37.0)
 	SSNVN[0] = 32.0
 	SSNVN[1] = 33.0
-	SSNVN[2] = 37.0
-	SSNVN[3] = 37.0
-	SSNVN[4] = 37.0
 
 	AModList = New String[8]
 	AModList[0] = "Dawnguard : OFF"
@@ -621,6 +634,13 @@ Function Install()
 	ArousalSARFlag = OPTION_FLAG_DISABLED
 	AllowNPCFlag = OPTION_FLAG_NONE
 	AllowCvicFlag = OPTION_FLAG_NONE
+
+	; Patched by Bane 29112022 - All HotKeyInts Initial Value Setters moved to MCM Init. These Values match the MCM OID defaults  	
+	RessConfig.HotKeyInts = New Int[4]
+	RessConfig.HotKeyInts[0] = 11	; Option key
+	RessConfig.HotKeyInts[1] = 42	; Modifier key
+	RessConfig.HotKeyInts[2] = 34	; Action key
+	RessConfig.HotKeyInts[3] = 37	; Surrender key
 EndFunction
 Function ExportSettings()
 	String File = "../Defeat/DefeatConfig.json"
@@ -884,7 +904,8 @@ Function ExportSettings()
 	JsonUtil.SetStringValue(File, "MultipleSupressTagNVN", MultipleSupressTagNVN)	
 	JsonUtil.SetIntValue(File, "MultipleRequireAllTagNVN", MultipleRequireAllTagNVN As Int) As Bool
 	JsonUtil.SetIntValue(File, "MultipleFemaleFirstNVN", MultipleFemaleFirstNVN As Int) As Bool
-	QTEColorBar = 0xFFFFFF
+	JsonUtil.SetIntValue(File, "QTEColorBar", QTEColorBar) ;Added by Bane 29112022
+	;QTEColorBar = 0xFFFFFF
 	JsonUtil.SetFloatValue(File, "MeterWidth", MeterWidth)
 	JsonUtil.SetFloatValue(File, "MeterHeight", MeterHeight)
 	JsonUtil.SetFloatValue(File, "AxisX", AxisX)
@@ -1238,7 +1259,11 @@ Function ImportSettings()
 	MultipleSupressTagNVN 	= JsonUtil.GetStringValue(File, "MultipleSupressTagNVN", MultipleSupressTagNVN)
 	MultipleRequireAllTagNVN = JsonUtil.GetIntValue(File, "MultipleRequireAllTagNVN", MultipleRequireAllTagNVN As Int) As Bool
 	MultipleFemaleFirstNVN 	= JsonUtil.GetIntValue(File, "MultipleFemaleFirstNVN", MultipleFemaleFirstNVN As Int) As Bool
-	QTEColorBar 			= 0xFFFFFF
+	;QTEColorBar 			= 0xFFFFFF
+	QTEColorBar 			= JsonUtil.GetIntValue(File, "QTEColorBar", QTEColorBar) ;Added by Bane 2902022
+	SetColorOptionValue(oidQTEColorBar, QTEColorBar)
+    StruggleBar.PrimaryColor = QTEColorBar
+    ;End Patch
 	MeterWidth 				= JsonUtil.GetFloatValue(File, "MeterWidth", MeterWidth)
 	MeterHeight 			= JsonUtil.GetFloatValue(File, "MeterHeight", MeterHeight)
 	AxisX 					= JsonUtil.GetFloatValue(File, "AxisX", AxisX)
@@ -1246,6 +1271,18 @@ Function ImportSettings()
 	HKOption 				= JsonUtil.GetIntValue(File, "HKOption", HKOption)											; HOTKEY ==========
 	HKModifier 				= JsonUtil.GetIntValue(File, "HKModifier", HKModifier)
 	HKAction 				= JsonUtil.GetIntValue(File, "HKAction", HKAction)
+	
+	;Keybinds were being saved to .json and restored to the MCM but not actioned to DefeatConfig or updated in MCM on restore ;Bane 29112022
+	RessConfig.HotKeyInts[0] = HKOption
+	SetKeymapOptionValue(oidHKOption, HKOption)
+	RessConfig.HotKeyInts[1] = HKModifier
+	SetKeymapOptionValue(oidHKModifier, HKModifier)
+	RessConfig.HotKeyInts[2] = HKAction
+	SetKeymapOptionValue(oidHKAction, HKAction)
+	RessConfig.HotKeyInts[3] = HKSurrender
+	SetKeymapOptionValue(oidHKSurrender, HKSurrender)
+	;End Patch
+
 	bRedressPvic 			= JsonUtil.GetIntValue(File, "bRedressPvic", bRedressPvic As Int) As Bool					; STRIPPING ==========
 	ImportFloatArray(File, "SSPvic", SSPvic)
 	ImportStringArray(File, "SSPvicSet", SSPvicSet)
@@ -1321,7 +1358,7 @@ Function ImportSettings()
 EndFunction
 
 Int Function GetVersion()
-	Return 69
+	Return 72 ;Bane 18/11/2023
 EndFunction
 Event OnVersionUpdate(Int NewVersion)
 	If (CurrentVersion != 0)
@@ -1441,12 +1478,17 @@ Event OnPageReset(String page)
 			oidExhaustedPagg = AddSliderOption("$Exhausted", ExhaustedPagg, "{0} seconds")
 			oidEscapePagg = AddSliderOption("$Escape", EscapePagg, "{0} seconds")
 			AddHeaderOption("$Strip options")
+			
 			oidSSPaggSet[0] = AddTextOption("$Weapon", SSPaggSet[0])
-			oidSSPaggSet[1] = AddTextOption("$Armor piece 01", SSPaggSet[1])
-			oidSSPaggSet[2] = AddTextOption("$Armor piece 02", SSPaggSet[2])
-			oidSSPaggSet[3] = AddTextOption("$Armor piece 03", SSPaggSet[3])
-			oidSSPaggSet[4] = AddTextOption("$Armor piece 04", SSPaggSet[4])
-			oidSSPaggSet[5] = AddTextOption("$Armor piece 05", SSPaggSet[5])
+
+			Int iNumSlots = SSPaggSet.Length
+			Int iSlot = 1
+			String strSlot
+			While iSlot < iNumSlots
+				strSlot = "$Armor piece " + iSlot
+				oidSSPaggSet[iSlot] = AddTextOption(strSlot, SSPaggSet[iSlot]);Bane Updated to use Array Length in V26092023 interface file edit needed
+				iSlot +=1
+			EndWhile
 		Else
 			AddTextOption("$Disabled", none)
 		Endif
@@ -1479,8 +1521,8 @@ Event OnPageReset(String page)
 			AddHeaderOption("")
 			oidCheckSlots = AddTextOption("$Check equipped item slots", "$CLICK")
 			Int i
-			While (i < 5)
-				oidSSPagg[i] = AddSliderOption(">>>>>", SSPagg[i], "{0}"+SlotNames[(SSPagg[i] As Int) - 30])
+			While (i < oidSSPagg.Length)
+				oidSSPagg[i] = AddSliderOption(">>>>>", SSPagg[i], "{0}"+SlotNames[(SSPagg[i] As Int) - 30]) ;Bane Updated to use Array Length in V26092023
 				i += 1
 			EndWhile
 		Endif
@@ -1526,12 +1568,17 @@ Event OnPageReset(String page)
 			oidDebuffDuration = AddSliderOption("$Weakened", DebuffDuration, "{0} seconds")
 			oidDamageStamina = AddToggleOption("$Exhausted", DamageStamina)
 			AddHeaderOption("$Strip options")
+			
 			oidSSPvicSet[0] = AddTextOption("$Weapon", SSPvicSet[0])
-			oidSSPvicSet[1] = AddTextOption("$Armor piece 01", SSPvicSet[1])
-			oidSSPvicSet[2] = AddTextOption("$Armor piece 02", SSPvicSet[2])
-			oidSSPvicSet[3] = AddTextOption("$Armor piece 03", SSPvicSet[3])
-			oidSSPvicSet[4] = AddTextOption("$Armor piece 04", SSPvicSet[4])
-			oidSSPvicSet[5] = AddTextOption("$Armor piece 05", SSPvicSet[5])
+			
+			Int iNumSlots = SSPvicSet.Length
+			Int iSlot = 1
+			String strSlot
+			While iSlot < iNumSlots
+				strSlot = "$Armor piece " + iSlot
+				oidSSPvicSet[iSlot] = AddTextOption(strSlot, SSPvicSet[iSlot]);Bane Updated to use Array Length in V26092023 interface file edit needed
+				iSlot +=1
+			EndWhile
 		Else
 			AddTextOption("$Disabled", none)
 		Endif
@@ -1578,8 +1625,8 @@ Event OnPageReset(String page)
 			AddHeaderOption("")
 			oidCheckSlots = AddTextOption("$Check equipped item slots", "$CLICK")
 			Int i
-			While (i < 5)
-				oidSSPvic[i] = AddSliderOption(">>>>>", SSPvic[i], "{0}"+SlotNames[(SSPvic[i] As Int) - 30])
+			While (i < oidSSPvic.Length)
+				oidSSPvic[i] = AddSliderOption(">>>>>", SSPvic[i], "{0}"+SlotNames[(SSPvic[i] As Int) - 30]) ;Bane Updated to use Array Length in V26092023
 				i += 1
 			EndWhile
 		Endif
@@ -1657,12 +1704,17 @@ Event OnPageReset(String page)
 			oidNVNKillPA = AddSliderOption("$Post-assault kill", NVNKillPA, "{0} %")
 			oidbRedressNVN = AddToggleOption("$Redress", bRedressNVN)
 			AddHeaderOption("$Strip options")
+
 			oidSSNVNSet[0] = AddTextOption("$Weapon", SSNVNSet[0])
-			oidSSNVNSet[1] = AddTextOption("$Armor piece 01", SSNVNSet[1])
-			oidSSNVNSet[2] = AddTextOption("$Armor piece 02", SSNVNSet[2])
-			oidSSNVNSet[3] = AddTextOption("$Armor piece 03", SSNVNSet[3])
-			oidSSNVNSet[4] = AddTextOption("$Armor piece 04", SSNVNSet[4])
-			oidSSNVNSet[5] = AddTextOption("$Armor piece 05", SSNVNSet[5])
+
+			Int iNumSlots = SSNVNSet.Length
+			Int iSlot = 1
+			String strSlot
+			While iSlot < iNumSlots
+				strSlot = "$Armor piece " + iSlot
+				oidSSNVNSet[iSlot] = AddTextOption(strSlot, SSNVNSet[iSlot]);Bane Updated to use Array Length in V26092023 interface file edit needed
+				iSlot +=1
+			EndWhile
 		Else
 			AddTextOption("$Disabled", none)
 		Endif
@@ -1701,9 +1753,10 @@ Event OnPageReset(String page)
 			oidbRedressFollower = AddToggleOption("$Redress", bRedressFollower)
 			AddHeaderOption("")
 			oidCheckSlots = AddTextOption("$Check equipped item slots", "$CLICK")
+			
 			Int i
-			While (i < 5)
-				oidSSNVN[i] = AddSliderOption(">>>>>", SSNVN[i], "{0}"+SlotNames[(SSNVN[i] As Int) - 30])
+			While (i < oidSSNVN.Length)
+				oidSSNVN[i] = AddSliderOption(">>>>>", SSNVN[i], "{0}"+SlotNames[(SSNVN[i] As Int) - 30]) ;Bane Updated to use Array Length in V26092023
 				i += 1
 			EndWhile
 		Endif

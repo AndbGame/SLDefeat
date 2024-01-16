@@ -45,10 +45,10 @@ EndFunction
 
 
 ; Break undies plus support
-;Bool Function BUIsNotFullyBroken(Form BodyArmor) Global
-;	BU_ArmorStats BodyArmorScript = (BodyArmor As BU_ArmorStats)
-;	Return (BodyArmorScript.currentStage < BodyArmorScript.numStages)
-;EndFunction
+Bool Function BUIsNotFullyBroken(Form BodyArmor) Global
+	BU_ArmorStats BodyArmorScript = (BodyArmor As BU_ArmorStats)
+	Return (BodyArmorScript.StageValue < BodyArmorScript.numStages)
+EndFunction
 Function BUBreakArmor(Actor Target, Form BodyArmor) Global
 	BU_ArmorStats BodyArmorScript = (BodyArmor As BU_ArmorStats)
 	BodyArmorScript.BreakArmor(Target)
