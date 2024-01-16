@@ -1,15 +1,25 @@
 scriptName defeat_skse_api Hidden
+; ---
+; Event OnSLDefeatPlayerKnockDown (ObjectReference akAggressor, string eventName)
+; ---
+; On Player Knock Downed. Must be attached to ReferenceAlias of Player
+; `eventName` can be:
+;   - "KNONKDOWN"
+;   - "KNONKOUT"
+;   - "STANDING_STRUGGLE"
+;
+; ---
+; Event OnSLDefeatQueryActor 
+; ---
+;
 
 Import Debug
 Import StorageUtil
 
-
-
-DefeatConfig function GetDefeatConfig() global
-	return Game.GetFormFromFile(0x04B8D1, "SexLabDefeat.esp") as DefeatConfig
-endFunction
-
 Function setActorVulnerability(actor actorref, float Vulnerability) global native
+
+; Set state of actor for processing: "ACTIVE", "DISACTIVE"
+Function setActorState(actor Actorref, string _state) global native
 
 Function DefeatQTEMeterInit(string WidgetRoot) global native
 
@@ -26,17 +36,11 @@ Function requestActorExtraData(actor actorref) global
 
     String RaceKey = sslCreatureAnimationSlots.GetRaceKey(actorref.GetLeveledActorBase().GetRace())
 
-    DefeatConfig defConfig = GetDefeatConfig()
-    Bool DefeatAllowed2PC = true
-    Bool DefeatAllowed2NvN = true
-
     If !actorref.HasKeyWordString("ActorTypeNPC")
         SexLabAllowed = SexLab.AllowedCreature(actorref.GetLeveledActorBase().GetRace())
-        DefeatAllowed2PC = defConfig.AllowedCreature(actorref, "Player")
-		DefeatAllowed2NvN = defConfig.AllowedCreature(actorref, "NVN")
     Endif
 
     
 
-    responseActorExtraData(actorref, IgnoreActorOnHit, SexLabGender, SexLabSexuality, SexLabAllowed, RaceKey, DefeatAllowed2PC, DefeatAllowed2NvN)
+    responseActorExtraData(actorref, IgnoreActorOnHit, SexLabGender, SexLabSexuality, SexLabAllowed, RaceKey, false, false)
 EndFunction

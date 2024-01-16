@@ -223,9 +223,10 @@ EndFunction
 
 Bool OnHitBusy = False
 State Running
-	;Event OnBeginState()
+	Event OnBeginState()
+		defeat_skse_api.setActorState(Player, "ACTIVE")
 		;ConsoleUtil.PrintMessage("State -> " + GetState())
-	;EndEvent
+	EndEvent
 
 	Function TriggerBleedOut()
 		If McmConfig.PlayerEssential && LastHitAggressor && CheckAggressor(LastHitAggressor) && (LastHitAggressor.GetDistance(Player) < FarMaxDist) && DefeatTriggerActive(LastHitAggressor)
