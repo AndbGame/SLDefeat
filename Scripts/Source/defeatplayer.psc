@@ -108,6 +108,9 @@ Event OnPlayerLoadGame()
 	ToysToy = KeyWord.GetKeyword("ToysToy")
 EndEvent
 
+Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
+EndEvent
+
 Event OnDeath(Actor akKiller)
 	Clean()
 Endevent
@@ -235,9 +238,36 @@ EndFunction
 Function TriggerBleedOut()
 EndFunction
 State Running
-	;Event OnBeginState()
+	Event OnBeginState()
+		defeat_skse_api.setActorState(Player, "ACTIVE")
 		;ConsoleUtil.PrintMessage("State -> " + GetState())
-	;EndEvent
+	EndEvent
+	Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
+		DefeatConfig.Log("[Defeat] - OnSLDefeatPlayerKnockDown " + eventName + " from " + akAggressor)
+		Detect.Start()
+		Actor Aggressor = (akAggressor As Actor)
+		IsAggressorValid(Aggressor) ; set isCreature
+		LastHitAggressor = Aggressor
+		if eventName == "KNONKOUT"
+			IsKnockout = true
+		Elseif eventName == "STANDING_STRUGGLE"
+			StandingStruggle = true
+		Else
+		EndIf
+
+		If IsKnockout
+			SceneSettings(ForceStayDown = 1, ForceResist = 0, ForceRelation = 1, ForceWitness = 0)
+			TheKnockDown(Aggressor)
+		Elseif (StandingStruggle && !IsCreature && (Aggressor.GetDistance(Player) < 500.0) && RessConfig.SexInterest(Aggressor, True, False))
+			SceneSettings(ForceResist = 0, ForceRelation = 0)
+			KnockDownQTE(Aggressor)
+		Else
+			SceneSettings()
+			TheKnockDown(Aggressor)
+		Endif
+		Detect.Stop()		
+	EndEvent
+
 	Function TriggerBleedOut()
 		If McmConfig.PlayerEssential && LastHitAggressor && CheckAggressor(LastHitAggressor) && (LastHitAggressor.GetDistance(Player) < FarMaxDist) && DefeatTriggerActive(LastHitAggressor)
 			Player.RestoreActorValue("Health", ((Player.GetActorValuePercentage("Health") * 100) - 80))
@@ -249,6 +279,7 @@ State Running
 		Endif
 	EndFunction
 	Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
+		return
 		Actor Aggressor = (akAggressor As Actor)
 		If Aggressor
 			LastHitAggressor = Aggressor
