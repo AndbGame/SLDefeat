@@ -242,7 +242,6 @@ State Running
 	Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
 		DefeatLog("[Defeat] - OnSLDefeatPlayerKnockDown " + eventName + " from " + akAggressor)
 		Detect.Start()
-		DefeatLog(Utility.GetCurrentRealTime() + " [Defeat] - OnKnockDown")
 		Actor Aggressor = (akAggressor As Actor)
 		IsAggressorValid(Aggressor) ; set isCreature
 		LastHitAggressor = Aggressor
