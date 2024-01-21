@@ -130,6 +130,12 @@ Float Function DFW_GetVulnerability(Actor Target) Global
 	return TempFloat
 EndFunction
 
+Actor Function GetCurrentFollower() Global
+	Alias[] ttt = (Game.GetFormFromFile(0x750BA, "Skyrim.esm") as Quest).GetAliases()
+	Debug.trace("DefeatUtil2 - Number of alias: " + ttt.Length)
+	return ((Game.GetFormFromFile(0x750BA, "Skyrim.esm") as Quest).GetAlias(0) as ReferenceAlias).GetActorReference()
+EndFunction
+
 Armor Function GetDDArmbinder(String Type, String Colour, Int ForceInt = -1) Global
 	if Type == "Leather"
 		if Colour == "Black"
@@ -335,6 +341,184 @@ Armor Function GetDDGag(String Type, String Colour, Int ForceInt = -1) Global
 				return (Game.GetFormFromFile(0x54108, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(5) as Armor ; no colour
 			elseif TempInt == 3
 				return (Game.GetFormFromFile(0x54108, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(6) as Armor ; no colour
+			endif
+		endif
+	elseif Type == "Pony"
+		if Colour == "Black"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 9)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x3B22B, "Devious Devices - Expansion.esm") as Armor) ;Black Leather Gag (Pony) (Harness)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x3B229, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Gag (Pony) (Harness)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x3B227, "Devious Devices - Expansion.esm") as Armor) ;Black Leather Gag (Pony) (Blinders)
+			elseif TempInt == 3
+				return (Game.GetFormFromFile(0x3B225, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Gag (Pony) (Blinders)
+			elseif TempInt == 4
+				return (Game.GetFormFromFile(0x3B223, "Devious Devices - Expansion.esm") as Armor) ;Black Leather Gag (Pony) (Ears)
+			elseif TempInt == 5
+				return (Game.GetFormFromFile(0x3B221, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Gag (Pony) (Ears)
+			elseif TempInt == 6
+				return (Game.GetFormFromFile(0x3B21F, "Devious Devices - Expansion.esm") as Armor) ;Black Leather Gag (Pony) (Strap)
+			elseif TempInt == 7
+				return (Game.GetFormFromFile(0x3B21D, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Gag (Pony) (Strap)
+			elseif TempInt == 8
+				return (Game.GetFormFromFile(0x3B21B, "Devious Devices - Expansion.esm") as Armor) ;Black Leather Gag (Pony)
+			elseif TempInt == 9
+				return (Game.GetFormFromFile(0x3B219, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Gag (Pony)
+			endif
+		elseif Colour == "White"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 9)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x3BD1D, "Devious Devices - Expansion.esm") as Armor) ;White Leather Gag (Pony) (Harness)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x3BD1B, "Devious Devices - Expansion.esm") as Armor) ;White Ebonite Gag (Pony) (Harness)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x3BD15, "Devious Devices - Expansion.esm") as Armor) ;White Leather Gag (Pony) (Blinders)
+			elseif TempInt == 3
+				return (Game.GetFormFromFile(0x3BD13, "Devious Devices - Expansion.esm") as Armor) ;White Ebonite Gag (Pony) (Blinders)
+			elseif TempInt == 4
+				return (Game.GetFormFromFile(0x3BD0D, "Devious Devices - Expansion.esm") as Armor) ;White Leather Gag (Pony) (Ears)
+			elseif TempInt == 5
+				return (Game.GetFormFromFile(0x3BD0B, "Devious Devices - Expansion.esm") as Armor) ;White Ebonite Gag (Pony) (Ears)
+			elseif TempInt == 6
+				return (Game.GetFormFromFile(0x3BD05, "Devious Devices - Expansion.esm") as Armor) ;White Leather Gag (Pony) (Strap)
+			elseif TempInt == 7
+				return (Game.GetFormFromFile(0x3BD03, "Devious Devices - Expansion.esm") as Armor) ;White Ebonite Gag (Pony) (Strap)
+			elseif TempInt == 8
+				return (Game.GetFormFromFile(0x3BCFD, "Devious Devices - Expansion.esm") as Armor) ;White Leather Gag (Pony)
+			elseif TempInt == 9
+				return (Game.GetFormFromFile(0x3BCFB, "Devious Devices - Expansion.esm") as Armor) ;White Ebonite Gag (Pony)
+			endif
+		elseif Colour == "Red"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 9)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x3BD19, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Gag (Pony) (Harness)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x3BD17, "Devious Devices - Expansion.esm") as Armor) ;Red Ebonite Gag (Pony) (Harness)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x3BD11, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Gag (Pony) (Blinders)
+			elseif TempInt == 3
+				return (Game.GetFormFromFile(0x3BD0F, "Devious Devices - Expansion.esm") as Armor) ;Red Ebonite Gag (Pony) (Blinders)
+			elseif TempInt == 4
+				return (Game.GetFormFromFile(0x3BD09, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Gag (Pony) (Ears)
+			elseif TempInt == 5
+				return (Game.GetFormFromFile(0x3BD07, "Devious Devices - Expansion.esm") as Armor) ;Red Ebonite Gag (Pony) (Ears)
+			elseif TempInt == 6
+				return (Game.GetFormFromFile(0x3BD01, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Gag (Pony) (Strap)
+			elseif TempInt == 7
+				return (Game.GetFormFromFile(0x3BCFF, "Devious Devices - Expansion.esm") as Armor) ;Red Ebonite Gag (Pony) (Strap)
+			elseif TempInt == 8
+				return (Game.GetFormFromFile(0x3BCF9, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Gag (Pony)
+			elseif TempInt == 9
+				return (Game.GetFormFromFile(0x3BCF7, "Devious Devices - Expansion.esm") as Armor) ;Red Ebonite Gag (Pony)
+			endif
+		endif
+	elseif Type == "Panel"
+		if Colour == "Black"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x4F92C, "Devious Devices - Expansion.esm") as Armor) ;Extreme Panel Gag Harness
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0xD4F3, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Gag (Panel) (Harness)
+			endif
+		elseif Colour == "White"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0xF054, "Devious Devices - Expansion.esm") as Armor) ;White Ebonite Gag (Panel) (Harness)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0xF051, "Devious Devices - Expansion.esm") as Armor) ;White Leather Gag (Panel) (Harness)
+			endif
+		elseif Colour == "Red"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x11130, "Devious Devices - Expansion.esm") as Armor) ;Red Ebonite Gag (Panel) (Harness)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x1112D, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Gag (Panel) (Harness)
+			endif
+		endif
+	elseif Type == "Inflatable"
+		Int TempInt
+		if ForceInt != -1
+			TempInt = ForceInt
+		else
+			TempInt = Utility.RandomInt(0, 1)
+		endif
+		if TempInt == 0
+			return (Game.GetFormFromFile(0x56785, "Devious Devices - Expansion.esm") as Armor) ;Inflatable Panel Gag
+		elseif TempInt == 1
+			return (Game.GetFormFromFile(0x4F92B, "Devious Devices - Expansion.esm") as Armor) ;Extreme Inflatable Gag Harness
+		endif
+	elseif Type == "Various(Metal)"
+		if Colour == "Iron"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 5)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x1AB0E, "Devious Devices - Expansion.esm") as Armor) ;Iron Scold's Bridle (Light)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x1B072, "Devious Devices - Expansion.esm") as Armor) ;Iron Scold's Bridle
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x1B074, "Devious Devices - Expansion.esm") as Armor) ;Iron Scold's Bridle (Heavy)
+			elseif TempInt == 3
+				return (Game.GetFormFromFile(0x1F6C7, "Devious Devices - Expansion.esm") as Armor) ;Iron Gag (Ring)
+			elseif TempInt == 4
+				return (Game.GetFormFromFile(0x1F6C9, "Devious Devices - Expansion.esm") as Armor) ;Iron Gag (Bit)
+			elseif TempInt == 5
+				return (Game.GetFormFromFile(0x1F6CB, "Devious Devices - Expansion.esm") as Armor) ;Iron Gag (Wood Bit)
+			endif
+		elseif Colour == "Rusty Iron"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 5)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x1B076, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Scold's Bridle (Light)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x1B077, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Scold's Bridle
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x1B079, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Scold's Bridle (Heavy)
+			elseif TempInt == 3
+				return (Game.GetFormFromFile(0x1FC37, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Gag (Bit)
+			elseif TempInt == 4
+				return (Game.GetFormFromFile(0x1FC39, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Gag (Wood Bit)
+			elseif TempInt == 5
+				return (Game.GetFormFromFile(0x1FC57, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Gag (Choke Pear)
 			endif
 		endif
 	endif
@@ -769,28 +953,36 @@ Armor Function GetDDChastityBelt(String Type, String Colour, Int ForceInt = -1) 
 EndFunction
 
 Armor Function GetDDChastityBra(String Type, String Colour, Int ForceInt = -1) Global
-	if Colour == "Steel"
-		return (Game.GetFormFromFile(0x1775A, "Devious Devices - Integration.esm")) as Armor
-	elseif Colour == "Gold"
-		return (Game.GetFormFromFile(0x3FFFF, "Devious Devices - Expansion.esm")) as Armor
-	elseif Colour == "Silver"
-		return (Game.GetFormFromFile(0x40002, "Devious Devices - Expansion.esm")) as Armor
-	elseif Colour == "Black"
-		Int TempInt
-		if ForceInt != -1
-			TempInt = ForceInt
-		else
-			TempInt = Utility.RandomInt(0, 1)
+	if Type == "Metal"
+		if Colour == "Steel"
+			return (Game.GetFormFromFile(0x1775A, "Devious Devices - Integration.esm")) as Armor
+		elseif Colour == "Gold"
+			return (Game.GetFormFromFile(0x3FFFF, "Devious Devices - Expansion.esm")) as Armor
+		elseif Colour == "Silver"
+			return (Game.GetFormFromFile(0x40002, "Devious Devices - Expansion.esm")) as Armor
+		elseif Colour == "Black"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x58462, "Devious Devices - Expansion.esm")) as Armor
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x58626, "Devious Devices - Expansion.esm")) as Armor
+			endif
+		elseif Colour == "White"
+			return (Game.GetFormFromFile(0x58460, "Devious Devices - Expansion.esm")) as Armor
+		elseif Colour == "Red"
+			return (Game.GetFormFromFile(0x58458, "Devious Devices - Expansion.esm")) as Armor
 		endif
-		if TempInt == 0
-			return (Game.GetFormFromFile(0x58462, "Devious Devices - Expansion.esm")) as Armor
-		elseif TempInt == 1
-			return (Game.GetFormFromFile(0x58626, "Devious Devices - Expansion.esm")) as Armor
+	elseif Type == "Chain"
+		if Colour == "Iron"
+			return (Game.GetFormFromFile(0x1C0BE, "Devious Devices - Expansion.esm")) as Armor ;Iron Chain Harness (Bra)
+		elseif Colour == "Rusty Iron"
+			return (Game.GetFormFromFile(0x1E690, "Devious Devices - Expansion.esm")) as Armor ;Rusty Iron Chain Harness (Bra)
 		endif
-	elseif Colour == "White"
-		return (Game.GetFormFromFile(0x58460, "Devious Devices - Expansion.esm")) as Armor
-	elseif Colour == "Red"
-		return (Game.GetFormFromFile(0x58458, "Devious Devices - Expansion.esm")) as Armor
 	endif
 EndFunction
 
@@ -1183,6 +1375,12 @@ Armor Function GetDDHarness(String Type, String Colour, Int ForceInt = -1) Globa
 				return (Game.GetFormFromFile(0x54688, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(127) as Armor ;Rope Harness
 			endif
 		endif
+	elseif Type == "Chain"
+		if Colour == "Iron"
+			return (Game.GetFormFromFile(0x1C0B7, "Devious Devices - Expansion.esm") as Armor) ;Iron Chain Harness (Body)
+		elseif Colour == "Rusty Iron"
+			return (Game.GetFormFromFile(0x1E68D, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Chain Harness (Body)
+		endif
 	endif
 EndFunction
 
@@ -1426,6 +1624,12 @@ Armor Function GetDDHarnessNoBelt(String Type, String Colour, Int ForceInt = -1)
 			elseif TempInt == 14
 				return (Game.GetFormFromFile(0x54688, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(30) as Armor ;Top Rope Harness
 			endif
+		endif
+	elseif Type == "Chain"
+		if Colour == "Iron"
+			return (Game.GetFormFromFile(0x1C0B7, "Devious Devices - Expansion.esm") as Armor) ;Iron Chain Harness (Body)
+		elseif Colour == "Rusty Iron"
+			return (Game.GetFormFromFile(0x1E68D, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Chain Harness (Body)
 		endif
 	endif
 EndFunction
@@ -2437,6 +2641,46 @@ Armor Function GetDDBoots(String Type, String Colour, Int ForceInt = -1) Global
 				return (Game.GetFormFromFile(0x54691, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(4) as Armor ;Rusty Iron Ballet Boots (Reinforced)
 			endif
 		endif
+	elseif Type == "Pony"
+		if Colour == "Black"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 2)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x0604A1E7, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Pony Play Boots
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x060116F6, "Devious Devices - Expansion.esm") as Armor) ;Black Ebonite Pony Boots
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x060116F1, "Devious Devices - Expansion.esm") as Armor) ;Black Leather Pony Boots
+			endif
+		elseif Colour == "White"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x060116FE, "Devious Devices - Expansion.esm") as Armor) ;White Ebonite Pony Boots
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x060116FA, "Devious Devices - Expansion.esm") as Armor) ;White Leather Pony Boots
+			endif
+		elseif Colour == "Red"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x06011706, "Devious Devices - Expansion.esm") as Armor) ;Red Ebonite Pony Boots
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x06011702, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Pony Boots
+			endif
+		endif
 	endif
 EndFunction
 
@@ -2549,6 +2793,12 @@ Armor Function GetDDArmCuffs(String Type, String Colour, Int ForceInt = -1) Glob
 				return (Game.GetFormFromFile(0x5469E, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(6) as Armor ;Red Cuffs (Padded) (Arms)
 			endif
 		endif
+	elseif Type == "Chain"
+		if Colour == "Iron"
+			return (Game.GetFormFromFile(0x1C0BC, "Devious Devices - Expansion.esm") as Armor) ;Iron Chain Harness (Arms)
+		elseif Colour == "Rusty Iron"
+			return (Game.GetFormFromFile(0x1E68A, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Chain Harness (Arms)
+		endif
 	elseif Type == "Rope"
 		if Colour == "Black"
 				return (Game.GetFormFromFile(0x5469F, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(2) as Armor ;Black Rope Arm Cuffs
@@ -2618,6 +2868,12 @@ Armor Function GetDDLegCuffs(String Type, String Colour, Int ForceInt = -1) Glob
 			elseif TempInt == 1
 				return (Game.GetFormFromFile(0x546A3, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(6) as Armor ;Red Cuffs (Padded) (Legs)
 			endif
+		endif
+	elseif Type == "Chain"
+		if Colour == "Iron"
+			return (Game.GetFormFromFile(0x1C0BA, "Devious Devices - Expansion.esm") as Armor) ;Iron Chain Harness (Legs)
+		elseif Colour == "Rusty Iron"
+			return (Game.GetFormFromFile(0x1E694, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Chain Harness (Legs)
 		endif
 	elseif Type == "Rope"
 		if Colour == "Black"
@@ -2759,6 +3015,110 @@ Armor Function GetDDCollar(String Type, String Colour, Int ForceInt = -1) Global
 				return (Game.GetFormFromFile(0x54694, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(35) as Armor ;Red Ebonite Collar (Spiked)
 			endif
 		endif
+	elseif Type == "Metal"
+		if Colour == "Iron"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 13)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(0) as Armor ;Steel Collar (Padded) (Posture)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(1) as Armor ;Steel Collar (Padded)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(4) as Armor ;Iron Collar (Nipple Chain)
+			elseif TempInt == 3
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(5) as Armor ;Iron Collar
+			elseif TempInt == 4
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(6) as Armor ;Rusty Iron Collar
+			elseif TempInt == 5
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(7) as Armor ;Rusty Iron Collar (Nipple Chain)
+			elseif TempInt == 6
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(8) as Armor ;Iron Collar (Short Chain)
+			elseif TempInt == 7
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(9) as Armor ;Iron Collar (Medium Chain)
+			elseif TempInt == 8
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(10) as Armor ;Iron Collar (Lengthy Chain)
+			elseif TempInt == 9
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(11) as Armor ;Iron Collar (Long Chain)
+			elseif TempInt == 10
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(12) as Armor ;Rusty Iron Collar (Short Chain)
+			elseif TempInt == 11
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(13) as Armor ;Rusty Iron Collar (Medium Chain)
+			elseif TempInt == 12
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(14) as Armor ;Rusty Iron Collar (Lengthy Chain)
+			elseif TempInt == 13
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(15) as Armor ;Rusty Iron Collar (Long Chain)
+			endif
+		elseif Colour == "Golden"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(16) as Armor ;Golden Collar (Padded) (Posture)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(18) as Armor ;Golden Collar (Padded)
+			endif
+		elseif Colour == "Silver"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(17) as Armor ;Silver Collar (Padded) (Posture)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(19) as Armor ;Silver Collar (Padded)
+			endif
+		elseif Colour == "Black"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 2)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(22) as Armor ;Black Collar (Padded) (Posture)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(25) as Armor ;Black Collar (Padded)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(26) as Armor ;Black Lustrous Collar (Padded) (Posture)
+			endif
+		elseif Colour == "White"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 2)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(3) as Armor ;White Lustrous Collar (Padded) (Posture)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(21) as Armor ;White Collar (Padded) (Posture)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(24) as Armor ;White Collar (Padded)
+			endif
+		elseif Colour == "Red"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 2)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(2) as Armor ;Red Lustrous Collar (Padded) (Posture)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(20) as Armor ;Red Collar (Padded) (Posture)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x54695, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(23) as Armor ;Red Collar (Padded)
+			endif
+		endif
 	elseif Type == "Rope"
 		if Colour == "Black"
 			Int TempInt
@@ -2824,6 +3184,32 @@ Armor Function GetDDPlugVaginal(String Type, String Colour, Int ForceInt = -1) G
 			return (Game.GetFormFromFile(0x546AB, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(0) as Armor ;Plug (Iron) (Vaginal)
 		elseif TempInt == 1
 			return (Game.GetFormFromFile(0x546AB, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(6) as Armor ;Plug (Locking) (Vaginal)
+		endif
+	elseif Type == "Pear"
+		if Colour == "Iron"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x1BB4D, "Devious Devices - Expansion.esm") as Armor) ;Iron Pear of Anguish (Bell) (Vaginal)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x1B5E8, "Devious Devices - Expansion.esm") as Armor) ;Iron Pear of Anguish (Chain) (Vaginal)
+			endif
+		elseif Colour == "Rusty Iron"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 1)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x1FC4B, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Pear of Anguish (Chain) (Vaginal)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x1FC47, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Pear of Anguish (Bell) (Vaginal)
+			endif
 		endif
 	elseif Type == "Wood"
 		return (Game.GetFormFromFile(0x546AB, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(1) as Armor ;Plug (Primitive) (Vaginal)
@@ -2922,6 +3308,36 @@ Armor Function GetDDPlugAnal(String Type, String Colour, Int ForceInt = -1) Glob
 			return (Game.GetFormFromFile(0x546AA, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(0) as Armor ;Plug (Iron) (Anal)
 		elseif TempInt == 1
 			return (Game.GetFormFromFile(0x546AA, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(4) as Armor ;Plug (Locking) (Anal)
+		endif
+	elseif Type == "Pear"
+		if Colour == "Iron"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 2)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x1B5E5, "Devious Devices - Expansion.esm") as Armor) ;Iron Pear of Anguish (Bell) (Anal)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x1B5E3, "Devious Devices - Expansion.esm") as Armor) ;Iron Pear of Anguish (Sign) (Anal)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x1B5E1, "Devious Devices - Expansion.esm") as Armor) ;Iron Pear of Anguish (Chain) (Anal)
+			endif
+		elseif Colour == "Rusty Iron"
+			Int TempInt
+			if ForceInt != -1
+				TempInt = ForceInt
+			else
+				TempInt = Utility.RandomInt(0, 2)
+			endif
+			if TempInt == 0
+				return (Game.GetFormFromFile(0x1FC49, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Pear of Anguish (Chain) (Anal)
+			elseif TempInt == 1
+				return (Game.GetFormFromFile(0x1FC45, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Pear of Anguish (Sign) (Anal)
+			elseif TempInt == 2
+				return (Game.GetFormFromFile(0x1FC43, "Devious Devices - Expansion.esm") as Armor) ;Rusty Iron Pear of Anguish (Bell) (Anal)
+			endif
 		endif
 	elseif Type == "Wood"
 			return (Game.GetFormFromFile(0x546AA, "Devious Devices - Expansion.esm") as LeveledItem).GetNthForm(1) as Armor ;Plug (Primitive) (Anal)
@@ -3105,7 +3521,7 @@ Armor Function GetDDArmLegShackles(String Type, String Colour, Int ForceInt = -1
 EndFunction
 
 Armor Function GetDDMittens(String Type, String Colour, Int ForceInt = -1) Global
-	if Type == "Iron"
+	if Type == "Metal"
 		Int TempInt
 		if ForceInt != -1
 			TempInt = ForceInt
@@ -3125,5 +3541,33 @@ Armor Function GetDDMittens(String Type, String Colour, Int ForceInt = -1) Globa
 		elseif Colour == "Red"
 			return (Game.GetFormFromFile(0x237B5, "Devious Devices - Expansion.esm") as Armor) ;Red Leather Paw Bondage Mittens
 		endif
+	endif
+EndFunction
+
+Armor Function GetDDYoke(String Type, String Colour, Int ForceInt = -1) Global
+	if Type == "Iron"
+		return (Game.GetFormFromFile(0x4F18C, "Devious Devices - Integration.esm") as Armor) ;Iron Yoke
+	elseif Type == "Steel"
+		return (Game.GetFormFromFile(0x3D2E1, "Devious Devices - Expansion.esm") as Armor) ;Steel Yoke
+	elseif Type == "Wood"
+		return (Game.GetFormFromFile(0x24B0, "Devious Devices - Expansion.esm") as Armor) ;Wooden Yoke
+	elseif Type == "Breast"
+		return (Game.GetFormFromFile(0x3C7FB, "Devious Devices - Expansion.esm") as Armor) ;Iron Breast Yoke
+	endif
+EndFunction
+
+Armor Function GetDDElbowShackles(String Type, String Colour, Int ForceInt = -1) Global
+	Int TempInt
+	if ForceInt != -1
+		TempInt = ForceInt
+	else
+		TempInt = Utility.RandomInt(0, 2)
+	endif
+	if TempInt == 0
+		return (Game.GetFormFromFile(0x53629, "Devious Devices - Expansion.esm") as Armor) ;Elbow Shackles
+	elseif TempInt == 1
+		return (Game.GetFormFromFile(0x53625, "Devious Devices - Expansion.esm") as Armor) ;Hooked Elbow Shackles
+	elseif TempInt == 2
+		return (Game.GetFormFromFile(0x530C1, "Devious Devices - Expansion.esm") as Armor) ;Elbow Shackles with Collar
 	endif
 EndFunction
