@@ -3171,9 +3171,9 @@ Event OnPlayerLoadGame()
 			debug.trace("zad_libs_ForceSilent - Cleared")
 		endif
 	endif
-	if RessConfig.DefeatPatchVersion != 1.5
+	if RessConfig.DefeatPatchVersion != 1.6
 		DefeatLog("[Defeat] - OnPlayerLoadGame - DefeatPatchVersion: " + RessConfig.DefeatPatchVersion + " - Updating")
-		RessConfig.DefeatPatchVersion = 1.5
+		RessConfig.DefeatPatchVersion = 1.6
 		RessConfig.CheckForMods()
 	endif
 	if DefVulnScr == None

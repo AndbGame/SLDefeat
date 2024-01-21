@@ -603,6 +603,13 @@ Int Property CursedLootMinDevices = 3 Auto
 Int oidCursedLootMaxDevices
 Int  Property CursedLootMaxDevices = 6 Auto
 
+Int oidCursedLootFollowerSupport
+Bool Property CursedLootFollowerSupport = True Auto
+Int oidCursedLootTeleportationChance
+Int Property CursedLootTeleportationChance = 25 Auto
+Int oidCursedLootTeleportationBoundChance
+Int Property CursedLootTeleportationBoundChance = 50 Auto
+
 Int oidAllowCreaturePostAssault
 string[] Property AllowCreaturePostAssault Auto
 Int Property AllowCreaturePostAssaultSelection = 0 Auto
@@ -644,6 +651,9 @@ Float Property VulnerabilityValueHelpless = 35.0 Auto
 String[] Property DDGeneralPermissionList Auto ; [0] - Disallow    [1] - Allow    [2] - Allways Use
 
 Int oidDDPaUseArmbinder
+Int oidDDPaUseYoke
+Int oidDDPaUseMittens
+Int oidDDPaUseElbowShackles
 Int oidDDPaUseGag
 Int oidDDPaUseSuit
 Int oidDDPaUseHood
@@ -662,6 +672,9 @@ Int oidDDPaUseArmCuffs
 Int oidDDPaUseLegCuffs
 
 Int Property DDPaUseArmbinder = 1 Auto
+Int Property DDPaUseYoke = 1 Auto
+Int Property DDPaUseMittens = 1 Auto
+Int Property DDPaUseElbowShackles = 1 Auto
 Int Property DDPaUseGag = 1 Auto
 Int Property DDPaUseSuit = 1 Auto
 Int Property DDPaUseHood = 1 Auto
@@ -686,6 +699,12 @@ Int Property DDMaxDevices = 6 Auto
 
 Int oidDDPaArmbinderStyle
 Int oidDDPaArmbinderColour
+Int oidDDPaYokeStyle
+Int oidDDPaYokeColour
+Int oidDDPaMittensStyle
+Int oidDDPaMittensColour
+Int oidDDPaElbowShacklesStyle
+Int oidDDPaElbowShacklesColour
 Int oidDDPaGagStyle
 Int oidDDPaGagColour
 Int oidDDPaSuitStyle
@@ -721,6 +740,12 @@ Int oidDDPaLegCuffsColour
 
 String Property DDPaArmbinderStyle = "Any" Auto
 String Property DDPaArmbinderColour = "Any" Auto
+String Property DDPaYokeStyle = "Any" Auto
+String Property DDPaYokeColour = "Any" Auto
+String Property DDPaMittensStyle = "Any" Auto
+String Property DDPaMittensColour = "Any" Auto
+String Property DDPaElbowShacklesStyle = "Any" Auto
+String Property DDPaElbowShacklesColour = "Any" Auto
 String Property DDPaGagStyle = "Any" Auto
 String Property DDPaGagColour = "Any" Auto
 String Property DDPaSuitStyle = "Any" Auto
@@ -761,6 +786,12 @@ Int Property DDPaArmAndLegShacklesChance = 25 Auto
 Int oidDDPaConsistantStyle
 Bool Property DDPaConsistantStyle = True Auto
 Int oidDDPaTestingEquipDevices
+Int oidDDPaFollowerSupport
+Bool Property DDPaFollowerSupport = True Auto
+Int oidDDPaTeleportationChance
+Int Property DDPaTeleportationChance = 25 Auto
+Int oidDDPaTeleportationBoundChance
+Int Property DDPaTeleportationBoundChance = 50 Auto
 
 Int oidDDPaSelectLanguage
 String Property Language = "English" Auto
@@ -1268,6 +1299,10 @@ Function ExportSettings()
 	JsonUtil.SetIntValue(File, "EnableLog", EnableLog As Int) As Bool
 	JsonUtil.SetIntValue(File, "CursedLootMinDevices", CursedLootMinDevices)
 	JsonUtil.SetIntValue(File, "CursedLootMaxDevices", CursedLootMaxDevices)
+	JsonUtil.SetIntValue(File, "CursedLootMaxDevices", CursedLootMaxDevices)
+	JsonUtil.SetIntValue(File, "CursedLootFollowerSupport", CursedLootFollowerSupport As Int) as bool
+	JsonUtil.SetIntValue(File, "CursedLootTeleportationChance", CursedLootTeleportationChance)
+	JsonUtil.SetIntValue(File, "CursedLootTeleportationBoundChance", CursedLootTeleportationBoundChance)
 	JsonUtil.SetIntValue(File, "AllowCreaturePostAssaultSelection", AllowCreaturePostAssaultSelection)
 	JsonUtil.SetFloatValue(File, "VulnerabilityValueGag", VulnerabilityValueGag)
 	JsonUtil.SetFloatValue(File, "VulnerabilityValueVagPlug", VulnerabilityValueVagPlug)
@@ -1287,6 +1322,9 @@ Function ExportSettings()
 	JsonUtil.SetFloatValue(File, "VulnerabilityValueHelpless", VulnerabilityValueHelpless)
 	
 	JsonUtil.SetIntValue(File, "DDPaUseArmbinder", DDPaUseArmbinder)
+	JsonUtil.SetIntValue(File, "DDPaUseYoke", DDPaUseYoke)
+	JsonUtil.SetIntValue(File, "DDPaUseMittens", DDPaUseMittens)
+	JsonUtil.SetIntValue(File, "DDPaUseElbowShackles", DDPaUseElbowShackles)
 	JsonUtil.SetIntValue(File, "DDPaUseGag", DDPaUseGag)
 	JsonUtil.SetIntValue(File, "DDPaUseSuit", DDPaUseSuit)
 	JsonUtil.SetIntValue(File, "DDPaUseHood", DDPaUseHood)
@@ -1307,6 +1345,12 @@ Function ExportSettings()
 	JsonUtil.SetIntValue(File, "DDMaxDevices", DDMaxDevices)
 	JsonUtil.SetStringValue(File, "DDPaArmbinderStyle", DDPaArmbinderStyle)
 	JsonUtil.SetStringValue(File, "DDPaArmbinderColour", DDPaArmbinderColour)
+	JsonUtil.SetStringValue(File, "DDPaYokeStyle", DDPaYokeStyle)
+	JsonUtil.SetStringValue(File, "DDPaYokeColour", DDPaYokeColour)
+	JsonUtil.SetStringValue(File, "DDPaMittensStyle", DDPaArmbinderStyle)
+	JsonUtil.SetStringValue(File, "DDPaMittensColour", DDPaArmbinderColour)
+	JsonUtil.SetStringValue(File, "DDPaElbowShacklesStyle", DDPaElbowShacklesStyle)
+	JsonUtil.SetStringValue(File, "DDPaElbowShacklesColour", DDPaElbowShacklesColour)
 	JsonUtil.SetStringValue(File, "DDPaGagStyle", DDPaGagStyle)
 	JsonUtil.SetStringValue(File, "DDPaGagColour", DDPaGagColour)
 	JsonUtil.SetStringValue(File, "DDPaSuitStyle", DDPaSuitStyle)
@@ -1342,6 +1386,9 @@ Function ExportSettings()
 	JsonUtil.SetIntValue(File, "DDPaPlugsWithBelt", DDPaPlugsWithBelt As Int) As Bool	
 	JsonUtil.SetIntValue(File, "DDPaArmAndLegShacklesChance", DDPaArmAndLegShacklesChance)
 	JsonUtil.SetIntValue(File, "DDPaConsistantStyle", DDPaConsistantStyle As Int) As Bool
+	JsonUtil.SetIntValue(File, "DDPaFollowerSupport", DDPaFollowerSupport As Int) As Bool
+	JsonUtil.SetIntValue(File, "DDPaTeleportationChance", DDPaTeleportationChance)
+	JsonUtil.SetIntValue(File, "DDPaTeleportationBoundChance", DDPaTeleportationBoundChance)
 	JsonUtil.SetStringValue(File, "Language", Language)
 	
 	JsonUtil.Save(File, False)
@@ -1762,6 +1809,9 @@ Function ImportSettings()
 	EnableLog = JsonUtil.GetIntValue(File, "EnableLog", EnableLog As Int) As Bool
 	CursedLootMinDevices = JsonUtil.GetIntValue(File, "CursedLootMinDevices", CursedLootMinDevices)
 	CursedLootMaxDevices = JsonUtil.GetIntValue(File, "CursedLootMaxDevices", CursedLootMaxDevices)
+	CursedLootFollowerSupport = JsonUtil.GetIntValue(File, "CursedLootFollowerSupport", CursedLootFollowerSupport As Int) As Bool
+	CursedLootTeleportationChance = JsonUtil.GetIntValue(File, "CursedLootTeleportationChance", CursedLootTeleportationChance)
+	CursedLootTeleportationBoundChance = JsonUtil.GetIntValue(File, "CursedLootTeleportationBoundChance", CursedLootTeleportationBoundChance)
 	AllowCreaturePostAssaultSelection = JsonUtil.GetIntValue(File, "AllowCreaturePostAssaultSelection", AllowCreaturePostAssaultSelection)
 	VulnerabilityValueGag = JsonUtil.GetFloatValue(File, "VulnerabilityValueGag", VulnerabilityValueGag)
 	VulnerabilityValueVagPlug = JsonUtil.GetFloatValue(File, "VulnerabilityValueVagPlug", VulnerabilityValueVagPlug)
@@ -1781,6 +1831,9 @@ Function ImportSettings()
 	VulnerabilityValueHelpless = JsonUtil.GetFloatValue(File, "VulnerabilityValueHelpless", VulnerabilityValueHelpless)
 	
 	DDPaUseArmbinder = JsonUtil.GetIntValue(File, "DDPaUseArmbinder", DDPaUseArmbinder)
+	DDPaUseYoke = JsonUtil.GetIntValue(File, "DDPaUseYoke", DDPaUseYoke)
+	DDPaUseMittens = JsonUtil.GetIntValue(File, "DDPaUseMittens", DDPaUseMittens)
+	DDPaUseElbowShackles = JsonUtil.GetIntValue(File, "DDPaUseElbowShackles", DDPaUseElbowShackles)
 	DDPaUseGag = JsonUtil.GetIntValue(File, "DDPaUseGag", DDPaUseGag)
 	DDPaUseSuit = JsonUtil.GetIntValue(File, "DDPaUseSuit", DDPaUseSuit)
 	DDPaUseHood = JsonUtil.GetIntValue(File, "DDPaUseHood", DDPaUseHood)
@@ -1801,6 +1854,12 @@ Function ImportSettings()
 	DDMaxDevices = JsonUtil.GetIntValue(File, "DDMaxDevices", DDMaxDevices)
 	DDPaArmbinderStyle = JsonUtil.GetStringValue(File, "DDPaArmbinderStyle", DDPaArmbinderStyle)
 	DDPaArmbinderColour = JsonUtil.GetStringValue(File, "DDPaArmbinderColour", DDPaArmbinderColour)
+	DDPaYokeStyle = JsonUtil.GetStringValue(File, "DDPaYokeStyle", DDPaYokeStyle)
+	DDPaYokeColour = JsonUtil.GetStringValue(File, "DDPaYokeColour", DDPaYokeColour)
+	DDPaMittensStyle = JsonUtil.GetStringValue(File, "DDPaMittensStyle", DDPaMittensStyle)
+	DDPaMittensColour = JsonUtil.GetStringValue(File, "DDPaMittensColour", DDPaMittensColour)
+	DDPaElbowShacklesStyle = JsonUtil.GetStringValue(File, "DDPaElbowShacklesStyle", DDPaElbowShacklesStyle)
+	DDPaElbowShacklesColour = JsonUtil.GetStringValue(File, "DDPaElbowShacklesColour", DDPaElbowShacklesColour)
 	DDPaGagStyle = JsonUtil.GetStringValue(File, "DDPaGagStyle", DDPaGagStyle)
 	DDPaGagColour = JsonUtil.GetStringValue(File, "DDPaGagColour", DDPaGagColour)
 	DDPaSuitStyle = JsonUtil.GetStringValue(File, "DDPaSuitStyle", DDPaSuitStyle)
@@ -1836,6 +1895,9 @@ Function ImportSettings()
 	DDPaPlugsWithBelt = JsonUtil.GetIntValue(File, "DDPaPlugsWithBelt", DDPaPlugsWithBelt As Int) As Bool	
 	DDPaArmAndLegShacklesChance = JsonUtil.GetIntValue(File, "DDPaArmAndLegShacklesChance", DDPaArmAndLegShacklesChance)
 	DDPaConsistantStyle = JsonUtil.GetIntValue(File, "DDPaConsistantStyle", DDPaConsistantStyle As Int) As Bool
+	DDPaFollowerSupport = JsonUtil.GetIntValue(File, "DDPaFollowerSupport", DDPaFollowerSupport As Int) As Bool
+	DDPaTeleportationChance = JsonUtil.GetIntValue(File, "DDPaTeleportationChance", DDPaTeleportationChance)
+	DDPaTeleportationBoundChance = JsonUtil.GetIntValue(File, "DDPaTeleportationBoundChance", DDPaTeleportationBoundChance)
 	Language = JsonUtil.GetStringValue(File, "Language", Language)
 	SetLanguageProperties()
 	
@@ -2269,7 +2331,7 @@ Event OnPageReset(String page)
 			else
 				oidPAfrequency[6] = AddSliderOption("$Event Chance", PAfrequency[6], "{0} %", OPTION_FLAG_DISABLED)
 			endif
-		AddHeaderOption("-----------------------------------------------------------")
+			AddHeaderOption("-----------------------------------------------------------")
 			AddHeaderOption("(Devious Devices) Equip Devices")
 			if RessConfig.DDon
 				oidPAfrequency[7] = AddSliderOption("$Event Chance", PAfrequency[7], "{0} %")
@@ -2278,30 +2340,30 @@ Event OnPageReset(String page)
 				else
 					oidDDMinDevices = AddSliderOption("Minimum number of Devices", DDMinDevices)
 					oidDDMaxDevices = AddSliderOption("Maximum number of Devices", DDMaxDevices)
-					oidDDPaSelectLanguage = AddMenuOption("Select Language", Language)
+					oidDDPaFollowerSupport = AddToggleOption("Follower Support", DDPaFollowerSupport)
+					oidDDPaTeleportationChance = AddSliderOption("Player teleportation chance", DDPaTeleportationChance, "{0} %")
+					oidDDPaTeleportationBoundChance = AddSliderOption("Player(Bound) teleportation chance", DDPaTeleportationBoundChance, "{0} %")
 					AddEmptyOption()
 					oidDDPaUseArmbinder = AddMenuOption("Armbinder Settings", DDGeneralPermissionList[DDPaUseArmbinder])
 					if DDPaUseArmbinder >= 1
 						oidDDPaArmbinderStyle = AddMenuOption("Armbinder Style", GetStyleMenuList("Armbinder")[GetStyleIndexFromList("Armbinder", DDPaArmbinderStyle)])
 						oidDDPaArmbinderColour = AddMenuOption("Armbinder Colour", GetColourMenuList("Armbinder", DDPaArmbinderStyle)[GetColourIndexFromList("Armbinder", DDPaArmbinderStyle, DDPaArmbinderColour)])
-;						if oidDDPaArmbinderStyle == "Any"
-;							oidDDPaArmbinderColour = AddTextOption("Armbinder Colour", "Any")
-;						else
-;							oidDDPaArmbinderColour = AddMenuOption("Armbinder Colour", GetColourMenuList("Armbinder", DDPaArmbinderStyle)[GetColourIndexFromList("Armbinder", DDPaArmbinderStyle, DDPaArmbinderColour)])
-;						endif
 					else
 						oidDDPaArmbinderStyle = AddTextOption("Armbinder Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaArmbinderColour = AddTextOption("Armbinder Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseYoke = AddMenuOption("Yoke Settings", DDGeneralPermissionList[DDPaUseYoke])
+					if DDPaUseYoke >= 1
+						oidDDPaYokeStyle = AddMenuOption("Yoke Style", GetStyleMenuList("Yoke")[GetStyleIndexFromList("Yoke", DDPaYokeStyle)])
+						oidDDPaYokeColour = AddMenuOption("Yoke Colour", GetColourMenuList("Yoke", DDPaYokeStyle)[GetColourIndexFromList("Yoke", DDPaYokeStyle, DDPaYokeColour)])
+					else
+						oidDDPaYokeStyle = AddTextOption("Yoke Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaYokeColour = AddTextOption("Yoke Colour", "Disabled", OPTION_FLAG_DISABLED)
 					endif
 					oidDDPaUseGag = AddMenuOption("Gag Settings", DDGeneralPermissionList[DDPaUseGag])
 					if DDPaUseGag >= 1
 						oidDDPaGagStyle = AddMenuOption("Gag Style", GetStyleMenuList("Gag")[GetStyleIndexFromList("Gag", DDPaGagStyle)])
 						oidDDPaGagColour = AddMenuOption("Gag Colour", GetColourMenuList("Gag", DDPaGagStyle)[GetColourIndexFromList("Gag", DDPaGagStyle, DDPaGagColour)])
-;						if oidDDPaGagStyle == "Any"
-;							oidDDPaGagColour = AddTextOption("Gag Colour", "Any")
-;						else
-;							oidDDPaGagColour = AddMenuOption("Gag Colour", GetColourMenuList("Gag", DDPaGagStyle)[GetColourIndexFromList("Gag", DDPaGagStyle, DDPaGagColour)])
-;						endif
 					else
 						oidDDPaGagStyle = AddTextOption("Gag Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaGagColour = AddTextOption("Gag Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2310,11 +2372,6 @@ Event OnPageReset(String page)
 					if DDPaUseSuit >= 1
 						oidDDPaSuitStyle = AddMenuOption("Suit Style", GetStyleMenuList("Suit")[GetStyleIndexFromList("Suit", DDPaSuitStyle)])
 						oidDDPaSuitColour = AddMenuOption("Suit Colour", GetColourMenuList("Suit", DDPaSuitStyle)[GetColourIndexFromList("Suit", DDPaSuitStyle, DDPaSuitColour)])
-;						if oidDDPaSuitStyle == "Any"
-;							oidDDPaSuitColour = AddTextOption("Suit Colour", "Any")
-;						else
-;							oidDDPaSuitColour = AddMenuOption("Suit Colour", GetColourMenuList("Suit", DDPaSuitStyle)[GetColourIndexFromList("Suit", DDPaSuitStyle, DDPaSuitColour)])
-;						endif
 					else
 						oidDDPaSuitStyle = AddTextOption("Suit Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaSuitColour = AddTextOption("Suit Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2323,11 +2380,6 @@ Event OnPageReset(String page)
 					if DDPaUseHood >= 1
 						oidDDPaHoodStyle = AddMenuOption("Head Gear Style", GetStyleMenuList("Hood")[GetStyleIndexFromList("Hood", DDPaHoodStyle)])
 						oidDDPaHoodColour = AddMenuOption("Head Gear Colour", GetColourMenuList("Hood", DDPaHoodStyle)[GetColourIndexFromList("Hood", DDPaHoodStyle, DDPaHoodColour)])
-;						if oidDDPaHoodStyle == "Any"
-;							oidDDPaHoodColour = AddTextOption("Head Gear Colour", "Any")
-;						else
-;							oidDDPaHoodColour = AddMenuOption("Head Gear Colour", GetColourMenuList("Hood", DDPaHoodStyle)[GetColourIndexFromList("Hood", DDPaHoodStyle, DDPaHoodColour)])
-;						endif
 					else
 						oidDDPaHoodStyle = AddTextOption("Head Gear Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaHoodColour = AddTextOption("Head Gear Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2336,11 +2388,6 @@ Event OnPageReset(String page)
 					if DDPaUseChastityBelt >= 1
 						oidDDPaChastityBeltStyle = AddMenuOption("Belt Style", GetStyleMenuList("Belt")[GetStyleIndexFromList("Belt", DDPaChastityBeltStyle)])
 						oidDDPaChastityBeltColour = AddMenuOption("Belt Colour", GetColourMenuList("Belt", DDPaChastityBeltStyle)[GetColourIndexFromList("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour)])
-;						if oidDDPaChastityBeltStyle == "Any"
-;							oidDDPaChastityBeltColour = AddTextOption("Belt Colour", "Any")
-;						else
-;							oidDDPaChastityBeltColour = AddMenuOption("Belt Colour", GetColourMenuList("Belt", DDPaChastityBeltStyle)[GetColourIndexFromList("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour)])
-;						endif
 					else
 						oidDDPaChastityBeltStyle = AddTextOption("Belt Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaChastityBeltColour = AddTextOption("Belt Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2349,11 +2396,6 @@ Event OnPageReset(String page)
 					if DDPaUseChastityBra >= 1
 						oidDDPaChastityBraStyle = AddMenuOption("Bra Style", GetStyleMenuList("Bra")[GetStyleIndexFromList("Bra", DDPaChastityBraStyle)])
 						oidDDPaChastityBraColour = AddMenuOption("Bra Colour", GetColourMenuList("Bra", DDPaChastityBraStyle)[GetColourIndexFromList("Bra", DDPaChastityBraStyle, DDPaChastityBraColour)])
-;						if oidDDPaChastityBraStyle == "Any"
-;							oidDDPaChastityBraColour = AddTextOption("Bra Colour", "Any")
-;						else
-;							oidDDPaChastityBraColour = AddMenuOption("Bra Colour", GetColourMenuList("Bra", DDPaChastityBraStyle)[GetColourIndexFromList("Bra", DDPaChastityBraStyle, DDPaChastityBraColour)])
-;						endif
 					else
 						oidDDPaChastityBraStyle = AddTextOption("Bra Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaChastityBraColour = AddTextOption("Bra Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2362,11 +2404,6 @@ Event OnPageReset(String page)
 					if DDPaUseHarness >= 1
 						oidDDPaHarnessStyle = AddMenuOption("Harness Style", GetStyleMenuList("Harness")[GetStyleIndexFromList("Harness", DDPaHarnessStyle)])
 						oidDDPaHarnessColour = AddMenuOption("Harness Colour", GetColourMenuList("Harness", DDPaHarnessStyle)[GetColourIndexFromList("Harness", DDPaHarnessStyle, DDPaHarnessColour)])
-;						if oidDDPaHarnessStyle == "Any"
-;							oidDDPaHarnessColour = AddTextOption("Harness Colour", "Any")
-;						else
-;							oidDDPaHarnessColour = AddMenuOption("Harness Colour", GetColourMenuList("Harness", DDPaHarnessStyle)[GetColourIndexFromList("Harness", DDPaHarnessStyle, DDPaHarnessColour)])
-;						endif
 					else
 						oidDDPaHarnessStyle = AddTextOption("Harness Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaHarnessColour = AddTextOption("Harness Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2375,11 +2412,6 @@ Event OnPageReset(String page)
 					if DDPaUseCorset >= 1
 						oidDDPaCorsetStyle = AddMenuOption("Corset Style", GetStyleMenuList("Corset")[GetStyleIndexFromList("Corset", DDPaCorsetStyle)])
 						oidDDPaCorsetColour = AddMenuOption("Corset Colour", GetColourMenuList("Corset", DDPaCorsetStyle)[GetColourIndexFromList("Corset", DDPaCorsetStyle, DDPaCorsetColour)])
-;						if oidDDPaCorsetStyle == "Any"
-;							oidDDPaCorsetColour = AddTextOption("Corset Colour", "Any")
-;						else
-;							oidDDPaCorsetColour = AddMenuOption("Corset Colour", GetColourMenuList("Corset", DDPaCorsetStyle)[GetColourIndexFromList("Corset", DDPaCorsetStyle, DDPaCorsetColour)])
-;						endif
 					else
 						oidDDPaCorsetStyle = AddTextOption("Corset Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaCorsetColour = AddTextOption("Corset Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2388,11 +2420,6 @@ Event OnPageReset(String page)
 					if DDPaUseCollar >= 1
 						oidDDPaCollarStyle = AddMenuOption("Collar Style", GetStyleMenuList("Collar")[GetStyleIndexFromList("Collar", DDPaCollarStyle)])
 						oidDDPaCollarColour = AddMenuOption("Collar Colour", GetColourMenuList("Collar", DDPaCollarStyle)[GetColourIndexFromList("Collar", DDPaCollarStyle, DDPaCollarColour)])
-;						if oidDDPaCollarStyle == "Any"
-;							oidDDPaCollarColour = AddTextOption("Collar Colour", "Any")
-;						else
-;							oidDDPaCollarColour = AddMenuOption("Collar Colour", GetColourMenuList("Collar", DDPaCollarStyle)[GetColourIndexFromList("Collar", DDPaCollarStyle, DDPaCollarColour)])
-;						endif
 					else
 						oidDDPaCollarStyle = AddTextOption("Collar Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaCollarColour = AddTextOption("Collar Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2402,17 +2429,30 @@ Event OnPageReset(String page)
 					oidDDPaPlugsWithBelt = AddToggleOption("Use Plugs with Belts", DDPaPlugsWithBelt)
 					oidDDPaArmAndLegShacklesChance = AddSliderOption("Use Arm and Leg Shackles", DDPaArmAndLegShacklesChance, "{0} %")
 					oidDDPaConsistantStyle = AddToggleOption("Use Consistent Devices", DDPaConsistantStyle)
+					oidDDPaSelectLanguage = AddMenuOption("Select Language", Language)
 					oidDDPaTestingEquipDevices = AddTextOption("TEST Devices", "Equip Devices")
 					AddEmptyOption()
+					AddEmptyOption()
+					oidDDPaUseMittens = AddMenuOption("Bondage Mittens Settings", DDGeneralPermissionList[DDPaUseMittens])
+					if DDPaUseMittens >= 1
+						oidDDPaMittensStyle = AddMenuOption("Bondage Mittens Style", GetStyleMenuList("Mittens")[GetStyleIndexFromList("Mittens", DDPaMittensStyle)])
+						oidDDPaMittensColour = AddMenuOption("Bondage Mittens Colour", GetColourMenuList("Mittens", DDPaMittensStyle)[GetColourIndexFromList("Mittens", DDPaMittensStyle, DDPaMittensColour)])
+					else
+						oidDDPaPlugVaginalStyle = AddTextOption("Bondage Mittens Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaPlugVaginalColour = AddTextOption("Bondage Mittens Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
+					oidDDPaUseElbowShackles = AddMenuOption("Elbow Shackles Settings", DDGeneralPermissionList[DDPaUseElbowShackles])
+					if DDPaUseElbowShackles >= 1
+						oidDDPaElbowShacklesStyle = AddMenuOption("Elbow Shackles Style", GetStyleMenuList("ElbowShackles")[GetStyleIndexFromList("ElbowShackles", DDPaElbowShacklesStyle)])
+						oidDDPaElbowShacklesColour = AddMenuOption("Elbow Shackles Colour", GetColourMenuList("ElbowShackles", DDPaElbowShacklesStyle)[GetColourIndexFromList("ElbowShackles", DDPaElbowShacklesStyle, DDPaElbowShacklesColour)])
+					else
+						oidDDPaPlugVaginalStyle = AddTextOption("Elbow Shackles Style", "Disabled", OPTION_FLAG_DISABLED)
+						oidDDPaPlugVaginalColour = AddTextOption("Elbow Shackles Colour", "Disabled", OPTION_FLAG_DISABLED)
+					endif
 					oidDDPaUsePlugVaginal = AddMenuOption("Plug(Vaginal) Settings", DDGeneralPermissionList[DDPaUsePlugVaginal])
 					if DDPaUsePlugVaginal >= 1
 						oidDDPaPlugVaginalStyle = AddMenuOption("Plug(Vaginal) Style", GetStyleMenuList("PlugVaginal")[GetStyleIndexFromList("PlugVaginal", DDPaPlugVaginalStyle)])
 						oidDDPaPlugVaginalColour = AddMenuOption("Plug(Vaginal) Colour", GetColourMenuList("PlugVaginal", DDPaPlugVaginalStyle)[GetColourIndexFromList("PlugVaginal", DDPaPlugVaginalStyle, DDPaPlugVaginalColour)])
-;						if oidDDPaPlugVaginalStyle == "Any"
-;							oidDDPaPlugVaginalColour = AddTextOption("Plug(Vaginal) Colour", "Any")
-;						else
-;							oidDDPaPlugVaginalColour = AddMenuOption("Plug(Vaginal) Colour", GetColourMenuList("PlugVaginal", DDPaPlugVaginalStyle)[GetColourIndexFromList("PlugVaginal", DDPaPlugVaginalStyle, DDPaPlugVaginalColour)])
-;						endif
 					else
 						oidDDPaPlugVaginalStyle = AddTextOption("Plug(Vaginal) Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaPlugVaginalColour = AddTextOption("Plug(Vaginal) Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2421,11 +2461,6 @@ Event OnPageReset(String page)
 					if DDPaUsePlugAnal >= 1
 						oidDDPaPlugAnalStyle = AddMenuOption("Plug(Anal) Style", GetStyleMenuList("PlugAnal")[GetStyleIndexFromList("PlugAnal", DDPaPlugAnalStyle)])
 						oidDDPaPlugAnalColour = AddMenuOption("Plug(Anal) Colour", GetColourMenuList("PlugAnal", DDPaPlugAnalStyle)[GetColourIndexFromList("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour)])
-;						if oidDDPaPlugAnalStyle == "Any"
-;							oidDDPaPlugAnalColour = AddTextOption("Plug(Anal) Colour", "Any")
-;						else
-;							oidDDPaPlugAnalColour = AddMenuOption("Plug(Anal) Colour", GetColourMenuList("PlugAnal", DDPaPlugAnalStyle)[GetColourIndexFromList("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour)])
-;						endif
 					else
 						oidDDPaPlugAnalStyle = AddTextOption("Plug(Anal) Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaPlugAnalColour = AddTextOption("Plug(Anal) Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2434,11 +2469,6 @@ Event OnPageReset(String page)
 					if DDPaUsePiercingVaginal >= 1
 						oidDDPaPiercingVaginalStyle = AddMenuOption("Piercing(Vaginal) Style", GetStyleMenuList("PiercingVaginal")[GetStyleIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle)])
 						oidDDPaPiercingVaginalColour = AddMenuOption("Piercing(Vaginal) Colour", GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle)[GetColourIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour)])
-;						if oidDDPaPiercingVaginalStyle == "Any"
-;							oidDDPaPiercingVaginalColour = AddTextOption("Piercing(Vaginal) Colour", "Any")
-;						else
-;							oidDDPaPiercingVaginalColour = AddMenuOption("Piercing(Vaginal) Colour", GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle)[GetColourIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour)])
-;						endif
 					else
 						oidDDPaPiercingVaginalStyle = AddTextOption("Piercing(Vaginal) Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaPiercingVaginalColour = AddTextOption("Piercing(Vaginal) Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2447,11 +2477,6 @@ Event OnPageReset(String page)
 					if DDPaUsePiercingNipple >= 1
 						oidDDPaPiercingNippleStyle = AddMenuOption("Piercing(Nipple) Style", GetStyleMenuList("PiercingNipple")[GetStyleIndexFromList("PiercingNipple", DDPaPiercingNippleStyle)])
 						oidDDPaPiercingNippleColour = AddMenuOption("Piercing(Nipple) Colour", GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle)[GetColourIndexFromList("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour)])
-;						if oidDDPaPiercingNippleStyle == "Any"
-;							oidDDPaPiercingNippleColour = AddTextOption("Piercing(Nipple) Colour", "Any")
-;						else
-;							oidDDPaPiercingNippleColour = AddMenuOption("Piercing(Nipple) Colour", GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle)[GetColourIndexFromList("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour)])
-;						endif
 					else
 						oidDDPaPiercingNippleStyle = AddTextOption("Piercing(Nipple) Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaPiercingNippleColour = AddTextOption("Piercing(Nipple) Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2460,11 +2485,6 @@ Event OnPageReset(String page)
 					if DDPaUseBoots >= 1
 						oidDDPaBootsStyle = AddMenuOption("Boots Style", GetStyleMenuList("Boots")[GetStyleIndexFromList("Boots", DDPaBootsStyle)])
 						oidDDPaBootsColour = AddMenuOption("Boots Colour", GetColourMenuList("Boots", DDPaBootsStyle)[GetColourIndexFromList("Boots", DDPaBootsStyle, DDPaBootsColour)])
-;						if oidDDPaBootsStyle == "Any"
-;							oidDDPaBootsColour = AddTextOption("Boots Colour", "Any")
-;						else
-;							oidDDPaBootsColour = AddMenuOption("Boots Colour", GetColourMenuList("Boots", DDPaBootsStyle)[GetColourIndexFromList("Boots", DDPaBootsStyle, DDPaBootsColour)])
-;						endif
 					else
 						oidDDPaBootsStyle = AddTextOption("Boots Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaBootsColour = AddTextOption("Boots Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2473,11 +2493,6 @@ Event OnPageReset(String page)
 					if DDPaUseGloves >= 1
 						oidDDPaGlovesStyle = AddMenuOption("Gloves Style", GetStyleMenuList("Gloves")[GetStyleIndexFromList("Gloves", DDPaGlovesStyle)])
 						oidDDPaGlovesColour = AddMenuOption("Gloves Colour", GetColourMenuList("Gloves", DDPaGlovesStyle)[GetColourIndexFromList("Gloves", DDPaGlovesStyle, DDPaGlovesColour)])
-;						if oidDDPaGlovesStyle == "Any"
-;							oidDDPaGlovesColour = AddTextOption("Gloves Colour", "Any")
-;						else
-;							oidDDPaGlovesColour = AddMenuOption("Gloves Colour", GetColourMenuList("Gloves", DDPaGlovesStyle)[GetColourIndexFromList("Gloves", DDPaGlovesStyle, DDPaGlovesColour)])
-;						endif
 					else
 						oidDDPaGlovesStyle = AddTextOption("Gloves Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaGlovesColour = AddTextOption("Gloves Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2486,11 +2501,6 @@ Event OnPageReset(String page)
 					if DDPaUseArmCuffs >= 1
 						oidDDPaArmCuffsStyle = AddMenuOption("Arm Cuffs Style", GetStyleMenuList("ArmCuffs")[GetStyleIndexFromList("ArmCuffs", DDPaArmCuffsStyle)])
 						oidDDPaArmCuffsColour = AddMenuOption("Arm Cuffs Colour", GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle)[GetColourIndexFromList("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour)])
-;						if oidDDPaArmCuffsStyle == "Any"
-;							oidDDPaArmCuffsColour = AddTextOption("Arm Cuffs Colour", "Any")
-;						else
-;							oidDDPaArmCuffsColour = AddMenuOption("Arm Cuffs Colour", GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle)[GetColourIndexFromList("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour)])
-;						endif
 					else
 						oidDDPaArmCuffsStyle = AddTextOption("Arm Cuffs Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaArmCuffsColour = AddTextOption("Arm Cuffs Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2499,11 +2509,6 @@ Event OnPageReset(String page)
 					if DDPaUseLegCuffs >= 1
 						oidDDPaLegCuffsStyle = AddMenuOption("Leg Cuffs Style", GetStyleMenuList("LegCuffs")[GetStyleIndexFromList("LegCuffs", DDPaLegCuffsStyle)])
 						oidDDPaLegCuffsColour = AddMenuOption("Leg Cuffs Colour", GetColourMenuList("LegCuffs", DDPaLegCuffsStyle)[GetColourIndexFromList("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour)])
-;						if oidDDPaLegCuffsStyle == "Any"
-;							oidDDPaLegCuffsColour = AddTextOption("Leg Cuffs Colour", "Any")
-;						else
-;							oidDDPaLegCuffsColour = AddMenuOption("Leg Cuffs Colour", GetColourMenuList("LegCuffs", DDPaLegCuffsStyle)[GetColourIndexFromList("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour)])
-;						endif
 					else
 						oidDDPaLegCuffsStyle = AddTextOption("Leg Cuff Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaLegCuffsColour = AddTextOption("Leg Cuff Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2544,15 +2549,24 @@ Event OnPageReset(String page)
 			else
 				oidPAfrequency[4] = AddSliderOption("$Event Chance", PAfrequency[4], "{0} %", OPTION_FLAG_DISABLED)
 			endif
+			
 			AddHeaderOption("-----------------------------------------------------------")
-			AddHeaderOption("(Misc) LeashGame")
-			if RessConfig.LeashGameON
-				oidPAfrequency[5] = AddSliderOption("$Event Chance", PAfrequency[5], "{0} %")
+			AddEmptyOption()
+			if RessConfig.DeviouslyCursedLootON
+				oidCursedLootFollowerSupport = AddToggleOption("Follower Support", CursedLootFollowerSupport)
+				oidCursedLootTeleportationChance = AddSliderOption("Player teleportation chance", CursedLootTeleportationChance, "{0} %")
+				oidCursedLootTeleportationBoundChance = AddSliderOption("Player(Bound) teleportation chance", CursedLootTeleportationBoundChance, "{0} %")
 			else
-				oidPAfrequency[5] = AddSliderOption("$Event Chance", PAfrequency[5], "{0} %", OPTION_FLAG_DISABLED)
+				oidPAfrequency[6] = AddSliderOption("$Event Chance", PAfrequency[6], "{0} %", OPTION_FLAG_DISABLED)
 			endif
-			AddEmptyOption()
-			AddEmptyOption()
+			
+;			AddHeaderOption("-----------------------------------------------------------")
+;			AddHeaderOption("(Misc) LeashGame")
+;			if RessConfig.LeashGameON
+;				oidPAfrequency[5] = AddSliderOption("$Event Chance", PAfrequency[5], "{0} %")
+;			else
+;				oidPAfrequency[5] = AddSliderOption("$Event Chance", PAfrequency[5], "{0} %", OPTION_FLAG_DISABLED)
+;			endif
 			AddHeaderOption("-----------------------------------------------------------")
 		Endif
 	Elseif (Page == "$NPC vs NPC")
@@ -4511,6 +4525,42 @@ Event OnOptionMenuOpen(Int Option)
 		SetMenuDialogOptions(GetColourMenuList("Armbinder", DDPaArmbinderStyle))
 		SetMenuDialogStartIndex(GetColourIndexFromList("Armbinder", DDPaArmbinderStyle, DDPaArmbinderColour))
 		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseYoke)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseYoke)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaYokeStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Yoke"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Yoke", DDPaYokeStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaYokeColour)
+		SetMenuDialogOptions(GetColourMenuList("Yoke", DDPaYokeStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Yoke", DDPaYokeStyle, DDPaYokeColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseMittens)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseMittens)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaMittensStyle)
+		SetMenuDialogOptions(GetStyleMenuList("Mittens"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("Mittens", DDPaMittensStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaMittensColour)
+		SetMenuDialogOptions(GetColourMenuList("Mittens", DDPaMittensStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("Mittens", DDPaMittensStyle, DDPaMittensColour))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaUseElbowShackles)
+		SetMenuDialogOptions(DDGeneralPermissionList)
+		SetMenuDialogStartIndex(DDPaUseElbowShackles)
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaElbowShacklesStyle)
+		SetMenuDialogOptions(GetStyleMenuList("ElbowShackles"))
+		SetMenuDialogStartIndex(GetStyleIndexFromList("ElbowShackles", DDPaElbowShacklesStyle))
+		SetMenuDialogDefaultIndex(0)
+	elseif (Option == oidDDPaElbowShacklesColour)
+		SetMenuDialogOptions(GetColourMenuList("ElbowShackles", DDPaElbowShacklesStyle))
+		SetMenuDialogStartIndex(GetColourIndexFromList("ElbowShackles", DDPaElbowShacklesStyle, DDPaElbowShacklesColour))
+		SetMenuDialogDefaultIndex(0)
 	elseif (Option == oidDDPaUseGag)
 		SetMenuDialogOptions(DDGeneralPermissionList)
 		SetMenuDialogStartIndex(DDPaUseGag)
@@ -4721,13 +4771,58 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaArmbinderStyle)
 		DDPaArmbinderStyle = GetStyleNameByIndex("Armbinder", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Armbinder")[Index])
-;		if DDPaArmbinderStyle == "Any"
-;			DDPaArmbinderColour = "Any"
-;		endif
+		if !StyleHasColour("Armbinder", DDPaArmbinderStyle, DDPaArmbinderColour)
+			DDPaArmbinderColour = GetColourNameByIndex("Armbinder", DDPaArmbinderStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaArmbinderColour)
 		DDPaArmbinderColour = GetColourNameByIndex("Armbinder", DDPaArmbinderStyle, Index)
 		SetMenuOptionValue(Option, GetColourMenuList("Armbinder", DDPaArmbinderStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseYoke)
+		DDPaUseYoke = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseYoke])
+		ForcePageReset()
+	elseif (Option == oidDDPaYokeStyle)
+		DDPaYokeStyle = GetStyleNameByIndex("Yoke", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Yoke")[Index])
+		if !StyleHasColour("Yoke", DDPaYokeStyle, DDPaYokeColour)
+			DDPaYokeColour = GetColourNameByIndex("Yoke", DDPaYokeStyle, 0)
+		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaYokeColour)
+		DDPaYokeColour = GetColourNameByIndex("Yoke", DDPaYokeStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Yoke", DDPaYokeStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseMittens)
+		DDPaUseMittens = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseMittens])
+		ForcePageReset()
+	elseif (Option == oidDDPaMittensStyle)
+		DDPaMittensStyle = GetStyleNameByIndex("Mittens", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("Mittens")[Index])
+		if !StyleHasColour("Mittens", DDPaMittensStyle, DDPaMittensColour)
+			DDPaMittensColour = GetColourNameByIndex("Mittens", DDPaMittensStyle, 0)
+		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaMittensColour)
+		DDPaMittensColour = GetColourNameByIndex("Mittens", DDPaMittensStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("Mittens", DDPaMittensStyle)[Index])
+		ForcePageReset()
+	elseif (Option == oidDDPaUseElbowShackles)
+		DDPaUseElbowShackles = Index
+		SetMenuOptionValue(Option, DDGeneralPermissionList[DDPaUseElbowShackles])
+		ForcePageReset()
+	elseif (Option == oidDDPaElbowShacklesStyle)
+		DDPaElbowShacklesStyle = GetStyleNameByIndex("ElbowShackles", Index)
+		SetMenuOptionValue(Option, GetStyleMenuList("ElbowShackles")[Index])
+		if !StyleHasColour("ElbowShackles", DDPaElbowShacklesStyle, DDPaElbowShacklesColour)
+			DDPaElbowShacklesColour = GetColourNameByIndex("ElbowShackles", DDPaElbowShacklesStyle, 0)
+		endif
+		ForcePageReset()
+	elseif (Option == oidDDPaElbowShacklesColour)
+		DDPaElbowShacklesColour = GetColourNameByIndex("ElbowShackles", DDPaElbowShacklesStyle, Index)
+		SetMenuOptionValue(Option, GetColourMenuList("ElbowShackles", DDPaElbowShacklesStyle)[Index])
 		ForcePageReset()
 	elseif (Option == oidDDPaUseGag)
 		DDPaUseGag = Index
@@ -4736,9 +4831,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaGagStyle)
 		DDPaGagStyle = GetStyleNameByIndex("Gag", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Gag")[Index])
-;		if DDPaGagStyle == "Any"
-;			DDPaGagColour = "Any"
-;		endif
+		if !StyleHasColour("Gag", DDPaGagStyle, DDPaGagColour)
+			DDPaGagColour = GetColourNameByIndex("Gag", DDPaGagStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaGagColour)
 		DDPaGagColour = GetColourNameByIndex("Gag", DDPaGagStyle, Index)
@@ -4751,9 +4846,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaSuitStyle)
 		DDPaSuitStyle = GetStyleNameByIndex("Suit", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Suit")[Index])
-;		if DDPaSuitStyle == "Any"
-;			DDPaSuitColour = "Any"
-;		endif
+		if !StyleHasColour("Suit", DDPaSuitStyle, DDPaSuitColour)
+			DDPaSuitColour = GetColourNameByIndex("Suit", DDPaSuitStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaSuitColour)
 		DDPaSuitColour = GetColourNameByIndex("Suit", DDPaSuitStyle, Index)
@@ -4766,9 +4861,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaHoodStyle)
 		DDPaHoodStyle = GetStyleNameByIndex("Hood", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Hood")[Index])
-;		if DDPaHoodStyle == "Any"
-;			DDPaHoodColour = "Any"
-;		endif
+		if !StyleHasColour("Hood", DDPaHoodStyle, DDPaHoodColour)
+			DDPaHoodColour = GetColourNameByIndex("Hood", DDPaHoodStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaHoodColour)
 		DDPaHoodColour = GetColourNameByIndex("Hood", DDPaHoodStyle, Index)
@@ -4781,9 +4876,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaChastityBeltStyle)
 		DDPaChastityBeltStyle = GetStyleNameByIndex("Belt", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Belt")[Index])
-;		if DDPaChastityBeltStyle == "Any"
-;			DDPaChastityBeltColour = "Any"
-;		endif
+		if !StyleHasColour("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour)
+			DDPaChastityBeltColour = GetColourNameByIndex("Belt", DDPaChastityBeltStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaChastityBeltColour)
 		DDPaChastityBeltColour = GetColourNameByIndex("Belt", DDPaChastityBeltStyle, Index)
@@ -4796,9 +4891,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaChastityBraStyle)
 		DDPaChastityBraStyle = GetStyleNameByIndex("Bra", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Bra")[Index])
-;		if DDPaChastityBraStyle == "Any"
-;			DDPaChastityBraColour = "Any"
-;		endif
+		if !StyleHasColour("Bra", DDPaChastityBraStyle, DDPaChastityBraColour)
+			DDPaChastityBraColour = GetColourNameByIndex("Bra", DDPaChastityBraStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaChastityBraColour)
 		DDPaChastityBraColour = GetColourNameByIndex("Bra", DDPaChastityBraStyle, Index)
@@ -4811,9 +4906,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaHarnessStyle)
 		DDPaHarnessStyle = GetStyleNameByIndex("Harness", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Harness")[Index])
-;		if DDPaHarnessStyle == "Any"
-;			DDPaHarnessColour = "Any"
-;		endif
+		if !StyleHasColour("Harness", DDPaHarnessStyle, DDPaHarnessColour)
+			DDPaHarnessColour = GetColourNameByIndex("Harness", DDPaHarnessStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaHarnessColour)
 		DDPaHarnessColour = GetColourNameByIndex("Harness", DDPaHarnessStyle, Index)
@@ -4826,9 +4921,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaCorsetStyle)
 		DDPaCorsetStyle = GetStyleNameByIndex("Corset", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Corset")[Index])
-;		if DDPaCorsetStyle == "Any"
-;			DDPaCorsetColour = "Any"
-;		endif
+		if !StyleHasColour("Corset", DDPaCorsetStyle, DDPaCorsetColour)
+			DDPaCorsetColour = GetColourNameByIndex("Corset", DDPaCorsetStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaCorsetColour)
 		DDPaCorsetColour = GetColourNameByIndex("Corset", DDPaCorsetStyle, Index)
@@ -4841,9 +4936,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaCollarStyle)
 		DDPaCollarStyle = GetStyleNameByIndex("Collar", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Collar")[Index])
-;		if DDPaCollarStyle == "Any"
-;			DDPaCollarColour = "Any"
-;		endif
+		if !StyleHasColour("Collar", DDPaCollarStyle, DDPaCollarColour)
+			DDPaCollarColour = GetColourNameByIndex("Collar", DDPaCollarStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaCollarColour)
 		DDPaCollarColour = GetColourNameByIndex("Collar", DDPaCollarStyle, Index)
@@ -4856,9 +4951,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaPlugVaginalStyle)
 		DDPaPlugVaginalStyle = GetStyleNameByIndex("PlugVaginal", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("PlugVaginal")[Index])
-;		if DDPaPlugVaginalStyle == "Any"
-;			DDPaPlugVaginalColour = "Any"
-;		endif
+		if !StyleHasColour("PlugVaginal", DDPaPlugVaginalStyle, DDPaPlugVaginalColour)
+			DDPaPlugVaginalColour = GetColourNameByIndex("PlugVaginal", DDPaPlugVaginalStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaPlugVaginalColour)
 		DDPaPlugVaginalColour = GetColourNameByIndex("PlugVaginal", DDPaPlugVaginalStyle, Index)
@@ -4871,9 +4966,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaPlugAnalStyle)
 		DDPaPlugAnalStyle = GetStyleNameByIndex("PlugAnal", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("PlugAnal")[Index])
-;		if DDPaPlugAnalStyle == "Any"
-;			DDPaPlugAnalColour = "Any"
-;		endif
+		if !StyleHasColour("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour)
+			DDPaPlugAnalColour = GetColourNameByIndex("PlugAnal", DDPaPlugAnalStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaPlugAnalColour)
 		DDPaPlugAnalColour = GetColourNameByIndex("PlugAnal", DDPaPlugAnalStyle, Index)
@@ -4886,9 +4981,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaPiercingVaginalStyle)
 		DDPaPiercingVaginalStyle = GetStyleNameByIndex("PiercingVaginal", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("PiercingVaginal")[Index])
-;		if DDPaPiercingVaginalStyle == "Any"
-;			DDPaPiercingVaginalColour = "Any"
-;		endif
+		if !StyleHasColour("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour)
+			DDPaPiercingVaginalColour = GetColourNameByIndex("PiercingVaginal", DDPaPiercingVaginalStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaPiercingVaginalColour)
 		DDPaPiercingVaginalColour = GetColourNameByIndex("PiercingVaginal", DDPaPiercingVaginalStyle, Index)
@@ -4901,9 +4996,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaPiercingNippleStyle)
 		DDPaPiercingNippleStyle = GetStyleNameByIndex("PiercingNipple", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("PiercingNipple")[Index])
-;		if DDPaPiercingNippleStyle == "Any"
-;			DDPaPiercingNippleColour = "Any"
-;		endif
+		if !StyleHasColour("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour)
+			DDPaPiercingNippleColour = GetColourNameByIndex("PiercingNipple", DDPaPiercingNippleStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaPiercingNippleColour)
 		DDPaPiercingNippleColour = GetColourNameByIndex("PiercingNipple", DDPaPiercingNippleStyle, Index)
@@ -4916,6 +5011,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaBootsStyle)
 		DDPaBootsStyle = GetStyleNameByIndex("Boots", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Boots")[Index])
+		if !StyleHasColour("Boots", DDPaBootsStyle, DDPaBootsColour)
+			DDPaBootsColour = GetColourNameByIndex("Boots", DDPaBootsStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaBootsColour)
 		DDPaBootsColour = GetColourNameByIndex("Boots", DDPaBootsStyle, Index)
@@ -4928,6 +5026,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaGlovesStyle)
 		DDPaGlovesStyle = GetStyleNameByIndex("Gloves", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("Gloves")[Index])
+		if !StyleHasColour("Gloves", DDPaGlovesStyle, DDPaGlovesColour)
+			DDPaGlovesColour = GetColourNameByIndex("Gloves", DDPaGlovesStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaGlovesColour)
 		DDPaGlovesColour = GetColourNameByIndex("Gloves", DDPaGlovesStyle, Index)
@@ -4940,6 +5041,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaArmCuffsStyle)
 		DDPaArmCuffsStyle = GetStyleNameByIndex("ArmCuffs", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("ArmCuffs")[Index])
+		if !StyleHasColour("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour)
+			DDPaArmCuffsColour = GetColourNameByIndex("ArmCuffs", DDPaArmCuffsStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaArmCuffsColour)
 		DDPaArmCuffsColour = GetColourNameByIndex("ArmCuffs", DDPaArmCuffsStyle, Index)
@@ -4952,6 +5056,9 @@ Event OnOptionMenuAccept(Int Option, Int Index)
 	elseif (Option == oidDDPaLegCuffsStyle)
 		DDPaLegCuffsStyle = GetStyleNameByIndex("LegCuffs", Index)
 		SetMenuOptionValue(Option, GetStyleMenuList("LegCuffs")[Index])
+		if !StyleHasColour("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour)
+			DDPaLegCuffsColour = GetColourNameByIndex("LegCuffs", DDPaLegCuffsStyle, 0)
+		endif
 		ForcePageReset()
 	elseif (Option == oidDDPaLegCuffsColour)
 		DDPaLegCuffsColour = GetColourNameByIndex("LegCuffs", DDPaLegCuffsStyle, Index)
@@ -5292,6 +5399,16 @@ Event OnOptionSliderOpen(Int Option)
 			SetSliderDialogDefaultValue(6.0)
 			SetSliderDialogRange(0.0, 14.0)
 			SetSliderDialogInterval(1.0)
+		Elseif Option == oidCursedLootTeleportationChance
+			SetSliderDialogStartValue(CursedLootTeleportationChance)
+			SetSliderDialogDefaultValue(25.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidCursedLootTeleportationBoundChance
+			SetSliderDialogStartValue(CursedLootTeleportationBoundChance)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0.0, 100.0)
+			SetSliderDialogInterval(1.0)
 		Elseif Option == oidDDMinDevices
 			SetSliderDialogStartValue(DDMinDevices)
 			SetSliderDialogDefaultValue(3.0)
@@ -5301,6 +5418,16 @@ Event OnOptionSliderOpen(Int Option)
 			SetSliderDialogStartValue(DDMaxDevices)
 			SetSliderDialogDefaultValue(6.0)
 			SetSliderDialogRange(DDMinDevices as Float, 17.0)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDDPaTeleportationChance
+			SetSliderDialogStartValue(DDPaTeleportationChance)
+			SetSliderDialogDefaultValue(25)
+			SetSliderDialogRange(0, 100)
+			SetSliderDialogInterval(1.0)
+		Elseif Option == oidDDPaTeleportationBoundChance
+			SetSliderDialogStartValue(DDPaTeleportationBoundChance)
+			SetSliderDialogDefaultValue(50.0)
+			SetSliderDialogRange(0, 100)
 			SetSliderDialogInterval(1.0)
 		Elseif Option == oidDDPaArmAndLegShacklesChance
 			SetSliderDialogStartValue(DDPaArmAndLegShacklesChance)
@@ -5859,12 +5986,24 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 		Elseif Option == oidCursedLootMaxDevices
 			CursedLootMaxDevices = Value as int
 			SetSliderOptionValue(oidCursedLootMaxDevices, CursedLootMaxDevices)
+		Elseif Option == oidCursedLootTeleportationChance
+			CursedLootTeleportationChance = Value as int
+			SetSliderOptionValue(oidCursedLootTeleportationChance, CursedLootTeleportationChance, "{0} %")
+		Elseif Option == oidCursedLootTeleportationBoundChance
+			CursedLootTeleportationBoundChance = Value as int
+			SetSliderOptionValue(oidCursedLootTeleportationBoundChance, CursedLootTeleportationBoundChance, "{0} %")
 		Elseif Option == oidDDMinDevices
 			DDMinDevices = Value as int
 			SetSliderOptionValue(oidDDMinDevices, DDMinDevices)
 		Elseif Option == oidDDMaxDevices
 			DDMaxDevices = Value as int
 			SetSliderOptionValue(oidDDMaxDevices, DDMaxDevices)
+		Elseif Option == oidDDPaTeleportationChance
+			DDPaTeleportationChance = Value as int
+			SetSliderOptionValue(oidDDPaTeleportationChance, DDPaTeleportationChance, "{0} %")
+		Elseif Option == oidDDPaTeleportationBoundChance
+			DDPaTeleportationBoundChance = Value as int
+			SetSliderOptionValue(oidDDPaTeleportationBoundChance, DDPaTeleportationBoundChance, "{0} %")
 		Elseif Option == oidDDPaArmAndLegShacklesChance
 			DDPaArmAndLegShacklesChance = Value as int
 			SetSliderOptionValue(oidDDPaArmAndLegShacklesChance, DDPaArmAndLegShacklesChance, "{0} %")
@@ -6382,9 +6521,15 @@ Event OnOptionSelect(Int Option)
 		Elseif Option == oidRobTimeLimit
 			RobTimeLimit = !RobTimeLimit
 			SetToggleOptionValue(Option, RobTimeLimit)
+		Elseif Option == oidCursedLootFollowerSupport
+			CursedLootFollowerSupport = !CursedLootFollowerSupport
+			SetToggleOptionValue(Option, CursedLootFollowerSupport)
 		Elseif Option == oidDDPaPlugsWithBelt
 			DDPaPlugsWithBelt = !DDPaPlugsWithBelt
 			SetToggleOptionValue(Option, DDPaPlugsWithBelt)
+		Elseif Option == oidDDPaFollowerSupport
+			DDPaFollowerSupport = !DDPaFollowerSupport
+			SetToggleOptionValue(Option, DDPaFollowerSupport)
 		Elseif Option == oidDDPaConsistantStyle
 			DDPaConsistantStyle = !DDPaConsistantStyle
 			SetToggleOptionValue(Option, DDPaConsistantStyle)
@@ -6986,14 +7131,26 @@ Event OnOptionHighlight(Int Option)
 			SetInfoText("Minimum number of Devices that will be equipped.")
 		Elseif Option == oidCursedLootMaxDevices
 			SetInfoText("Maximum number of Devices that will be equipped.")
+		Elseif Option == oidCursedLootFollowerSupport
+			SetInfoText("Allow to equip Devices on Followers.")
+		Elseif Option == oidCursedLootTeleportationChance
+			SetInfoText("A chance to trigger 'Left for dead' or 'Rescued' event after equipping Devices. 'Left for dead' will run if Player was defeated by humans and 'Rescued' - by creatures.")
+		Elseif Option == oidCursedLootTeleportationBoundChance
+			SetInfoText("A chance to trigger 'Left for dead' or 'Rescued' when Players arms and legs are bound (prevents from fighting). 'Left for dead' will run if Player was defeated by humans and 'Rescued' - by creatures.")
 		Elseif Option == oidDDMinDevices
 			SetInfoText("Minimum number of Devices that will be equipped.")
 		Elseif Option == oidDDMaxDevices
 			SetInfoText("Maximum number of Devices that will be equipped.")
+		Elseif Option == oidDDPaTeleportationChance
+			SetInfoText("A chance to trigger 'Left for dead' or 'Rescued' event after equipping Devices. 'Left for dead' will run if Player was defeated by humans and 'Rescued' - by creatures.")
+		Elseif Option == oidDDPaTeleportationBoundChance
+			SetInfoText("A chance to trigger 'Left for dead' or 'Rescued' when Players arms and legs are bound (prevents from fighting). 'Left for dead' will run if Player was defeated by humans and 'Rescued' - by creatures.")
 		Elseif Option == oidDDPaSelectLanguage
 			SetInfoText("Defeat will check Player equipped Devices names to determine their style and colour. Selecting the language of your Devious Device localisation will allow it to properly process non-English named Devices.")
 		Elseif Option == oidDDPaPlugsWithBelt
 			SetInfoText("Equip Plugs only when wearing Devious Belt or other orifice blocking Devices.")
+		Elseif Option == oidDDPaFollowerSupport
+			SetInfoText("Allow to equip Devices on Followers.")
 		Elseif Option == oidDDPaConsistantStyle
 			SetInfoText("Try to equip Devices that match the Style and Colour of already worn Devices. This option will work only if equippable Device Style and Colour are set to 'Any'.")
 		Elseif Option == oidDDPaArmAndLegShacklesChance
@@ -7002,6 +7159,12 @@ Event OnOptionHighlight(Int Option)
 			SetInfoText("For testing purposes. Equip Devices in accordance with settings.")
 		Elseif Option == oidDDPaUseArmbinder
 			SetInfoText("Determines whether Armbinders are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseYoke
+			SetInfoText("Determines whether Yokes are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseMittens
+			SetInfoText("Determines whether Bondage Mittens are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
+		Elseif Option == oidDDPaUseElbowShackles
+			SetInfoText("Determines whether Elbow Shackles are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
 		Elseif Option == oidDDPaUseGag
 			SetInfoText("Determines whether Gags are allowed to be equipped. 'Disallow' - Device will never be equipped; 'Allow' - Device may be equipped; 'Always Use' - Device will always be equipped regardles of Min/Max Settings.")
 		Elseif Option == oidDDPaUseSuit
@@ -7610,12 +7773,139 @@ String Function IsDeviceEquipped(int DeviceID)
 EndFunction
 
 Function BuildDDSettingLists()
-	if StorageUtil.GetFloatValue(none, "Defeat_LRGPatch_MCMSettings_DD_Version") != 1.0
-		StorageUtil.SetFloatValue(none, "Defeat_LRGPatch_MCMSettings_DD_Version", 1.0)
+	if StorageUtil.GetFloatValue(none, "Defeat_LRGPatch_MCMSettings_DD_Version") != 1.2
+		StorageUtil.SetFloatValue(none, "Defeat_LRGPatch_MCMSettings_DD_Version", 1.2)
 		DDGeneralPermissionList = new String[3]
 		DDGeneralPermissionList[0] = "Disallow"
 		DDGeneralPermissionList[1] = "Allow"
 		DDGeneralPermissionList[2] = "Always Use"
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Ebonite")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Rope")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Yoke")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Iron")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Steel")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Wood")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Breast")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "YokeNoBreast")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Iron")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Steel")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Wood")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Mittens")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Metal")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Leather")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ElbowShackles")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ElbowShackles_" + "Any")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag")																			  
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ball")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Ring")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Pony")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Panel")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Inflatable")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Various(Metal)")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Catsuit")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Hobbled")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Suit_" + "Straitjacket")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Hood")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Hood")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "BlindFold")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Hood_" + "Gasmask")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Belt")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Ebonite")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Harness_" + "Rope")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Corset")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Ebonite")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Corset_" + "Rope")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Iron")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Pear")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Wood")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Soulgem")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Leather")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Iron")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Pear")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Wood")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Soulgem")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Leather")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingVaginal")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingVaginal_" + "Any")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PiercingNipple")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PiercingNipple_" + "Any")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Pony")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Metal")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gloves")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gloves_" + "Ebonite")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ArmCuffs")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Ebonite")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Metal")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ArmCuffs_" + "Rope")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "LegCuffs")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Any")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Ebonite")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Metal")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope")
+		
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_ConsistentMatch_" + "Leather")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_ConsistentMatch_" + "Ebonite")
+		
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", "Leather", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Armbinder", "Ebonite", False)
@@ -7637,10 +7927,54 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Rope", "White", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Armbinder_" + "Rope", "Red", False)
 		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Yoke", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Yoke", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Yoke", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Yoke", "Wood", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Yoke", "Breast", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Any", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Any", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Any", "Wood", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Any", "Breast", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Iron", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Steel", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Wood", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Yoke_" + "Breast", "Any", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "YokeNoBreast", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "YokeNoBreast", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "YokeNoBreast", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "YokeNoBreast", "Wood", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Any", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Any", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Any", "Wood", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Iron", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Steel", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "YokeNoBreast_" + "Wood", "Any", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Mittens", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Mittens", "Metal", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Mittens", "Leather", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Any", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Metal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Leather", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Leather", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Leather", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Mittens_" + "Leather", "Red", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "ElbowShackles", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "ElbowShackles_" + "Any", "Any", False)
+		
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Ball", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Ring", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Rope", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Pony", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Panel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Inflatable", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Gag", "Various(Metal)", False)																						  
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any", "Black", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Any", "White", False)
@@ -7657,6 +7991,18 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope", "Black", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope", "White", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Rope", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Pony", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Pony", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Pony", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Pony", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Panel", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Panel", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Panel", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Panel", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Inflatable", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Various(Metal)", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Various(Metal)", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Gag_" + "Various(Metal)", "Rusty Iron", False)
 		
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Suit", "Catsuit", False)
@@ -7711,13 +8057,15 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Belt_" + "Any", "Red", False)
 		
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Bra", "Metal", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Any", False)
-		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Steel", False)
-		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Gold", False)
-		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Silver", False)
-		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Black", False)
-		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "White", False)
-		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Any", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal", "Steel", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal", "Gold", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal", "Silver", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Bra_" + "Metal", "Red", False)
 		
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Harness", "Leather", False)
@@ -7766,6 +8114,7 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Leather", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Metal", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Collar", "Rope", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Any", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Any", "Black", False)
@@ -7779,6 +8128,13 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite", "Black", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite", "White", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal", "Golden", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal", "Silver", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Metal", "Red", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "Black", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Collar_" + "Rope", "White", False)
@@ -7787,22 +8143,30 @@ Function BuildDDSettingLists()
 		
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Pear", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Wood", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Soulgem", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugVaginal", "Leather", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Any", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Iron", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Pear", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Pear", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Pear", "Rusty Iron", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Wood", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Soulgem", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugVaginal_" + "Leather", "Any", False)
 		
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Pear", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Wood", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Soulgem", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "PlugAnal", "Leather", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Any", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Iron", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Pear", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Pear", "Iron", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Pear", "Rusty Iron", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Wood", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Soulgem", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "PlugAnal_" + "Leather", "Any", False)
@@ -7816,6 +8180,7 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Leather", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Pony", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDStyle_" + "Boots", "Metal", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Any", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Any", "Black", False)
@@ -7829,6 +8194,10 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite", "Black", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite", "White", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Ebonite", "Red", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Pony", "Any", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Pony", "Black", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Pony", "White", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Pony", "Red", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Metal", "Any", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "Boots_" + "Metal", "Iron", False)
 		
@@ -7903,6 +8272,9 @@ Function BuildDDSettingLists()
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "White", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "Red", False)
 		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + "LegCuffs_" + "Rope", "Default", False)
+		
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_ConsistentMatch_" + "Leather", "Ebonite", False)
+		StorageUtil.StringListAdd(none, "Defeat_LRGPatch_ConsistentMatch_" + "Ebonite", "Leather", False)
 	endif
 EndFunction
 
@@ -7928,6 +8300,10 @@ EndFunction
 
 String Function GetColourNameByIndex(String DeviceType, String StyleName, Int ColourIndex)
 	return StorageUtil.StringListGet(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + DeviceType + "_" + StyleName, ColourIndex)
+EndFunction
+
+Bool Function StyleHasColour(String DeviceType, String StyleName, String ColourName)
+	return StorageUtil.StringListHas(none, "Defeat_LRGPatch_MCMSettings_DDColour_" + DeviceType + "_" + StyleName, ColourName)
 EndFunction
 
 String Function GetLanguageName(String FileName)
@@ -8008,6 +8384,22 @@ Function TestEquipDevices()
 	StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquip")
 	StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquip")
 	Keyword TempDDKeywordHeavyBondage = Game.GetFormFromFile(0x5226C, "Devious Devices - Integration.esm") as Keyword ; HeavyBondage
+	Keyword TempDDKeywordGag = Game.GetFormFromFile(0x7EB8, "Devious Devices - Assets.esm") as Keyword ; Gag
+	Keyword TempDDKeywordSuit = Game.GetFormFromFile(0x2AFA3, "Devious Devices - Assets.esm") as Keyword ; Suit
+	Keyword TempDDKeywordHood = Game.GetFormFromFile(0x2AFA2, "Devious Devices - Assets.esm") as Keyword ; Hood
+	Keyword TempDDKeywordBelt = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
+	Keyword TempDDKeywordBra = Game.GetFormFromFile(0x3DFA, "Devious Devices - Assets.esm") as Keyword ; Bra
+	Keyword TempDDKeywordHarness = Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword ; Harness
+	Keyword TempDDKeywordCorset = Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword ; Corset
+	Keyword TempDDKeywordCollar = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
+	Keyword TempDDKeywordPlugVag = Game.GetFormFromFile(0x1DD7C, "Devious Devices - Assets.esm") as Keyword ; PlugVaginal
+	Keyword TempDDKeywordPlugAnal = Game.GetFormFromFile(0x1DD7D, "Devious Devices - Assets.esm") as Keyword ; PlugAnal
+	Keyword TempDDKeywordPiercingVag = Game.GetFormFromFile(0x23E70, "Devious Devices - Assets.esm") as Keyword ; PiercingVaginal
+	Keyword TempDDKeywordPiercingNipp = Game.GetFormFromFile(0xCA39, "Devious Devices - Assets.esm") as Keyword ; PiercingNipple
+	Keyword TempDDKeywordBoots = Game.GetFormFromFile(0x27F29, "Devious Devices - Assets.esm") as Keyword ; Boots
+	Keyword TempDDKeywordGloves = Game.GetFormFromFile(0x2AFA1, "Devious Devices - Assets.esm") as Keyword ; Gloves
+	Keyword TempDDKeywordArmCuffs = Game.GetFormFromFile(0x3DF9, "Devious Devices - Assets.esm") as Keyword ; ArmCuffs
+	Keyword TempDDKeywordLegCuffs = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage)
 		if DDPaUseArmbinder == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Armbinder")
@@ -8017,7 +8409,38 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage, False)
 	endif
-	Keyword TempDDKeywordGag = Game.GetFormFromFile(0x7EB8, "Devious Devices - Assets.esm") as Keyword ; Gag
+	
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage)
+		if DDPaUseYoke == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Yoke")
+		elseif DDPaUseYoke == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Yoke")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage, False)
+	endif
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordGloves) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves)
+		if DDPaUseMittens == 1
+			debug.trace("1")
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Mittens")
+		elseif DDPaUseMittens == 2
+			debug.trace("2")
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "Mittens")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves, False)
+	endif
+	
+	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage)
+		if DDPaUseElbowShackles == 1
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "ElbowShackles")
+		elseif DDPaUseElbowShackles == 2
+			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquip", "ElbowShackles")
+		endif
+	else
+		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHeavyBondage, False)
+	endif
+	
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordGag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGag)
 		if DDPaUseGag == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Gag")
@@ -8027,7 +8450,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGag, False)
 	endif
-	Keyword TempDDKeywordSuit = Game.GetFormFromFile(0x2AFA3, "Devious Devices - Assets.esm") as Keyword ; Suit
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordSuit) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordSuit)
 		if DDPaUseSuit == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Suit")
@@ -8037,7 +8459,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordSuit, False)
 	endif
-	Keyword TempDDKeywordHood = Game.GetFormFromFile(0x2AFA2, "Devious Devices - Assets.esm") as Keyword ; Hood
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHood) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHood)
 		if DDPaUseHood == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Hood")
@@ -8047,7 +8468,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHood, False)
 	endif
-	Keyword TempDDKeywordBelt = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordBelt) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBelt)
 		if DDPaUseChastityBelt == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Belt")
@@ -8057,7 +8477,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBelt, False)
 	endif
-	Keyword TempDDKeywordBra = Game.GetFormFromFile(0x3DFA, "Devious Devices - Assets.esm") as Keyword ; Bra
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordBra) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBra)
 		if DDPaUseChastityBra == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Bra")
@@ -8067,7 +8486,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBra, False)
 	endif
-	Keyword TempDDKeywordHarness = Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword ; Harness
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordHarness) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHarness)
 		if DDPaUseHarness == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Harness")
@@ -8077,7 +8495,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordHarness, False)
 	endif
-	Keyword TempDDKeywordCorset = Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword ; Corset
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordCorset) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCorset)
 		if DDPaUseCorset == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Corset")
@@ -8087,7 +8504,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCorset, False)
 	endif
-	Keyword TempDDKeywordCollar = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordCollar) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCollar)
 		if DDPaUseCollar == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Collar")
@@ -8097,7 +8513,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordCollar, False)
 	endif
-	Keyword TempDDKeywordPlugVag = Game.GetFormFromFile(0x1DD7C, "Devious Devices - Assets.esm") as Keyword ; PlugVaginal
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPlugVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugVag)
 		if DDPaUsePlugVaginal == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugVaginal")
@@ -8107,7 +8522,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugVag, False)
 	endif
-	Keyword TempDDKeywordPlugAnal = Game.GetFormFromFile(0x1DD7D, "Devious Devices - Assets.esm") as Keyword ; PlugAnal
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPlugAnal) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugAnal)
 		if DDPaUsePlugAnal == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PlugAnal")
@@ -8117,7 +8531,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPlugAnal, False)
 	endif
-	Keyword TempDDKeywordPiercingVag = Game.GetFormFromFile(0x23E70, "Devious Devices - Assets.esm") as Keyword ; PiercingVaginal
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPiercingVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingVag)
 		if DDPaUsePiercingVaginal == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PiercingVaginal")
@@ -8127,7 +8540,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingVag, False)
 	endif
-	Keyword TempDDKeywordPiercingNipp = Game.GetFormFromFile(0xCA39, "Devious Devices - Assets.esm") as Keyword ; PiercingNipple
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordPiercingNipp) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingNipp)
 		if DDPaUsePiercingNipple == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "PiercingNipple")
@@ -8137,7 +8549,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordPiercingNipp, False)
 	endif
-	Keyword TempDDKeywordBoots = Game.GetFormFromFile(0x27F29, "Devious Devices - Assets.esm") as Keyword ; Boots
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordBoots) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBoots)
 		if DDPaUseBoots == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Boots")
@@ -8147,7 +8558,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordBoots, False)
 	endif
-	Keyword TempDDKeywordGloves = Game.GetFormFromFile(0x2AFA1, "Devious Devices - Assets.esm") as Keyword ; Gloves
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordGloves) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves)
 		if DDPaUseGloves == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "Gloves")
@@ -8157,7 +8567,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordGloves, False)
 	endif
-	Keyword TempDDKeywordArmCuffs = Game.GetFormFromFile(0x3DF9, "Devious Devices - Assets.esm") as Keyword ; ArmCuffs
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordArmCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordArmCuffs)
 		if DDPaUseArmCuffs == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "ArmCuffs")
@@ -8167,7 +8576,6 @@ Function TestEquipDevices()
 	else
 		StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordArmCuffs, False)
 	endif
-	Keyword TempDDKeywordLegCuffs = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
 	if !PostAssault.Player.WornHasKeyword(TempDDKeywordLegCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywords", TempDDKeywordLegCuffs)
 		if DDPaUseLegCuffs == 1
 			StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquip", "LegCuffs")
@@ -8240,6 +8648,263 @@ Function TestEquipDevices()
 			Debug.Trace("[Defeat] - NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
 		endif
 	endwhile
+	
+	Actor Follower = DefeatUtil2.GetCurrentFollower()
+	if Follower
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower")
+		StorageUtil.FormListClear(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquipFollower")
+		StorageUtil.StringListClear(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquipFollower")
+		if !Follower.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHeavyBondage)
+			if DDPaUseArmbinder == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Armbinder")
+			elseif DDPaUseArmbinder == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Armbinder")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHeavyBondage, False)
+		endif
+		
+		if !Follower.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHeavyBondage)
+			if DDPaUseYoke == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Yoke")
+			elseif DDPaUseYoke == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Yoke")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHeavyBondage, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordGloves) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGloves)
+			if DDPaUseMittens == 1
+				debug.trace("1")
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Mittens")
+			elseif DDPaUseMittens == 2
+				debug.trace("2")
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Mittens")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGloves, False)
+		endif
+		
+		if !Follower.WornHasKeyword(TempDDKeywordHeavyBondage) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHeavyBondage)
+			if DDPaUseElbowShackles == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "ElbowShackles")
+			elseif DDPaUseElbowShackles == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "ElbowShackles")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHeavyBondage, False)
+		endif
+		
+		if !Follower.WornHasKeyword(TempDDKeywordGag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGag)
+			if DDPaUseGag == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Gag")
+			elseif DDPaUseGag == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Gag")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGag, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordSuit) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordSuit)
+			if DDPaUseSuit == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Suit")
+			elseif DDPaUseSuit == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Suit")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordSuit, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordHood) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHood)
+			if DDPaUseHood == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Hood")
+			elseif DDPaUseHood == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Hood")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHood, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordBelt) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBelt)
+			if DDPaUseChastityBelt == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Belt")
+			elseif DDPaUseChastityBelt == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Belt")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBelt, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordBra) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBra)
+			if DDPaUseChastityBra == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Bra")
+			elseif DDPaUseChastityBra == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Bra")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBra, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordHarness) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHarness)
+			if DDPaUseHarness == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Harness")
+			elseif DDPaUseHarness == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Harness")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHarness, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordCorset) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCorset)
+			if DDPaUseCorset == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Corset")
+			elseif DDPaUseCorset == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Corset")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCorset, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordCollar) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCollar)
+			if DDPaUseCollar == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Collar")
+			elseif DDPaUseCollar == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Collar")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCollar, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordPlugVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugVag)
+			if DDPaUsePlugVaginal == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PlugVaginal")
+			elseif DDPaUsePlugVaginal == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "PlugVaginal")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugVag, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordPlugAnal) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugAnal)
+			if DDPaUsePlugAnal == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PlugAnal")
+			elseif DDPaUsePlugAnal == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "PlugAnal")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugAnal, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordPiercingVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingVag)
+			if DDPaUsePiercingVaginal == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PiercingVaginal")
+			elseif DDPaUsePiercingVaginal == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "PiercingVaginal")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingVag, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordPiercingNipp) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingNipp)
+			if DDPaUsePiercingNipple == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PiercingNipple")
+			elseif DDPaUsePiercingNipple == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "PiercingNipple")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingNipp, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordBoots) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBoots)
+			if DDPaUseBoots == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Boots")
+			elseif DDPaUseBoots == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Boots")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBoots, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordGloves) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGloves)
+			if DDPaUseGloves == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Gloves")
+			elseif DDPaUseGloves == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "Gloves")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGloves, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordArmCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordArmCuffs)
+			if DDPaUseArmCuffs == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "ArmCuffs")
+			elseif DDPaUseArmCuffs == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "ArmCuffs")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordArmCuffs, False)
+		endif
+		if !Follower.WornHasKeyword(TempDDKeywordLegCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordLegCuffs)
+			if DDPaUseLegCuffs == 1
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "LegCuffs")
+			elseif DDPaUseLegCuffs == 2
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "LegCuffs")
+			endif
+		else
+			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordLegCuffs, False)
+		endif
+		if DDPaArmAndLegShacklesChance >= Utility.RandomInt(0, 100)
+			if !Follower.WornHasKeyword(TempDDKeywordHeavyBondage)
+				if !Follower.WornHasKeyword(TempDDKeywordLegCuffs) && !Follower.WornHasKeyword(TempDDKeywordCollar)
+					StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquipFollower", "ArmLegShackles")
+				elseif !Follower.WornHasKeyword(TempDDKeywordLegCuffs)
+					StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquipFollower", "ArmShackles")
+					StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquipFollower", "LegShackles")
+				endif
+			endif
+		endif
+		if DDPaConsistantStyle
+			PostAssault.BuildConsistantDataFollower(Follower)
+		endif
+		NumberOfDevicesEquipped = 0
+		NumberOfDevicesTotal = Utility.RandomInt(DDMinDevices, DDMaxDevices)
+		Debug.Trace("NumberOfDevicesTotal: " + NumberOfDevicesTotal)
+		Debug.Trace("Random: " + StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower"))
+		Debug.Trace("Random: " + StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower"))
+		While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquipFollower") > 0
+			if PostAssault.EquipPreferedDeviceFollower(Follower, StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_ForceItemsToEquipFollower", 0, ""))
+				Debug.Trace("NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+			endif
+		endwhile
+		While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower") > 0
+			Int TempListIndex = Utility.RandomInt(0, StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower") - 1)
+			if StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", TempListIndex) == "PlugVaginal" && DDPaPlugsWithBelt
+				StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "PlugVaginal")
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquipFollower", "PlugVaginal")
+			elseif StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", TempListIndex) == "PlugAnal" && DDPaPlugsWithBelt
+				StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", "PlugAnal")
+				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquipFollower", "PlugAnal")
+			else
+				if PostAssault.EquipPreferedDeviceFollower(Follower, StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_AlwaysItemsToEquipFollower", TempListIndex, ""))
+					NumberOfDevicesEquipped += 1
+					Debug.Trace("NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+				endif
+			endif
+		endwhile
+		While NumberOfDevicesEquipped < NumberOfDevicesTotal
+			if StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower") > 0
+				Int TempListIndex = Utility.RandomInt(0, StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower") - 1)
+				if StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", TempListIndex) == "PlugVaginal" && DDPaPlugsWithBelt
+					StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PlugVaginal")
+					StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquipFollower", "PlugVaginal")
+				elseif StorageUtil.StringListGet(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", TempListIndex) == "PlugAnal" && DDPaPlugsWithBelt
+					StorageUtil.StringListRemove(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PlugAnal")
+					StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquipFollower", "PlugAnal")
+				else
+					if PostAssault.EquipPreferedDeviceFollower(Follower, StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", TempListIndex, ""))
+						NumberOfDevicesEquipped += 1
+						Debug.Trace("NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+					else
+					endif
+				endif
+			else
+				NumberOfDevicesEquipped = NumberOfDevicesTotal
+			endif
+		endwhile
+		While StorageUtil.StringListCount(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquipFollower") > 0
+			if PostAssault.EquipPreferedDeviceFollower(Follower, StorageUtil.StringListPluck(none, "Defeat_LRGPatch_PostAssault_TempData_PostItemsToEquipFollower", 0, ""))
+				Debug.Trace("NumberOfDevicesEquipped: " + NumberOfDevicesEquipped)
+			endif
+		endwhile
+	endif
 EndFunction
 
 ; Deprecated
