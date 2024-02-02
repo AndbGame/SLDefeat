@@ -4,8 +4,8 @@ scriptName defeat_skse_api Hidden
 ; ---
 ; On Player Knock Downed. Must be attached to ReferenceAlias of Player
 ; `eventName` can be:
-;   - "KNONKDOWN"
-;   - "KNONKOUT"
+;   - "KNOCKDOWN"
+;   - "KNOCKOUT"
 ;   - "STANDING_STRUGGLE"
 ;
 ; ---
