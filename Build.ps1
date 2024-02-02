@@ -67,7 +67,7 @@ function Compile {
 
     $originalFile = $sourceBaseDir + "\source_original\" + $file.BaseName + ".psc"
     if([System.IO.File]::Exists($originalFile)) {
-        $diffFile = $sourceBaseDir + "\source\" + $file.BaseName + ".patch";
+        $diffFile = $sourceBaseDir + "\diff\" + $file.BaseName + ".patch";
         $ret = GenerateDiffFile -file1 $originalFile -file2 $file -diffFile $diffFile
         if($ret.Status -ne $STATUS_COMPILED_SUCCESS) {
             return $ret

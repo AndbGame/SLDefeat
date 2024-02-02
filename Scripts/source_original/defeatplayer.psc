@@ -88,9 +88,6 @@ FormList[] Property MiscFormLists Auto Hidden
 Scene[] Property MiscScenes Auto Hidden
 Message[] Property MiscMessages Auto Hidden
 
-Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
-EndEvent
-
 Event OnDeath(Actor akKiller)
 	Clean()
 Endevent
@@ -223,10 +220,9 @@ EndFunction
 
 Bool OnHitBusy = False
 State Running
-	Event OnBeginState()
-		defeat_skse_api.setActorState(Player, "ACTIVE")
+	;Event OnBeginState()
 		;ConsoleUtil.PrintMessage("State -> " + GetState())
-	EndEvent
+	;EndEvent
 
 	Function TriggerBleedOut()
 		If McmConfig.PlayerEssential && LastHitAggressor && CheckAggressor(LastHitAggressor) && (LastHitAggressor.GetDistance(Player) < FarMaxDist) && DefeatTriggerActive(LastHitAggressor)
@@ -238,38 +234,7 @@ State Running
 			Player.Kill()
 		Endif
 	EndFunction
-
-	Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
-		DefeatLog("[Defeat] - OnSLDefeatPlayerKnockDown " + eventName + " from " + akAggressor)
-		Detect.Start()
-		Actor Aggressor = (akAggressor As Actor)
-		IsAggressorValid(Aggressor) ; set isCreature
-		LastHitAggressor = Aggressor
-		IsKnockout = false
-		StandingStruggle = false
-		if eventName == "KNOCKOUT"
-			IsKnockout = true
-		Elseif eventName == "STANDING_STRUGGLE"
-			StandingStruggle = true
-		Else
-		EndIf
-
-		If IsKnockout
-			SceneSettings(ForceStayDown = 1, ForceResist = 0, ForceRelation = 1, ForceWitness = 0)
-			TheKnockDown(Aggressor)
-		Elseif (StandingStruggle && !IsCreature && (Aggressor.GetDistance(Player) < 500.0) && RessConfig.SexInterest(Aggressor, True, False))
-			SceneSettings(ForceResist = 0, ForceRelation = 0)
-			KnockDownQTE(Aggressor)
-		Else
-			SceneSettings()
-			TheKnockDown(Aggressor)
-		Endif
-		Detect.Stop()		
-	EndEvent
-
 	Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
-		return
-		
 		if !OnHitBusy
 			ProcessOnHit(akAggressor, akSrc, akProjectile, abPowerAttack, abSneakAttack, abBashAttack, abHitBlocked)
 		else
@@ -4074,8 +4039,4 @@ Function DefeatLog(string TargetString)
 	if McmConfig.EnableLog
 		Debug.Trace(TargetString)
 	endif
-EndFunction
-
-Function NextStep(string Step)
-	Debug.Trace("[Defeat] - NextStep " + Step + " not implemented or obsolete!!!")
 EndFunction
