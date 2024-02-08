@@ -136,6 +136,18 @@ Actor Function GetCurrentFollower() Global
 	return ((Game.GetFormFromFile(0x750BA, "Skyrim.esm") as Quest).GetAlias(0) as ReferenceAlias).GetActorReference()
 EndFunction
 
+FormList Function GetDynDefIgnoredWeaponList() Global
+	return (Game.GetFormFromFile(0x808, "SexLabDefeat_LRG_Patch.esp") as FormList)
+EndFunction
+
+Function AddToDynDefIgnoredWeaponList(Weapon TargetWeapon) Global
+	(Game.GetFormFromFile(0x808, "SexLabDefeat_LRG_Patch.esp") as FormList).AddForm(TargetWeapon)
+EndFunction
+
+Function RemoveFromDynDefIgnoredWeaponList(Weapon TargetWeapon) Global
+	(Game.GetFormFromFile(0x808, "SexLabDefeat_LRG_Patch.esp") as FormList).RemoveAddedForm(TargetWeapon)
+EndFunction
+
 Armor Function GetDDArmbinder(String Type, String Colour, Int ForceInt = -1) Global
 	if Type == "Leather"
 		if Colour == "Black"

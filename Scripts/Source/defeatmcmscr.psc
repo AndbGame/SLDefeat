@@ -2330,6 +2330,8 @@ Event OnPageReset(String page)
 				oidCursedLootMaxDevices = AddSliderOption("Maximum number of Devices", CursedLootMaxDevices)
 			else
 				oidPAfrequency[6] = AddSliderOption("$Event Chance", PAfrequency[6], "{0} %", OPTION_FLAG_DISABLED)
+				oidCursedLootMinDevices = AddSliderOption("Minimum number of Devices", CursedLootMinDevices, "", OPTION_FLAG_DISABLED)
+				oidCursedLootMaxDevices = AddSliderOption("Maximum number of Devices", CursedLootMaxDevices, "", OPTION_FLAG_DISABLED)
 			endif
 			AddHeaderOption("-----------------------------------------------------------")
 			AddHeaderOption("(Devious Devices) Equip Devices")
@@ -2380,6 +2382,11 @@ Event OnPageReset(String page)
 					if DDPaUseHood >= 1
 						oidDDPaHoodStyle = AddMenuOption("Head Gear Style", GetStyleMenuList("Hood")[GetStyleIndexFromList("Hood", DDPaHoodStyle)])
 						oidDDPaHoodColour = AddMenuOption("Head Gear Colour", GetColourMenuList("Hood", DDPaHoodStyle)[GetColourIndexFromList("Hood", DDPaHoodStyle, DDPaHoodColour)])
+;						if oidDDPaHoodStyle == "Any"
+;							oidDDPaHoodColour = AddTextOption("Head Gear Colour", "Any")
+;						else
+;							oidDDPaHoodColour = AddMenuOption("Head Gear Colour", GetColourMenuList("Hood", DDPaHoodStyle)[GetColourIndexFromList("Hood", DDPaHoodStyle, DDPaHoodColour)])
+;						endif
 					else
 						oidDDPaHoodStyle = AddTextOption("Head Gear Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaHoodColour = AddTextOption("Head Gear Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2388,6 +2395,11 @@ Event OnPageReset(String page)
 					if DDPaUseChastityBelt >= 1
 						oidDDPaChastityBeltStyle = AddMenuOption("Belt Style", GetStyleMenuList("Belt")[GetStyleIndexFromList("Belt", DDPaChastityBeltStyle)])
 						oidDDPaChastityBeltColour = AddMenuOption("Belt Colour", GetColourMenuList("Belt", DDPaChastityBeltStyle)[GetColourIndexFromList("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour)])
+;						if oidDDPaChastityBeltStyle == "Any"
+;							oidDDPaChastityBeltColour = AddTextOption("Belt Colour", "Any")
+;						else
+;							oidDDPaChastityBeltColour = AddMenuOption("Belt Colour", GetColourMenuList("Belt", DDPaChastityBeltStyle)[GetColourIndexFromList("Belt", DDPaChastityBeltStyle, DDPaChastityBeltColour)])
+;						endif
 					else
 						oidDDPaChastityBeltStyle = AddTextOption("Belt Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaChastityBeltColour = AddTextOption("Belt Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2396,6 +2408,11 @@ Event OnPageReset(String page)
 					if DDPaUseChastityBra >= 1
 						oidDDPaChastityBraStyle = AddMenuOption("Bra Style", GetStyleMenuList("Bra")[GetStyleIndexFromList("Bra", DDPaChastityBraStyle)])
 						oidDDPaChastityBraColour = AddMenuOption("Bra Colour", GetColourMenuList("Bra", DDPaChastityBraStyle)[GetColourIndexFromList("Bra", DDPaChastityBraStyle, DDPaChastityBraColour)])
+;						if oidDDPaChastityBraStyle == "Any"
+;							oidDDPaChastityBraColour = AddTextOption("Bra Colour", "Any")
+;						else
+;							oidDDPaChastityBraColour = AddMenuOption("Bra Colour", GetColourMenuList("Bra", DDPaChastityBraStyle)[GetColourIndexFromList("Bra", DDPaChastityBraStyle, DDPaChastityBraColour)])
+;						endif
 					else
 						oidDDPaChastityBraStyle = AddTextOption("Bra Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaChastityBraColour = AddTextOption("Bra Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2404,6 +2421,11 @@ Event OnPageReset(String page)
 					if DDPaUseHarness >= 1
 						oidDDPaHarnessStyle = AddMenuOption("Harness Style", GetStyleMenuList("Harness")[GetStyleIndexFromList("Harness", DDPaHarnessStyle)])
 						oidDDPaHarnessColour = AddMenuOption("Harness Colour", GetColourMenuList("Harness", DDPaHarnessStyle)[GetColourIndexFromList("Harness", DDPaHarnessStyle, DDPaHarnessColour)])
+;						if oidDDPaHarnessStyle == "Any"
+;							oidDDPaHarnessColour = AddTextOption("Harness Colour", "Any")
+;						else
+;							oidDDPaHarnessColour = AddMenuOption("Harness Colour", GetColourMenuList("Harness", DDPaHarnessStyle)[GetColourIndexFromList("Harness", DDPaHarnessStyle, DDPaHarnessColour)])
+;						endif
 					else
 						oidDDPaHarnessStyle = AddTextOption("Harness Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaHarnessColour = AddTextOption("Harness Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2412,6 +2434,11 @@ Event OnPageReset(String page)
 					if DDPaUseCorset >= 1
 						oidDDPaCorsetStyle = AddMenuOption("Corset Style", GetStyleMenuList("Corset")[GetStyleIndexFromList("Corset", DDPaCorsetStyle)])
 						oidDDPaCorsetColour = AddMenuOption("Corset Colour", GetColourMenuList("Corset", DDPaCorsetStyle)[GetColourIndexFromList("Corset", DDPaCorsetStyle, DDPaCorsetColour)])
+;						if oidDDPaCorsetStyle == "Any"
+;							oidDDPaCorsetColour = AddTextOption("Corset Colour", "Any")
+;						else
+;							oidDDPaCorsetColour = AddMenuOption("Corset Colour", GetColourMenuList("Corset", DDPaCorsetStyle)[GetColourIndexFromList("Corset", DDPaCorsetStyle, DDPaCorsetColour)])
+;						endif
 					else
 						oidDDPaCorsetStyle = AddTextOption("Corset Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaCorsetColour = AddTextOption("Corset Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2420,6 +2447,11 @@ Event OnPageReset(String page)
 					if DDPaUseCollar >= 1
 						oidDDPaCollarStyle = AddMenuOption("Collar Style", GetStyleMenuList("Collar")[GetStyleIndexFromList("Collar", DDPaCollarStyle)])
 						oidDDPaCollarColour = AddMenuOption("Collar Colour", GetColourMenuList("Collar", DDPaCollarStyle)[GetColourIndexFromList("Collar", DDPaCollarStyle, DDPaCollarColour)])
+;						if oidDDPaCollarStyle == "Any"
+;							oidDDPaCollarColour = AddTextOption("Collar Colour", "Any")
+;						else
+;							oidDDPaCollarColour = AddMenuOption("Collar Colour", GetColourMenuList("Collar", DDPaCollarStyle)[GetColourIndexFromList("Collar", DDPaCollarStyle, DDPaCollarColour)])
+;						endif
 					else
 						oidDDPaCollarStyle = AddTextOption("Collar Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaCollarColour = AddTextOption("Collar Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2461,6 +2493,11 @@ Event OnPageReset(String page)
 					if DDPaUsePlugAnal >= 1
 						oidDDPaPlugAnalStyle = AddMenuOption("Plug(Anal) Style", GetStyleMenuList("PlugAnal")[GetStyleIndexFromList("PlugAnal", DDPaPlugAnalStyle)])
 						oidDDPaPlugAnalColour = AddMenuOption("Plug(Anal) Colour", GetColourMenuList("PlugAnal", DDPaPlugAnalStyle)[GetColourIndexFromList("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour)])
+;						if oidDDPaPlugAnalStyle == "Any"
+;							oidDDPaPlugAnalColour = AddTextOption("Plug(Anal) Colour", "Any")
+;						else
+;							oidDDPaPlugAnalColour = AddMenuOption("Plug(Anal) Colour", GetColourMenuList("PlugAnal", DDPaPlugAnalStyle)[GetColourIndexFromList("PlugAnal", DDPaPlugAnalStyle, DDPaPlugAnalColour)])
+;						endif
 					else
 						oidDDPaPlugAnalStyle = AddTextOption("Plug(Anal) Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaPlugAnalColour = AddTextOption("Plug(Anal) Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2469,6 +2506,11 @@ Event OnPageReset(String page)
 					if DDPaUsePiercingVaginal >= 1
 						oidDDPaPiercingVaginalStyle = AddMenuOption("Piercing(Vaginal) Style", GetStyleMenuList("PiercingVaginal")[GetStyleIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle)])
 						oidDDPaPiercingVaginalColour = AddMenuOption("Piercing(Vaginal) Colour", GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle)[GetColourIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour)])
+;						if oidDDPaPiercingVaginalStyle == "Any"
+;							oidDDPaPiercingVaginalColour = AddTextOption("Piercing(Vaginal) Colour", "Any")
+;						else
+;							oidDDPaPiercingVaginalColour = AddMenuOption("Piercing(Vaginal) Colour", GetColourMenuList("PiercingVaginal", DDPaPiercingVaginalStyle)[GetColourIndexFromList("PiercingVaginal", DDPaPiercingVaginalStyle, DDPaPiercingVaginalColour)])
+;						endif
 					else
 						oidDDPaPiercingVaginalStyle = AddTextOption("Piercing(Vaginal) Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaPiercingVaginalColour = AddTextOption("Piercing(Vaginal) Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2477,6 +2519,11 @@ Event OnPageReset(String page)
 					if DDPaUsePiercingNipple >= 1
 						oidDDPaPiercingNippleStyle = AddMenuOption("Piercing(Nipple) Style", GetStyleMenuList("PiercingNipple")[GetStyleIndexFromList("PiercingNipple", DDPaPiercingNippleStyle)])
 						oidDDPaPiercingNippleColour = AddMenuOption("Piercing(Nipple) Colour", GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle)[GetColourIndexFromList("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour)])
+;						if oidDDPaPiercingNippleStyle == "Any"
+;							oidDDPaPiercingNippleColour = AddTextOption("Piercing(Nipple) Colour", "Any")
+;						else
+;							oidDDPaPiercingNippleColour = AddMenuOption("Piercing(Nipple) Colour", GetColourMenuList("PiercingNipple", DDPaPiercingNippleStyle)[GetColourIndexFromList("PiercingNipple", DDPaPiercingNippleStyle, DDPaPiercingNippleColour)])
+;						endif
 					else
 						oidDDPaPiercingNippleStyle = AddTextOption("Piercing(Nipple) Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaPiercingNippleColour = AddTextOption("Piercing(Nipple) Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2485,6 +2532,11 @@ Event OnPageReset(String page)
 					if DDPaUseBoots >= 1
 						oidDDPaBootsStyle = AddMenuOption("Boots Style", GetStyleMenuList("Boots")[GetStyleIndexFromList("Boots", DDPaBootsStyle)])
 						oidDDPaBootsColour = AddMenuOption("Boots Colour", GetColourMenuList("Boots", DDPaBootsStyle)[GetColourIndexFromList("Boots", DDPaBootsStyle, DDPaBootsColour)])
+;						if oidDDPaBootsStyle == "Any"
+;							oidDDPaBootsColour = AddTextOption("Boots Colour", "Any")
+;						else
+;							oidDDPaBootsColour = AddMenuOption("Boots Colour", GetColourMenuList("Boots", DDPaBootsStyle)[GetColourIndexFromList("Boots", DDPaBootsStyle, DDPaBootsColour)])
+;						endif
 					else
 						oidDDPaBootsStyle = AddTextOption("Boots Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaBootsColour = AddTextOption("Boots Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2493,6 +2545,11 @@ Event OnPageReset(String page)
 					if DDPaUseGloves >= 1
 						oidDDPaGlovesStyle = AddMenuOption("Gloves Style", GetStyleMenuList("Gloves")[GetStyleIndexFromList("Gloves", DDPaGlovesStyle)])
 						oidDDPaGlovesColour = AddMenuOption("Gloves Colour", GetColourMenuList("Gloves", DDPaGlovesStyle)[GetColourIndexFromList("Gloves", DDPaGlovesStyle, DDPaGlovesColour)])
+;						if oidDDPaGlovesStyle == "Any"
+;							oidDDPaGlovesColour = AddTextOption("Gloves Colour", "Any")
+;						else
+;							oidDDPaGlovesColour = AddMenuOption("Gloves Colour", GetColourMenuList("Gloves", DDPaGlovesStyle)[GetColourIndexFromList("Gloves", DDPaGlovesStyle, DDPaGlovesColour)])
+;						endif
 					else
 						oidDDPaGlovesStyle = AddTextOption("Gloves Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaGlovesColour = AddTextOption("Gloves Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2501,6 +2558,11 @@ Event OnPageReset(String page)
 					if DDPaUseArmCuffs >= 1
 						oidDDPaArmCuffsStyle = AddMenuOption("Arm Cuffs Style", GetStyleMenuList("ArmCuffs")[GetStyleIndexFromList("ArmCuffs", DDPaArmCuffsStyle)])
 						oidDDPaArmCuffsColour = AddMenuOption("Arm Cuffs Colour", GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle)[GetColourIndexFromList("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour)])
+;						if oidDDPaArmCuffsStyle == "Any"
+;							oidDDPaArmCuffsColour = AddTextOption("Arm Cuffs Colour", "Any")
+;						else
+;							oidDDPaArmCuffsColour = AddMenuOption("Arm Cuffs Colour", GetColourMenuList("ArmCuffs", DDPaArmCuffsStyle)[GetColourIndexFromList("ArmCuffs", DDPaArmCuffsStyle, DDPaArmCuffsColour)])
+;						endif
 					else
 						oidDDPaArmCuffsStyle = AddTextOption("Arm Cuffs Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaArmCuffsColour = AddTextOption("Arm Cuffs Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2509,6 +2571,11 @@ Event OnPageReset(String page)
 					if DDPaUseLegCuffs >= 1
 						oidDDPaLegCuffsStyle = AddMenuOption("Leg Cuffs Style", GetStyleMenuList("LegCuffs")[GetStyleIndexFromList("LegCuffs", DDPaLegCuffsStyle)])
 						oidDDPaLegCuffsColour = AddMenuOption("Leg Cuffs Colour", GetColourMenuList("LegCuffs", DDPaLegCuffsStyle)[GetColourIndexFromList("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour)])
+;						if oidDDPaLegCuffsStyle == "Any"
+;							oidDDPaLegCuffsColour = AddTextOption("Leg Cuffs Colour", "Any")
+;						else
+;							oidDDPaLegCuffsColour = AddMenuOption("Leg Cuffs Colour", GetColourMenuList("LegCuffs", DDPaLegCuffsStyle)[GetColourIndexFromList("LegCuffs", DDPaLegCuffsStyle, DDPaLegCuffsColour)])
+;						endif
 					else
 						oidDDPaLegCuffsStyle = AddTextOption("Leg Cuff Style", "Disabled", OPTION_FLAG_DISABLED)
 						oidDDPaLegCuffsColour = AddTextOption("Leg Cuff Colour", "Disabled", OPTION_FLAG_DISABLED)
@@ -2558,6 +2625,8 @@ Event OnPageReset(String page)
 				oidCursedLootTeleportationBoundChance = AddSliderOption("Player(Bound) teleportation chance", CursedLootTeleportationBoundChance, "{0} %")
 			else
 				oidPAfrequency[6] = AddSliderOption("$Event Chance", PAfrequency[6], "{0} %", OPTION_FLAG_DISABLED)
+				oidCursedLootTeleportationChance = AddSliderOption("Player teleportation chance", CursedLootTeleportationChance, "{0} %", OPTION_FLAG_DISABLED)
+				oidCursedLootTeleportationBoundChance = AddSliderOption("Player(Bound) teleportation chance", CursedLootTeleportationBoundChance, "{0} %", OPTION_FLAG_DISABLED)
 			endif
 			
 ;			AddHeaderOption("-----------------------------------------------------------")
@@ -5988,10 +6057,10 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 			SetSliderOptionValue(oidCursedLootMaxDevices, CursedLootMaxDevices)
 		Elseif Option == oidCursedLootTeleportationChance
 			CursedLootTeleportationChance = Value as int
-			SetSliderOptionValue(oidCursedLootTeleportationChance, CursedLootTeleportationChance, "{0} %")
+			SetSliderOptionValue(oidCursedLootTeleportationChance, CursedLootTeleportationChance)
 		Elseif Option == oidCursedLootTeleportationBoundChance
 			CursedLootTeleportationBoundChance = Value as int
-			SetSliderOptionValue(oidCursedLootTeleportationBoundChance, CursedLootTeleportationBoundChance, "{0} %")
+			SetSliderOptionValue(oidCursedLootTeleportationBoundChance, CursedLootTeleportationBoundChance)
 		Elseif Option == oidDDMinDevices
 			DDMinDevices = Value as int
 			SetSliderOptionValue(oidDDMinDevices, DDMinDevices)
@@ -6012,7 +6081,7 @@ Event OnOptionSliderAccept(Int Option, Float Value)
 			If (i != -1)
 				PAfrequency[i] = Value
 				SetSliderOptionValue(oidPAfrequency[i], PAfrequency[i], "{0} %")
-				if i == 7
+				if i == 7 || i == 5
 					ForcePageReset()
 				endif
 			Endif
@@ -8697,6 +8766,7 @@ Function TestEquipDevices()
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHeavyBondage, False)
 		endif
 		
+;		Keyword TempDDKeywordGag = Game.GetFormFromFile(0x7EB8, "Devious Devices - Assets.esm") as Keyword ; Gag
 		if !Follower.WornHasKeyword(TempDDKeywordGag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGag)
 			if DDPaUseGag == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Gag")
@@ -8706,6 +8776,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGag, False)
 		endif
+;		Keyword TempDDKeywordSuit = Game.GetFormFromFile(0x2AFA3, "Devious Devices - Assets.esm") as Keyword ; Suit
 		if !Follower.WornHasKeyword(TempDDKeywordSuit) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordSuit)
 			if DDPaUseSuit == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Suit")
@@ -8715,6 +8786,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordSuit, False)
 		endif
+;		Keyword TempDDKeywordHood = Game.GetFormFromFile(0x2AFA2, "Devious Devices - Assets.esm") as Keyword ; Hood
 		if !Follower.WornHasKeyword(TempDDKeywordHood) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHood)
 			if DDPaUseHood == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Hood")
@@ -8724,6 +8796,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHood, False)
 		endif
+;		Keyword TempDDKeywordBelt = Game.GetFormFromFile(0x3330, "Devious Devices - Assets.esm") as Keyword ; Belt
 		if !Follower.WornHasKeyword(TempDDKeywordBelt) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBelt)
 			if DDPaUseChastityBelt == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Belt")
@@ -8733,6 +8806,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBelt, False)
 		endif
+;		Keyword TempDDKeywordBra = Game.GetFormFromFile(0x3DFA, "Devious Devices - Assets.esm") as Keyword ; Bra
 		if !Follower.WornHasKeyword(TempDDKeywordBra) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBra)
 			if DDPaUseChastityBra == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Bra")
@@ -8742,6 +8816,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBra, False)
 		endif
+;		Keyword TempDDKeywordHarness = Game.GetFormFromFile(0x17C43, "Devious Devices - Assets.esm") as Keyword ; Harness
 		if !Follower.WornHasKeyword(TempDDKeywordHarness) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHarness)
 			if DDPaUseHarness == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Harness")
@@ -8751,6 +8826,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordHarness, False)
 		endif
+;		Keyword TempDDKeywordCorset = Game.GetFormFromFile(0x27F28, "Devious Devices - Assets.esm") as Keyword ; Corset
 		if !Follower.WornHasKeyword(TempDDKeywordCorset) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCorset)
 			if DDPaUseCorset == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Corset")
@@ -8760,6 +8836,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCorset, False)
 		endif
+;		Keyword TempDDKeywordCollar = Game.GetFormFromFile(0x3DF7, "Devious Devices - Assets.esm") as Keyword ; Collar
 		if !Follower.WornHasKeyword(TempDDKeywordCollar) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCollar)
 			if DDPaUseCollar == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Collar")
@@ -8769,6 +8846,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordCollar, False)
 		endif
+;		Keyword TempDDKeywordPlugVag = Game.GetFormFromFile(0x1DD7C, "Devious Devices - Assets.esm") as Keyword ; PlugVaginal
 		if !Follower.WornHasKeyword(TempDDKeywordPlugVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugVag)
 			if DDPaUsePlugVaginal == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PlugVaginal")
@@ -8778,6 +8856,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugVag, False)
 		endif
+;		Keyword TempDDKeywordPlugAnal = Game.GetFormFromFile(0x1DD7D, "Devious Devices - Assets.esm") as Keyword ; PlugAnal
 		if !Follower.WornHasKeyword(TempDDKeywordPlugAnal) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugAnal)
 			if DDPaUsePlugAnal == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PlugAnal")
@@ -8787,6 +8866,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPlugAnal, False)
 		endif
+;		Keyword TempDDKeywordPiercingVag = Game.GetFormFromFile(0x23E70, "Devious Devices - Assets.esm") as Keyword ; PiercingVaginal
 		if !Follower.WornHasKeyword(TempDDKeywordPiercingVag) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingVag)
 			if DDPaUsePiercingVaginal == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PiercingVaginal")
@@ -8796,6 +8876,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingVag, False)
 		endif
+;		Keyword TempDDKeywordPiercingNipp = Game.GetFormFromFile(0xCA39, "Devious Devices - Assets.esm") as Keyword ; PiercingNipple
 		if !Follower.WornHasKeyword(TempDDKeywordPiercingNipp) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingNipp)
 			if DDPaUsePiercingNipple == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "PiercingNipple")
@@ -8805,6 +8886,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordPiercingNipp, False)
 		endif
+;		Keyword TempDDKeywordBoots = Game.GetFormFromFile(0x27F29, "Devious Devices - Assets.esm") as Keyword ; Boots
 		if !Follower.WornHasKeyword(TempDDKeywordBoots) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBoots)
 			if DDPaUseBoots == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Boots")
@@ -8814,6 +8896,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordBoots, False)
 		endif
+;		Keyword TempDDKeywordGloves = Game.GetFormFromFile(0x2AFA1, "Devious Devices - Assets.esm") as Keyword ; Gloves
 		if !Follower.WornHasKeyword(TempDDKeywordGloves) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGloves)
 			if DDPaUseGloves == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "Gloves")
@@ -8823,6 +8906,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordGloves, False)
 		endif
+;		Keyword TempDDKeywordArmCuffs = Game.GetFormFromFile(0x3DF9, "Devious Devices - Assets.esm") as Keyword ; ArmCuffs
 		if !Follower.WornHasKeyword(TempDDKeywordArmCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordArmCuffs)
 			if DDPaUseArmCuffs == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "ArmCuffs")
@@ -8832,6 +8916,7 @@ Function TestEquipDevices()
 		else
 			StorageUtil.FormListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordArmCuffs, False)
 		endif
+;		Keyword TempDDKeywordLegCuffs = Game.GetFormFromFile(0x3DF8, "Devious Devices - Assets.esm") as Keyword ; LegCuffs
 		if !Follower.WornHasKeyword(TempDDKeywordLegCuffs) && !StorageUtil.FormListHas(none, "Defeat_LRGPatch_PostAssault_TempData_EquippedKeywordsFollower", TempDDKeywordLegCuffs)
 			if DDPaUseLegCuffs == 1
 				StorageUtil.StringListAdd(none, "Defeat_LRGPatch_PostAssault_TempData_RandomItemsToEquipFollower", "LegCuffs")
@@ -8905,6 +8990,10 @@ Function TestEquipDevices()
 			endif
 		endwhile
 	endif
+EndFunction
+
+Function AdditionalMCMPageUpdate() ; Updating Post-assault OID array
+	oidPAfrequency = new int[10]
 EndFunction
 
 ; Deprecated
