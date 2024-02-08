@@ -88,6 +88,8 @@ FormList[] Property MiscFormLists Auto Hidden
 Scene[] Property MiscScenes Auto Hidden
 Message[] Property MiscMessages Auto Hidden
 
+FormList Property DynDefIgnoredWeaponList Auto ; List of weapons that will not trigger Defeat Bar.
+
 Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
 EndEvent
 
@@ -227,18 +229,6 @@ State Running
 		defeat_skse_api.setActorState(Player, "ACTIVE")
 		;ConsoleUtil.PrintMessage("State -> " + GetState())
 	EndEvent
-
-	Function TriggerBleedOut()
-		If McmConfig.PlayerEssential && LastHitAggressor && CheckAggressor(LastHitAggressor) && (LastHitAggressor.GetDistance(Player) < FarMaxDist) && DefeatTriggerActive(LastHitAggressor)
-			Player.RestoreActorValue("Health", ((Player.GetActorValuePercentage("Health") * 100) - 80))
-			Wait(1.0)
-			DefeatTrigger(LastHitAggressor)
-		Else
-			RessConfig.PlayerEssential.Clear()
-			Player.Kill()
-		Endif
-	EndFunction
-
 	Event OnSLDefeatPlayerKnockDown(ObjectReference akAggressor, string eventName)
 		DefeatLog("[Defeat] - OnSLDefeatPlayerKnockDown " + eventName + " from " + akAggressor)
 		Detect.Start()
@@ -267,9 +257,18 @@ State Running
 		Detect.Stop()		
 	EndEvent
 
+	Function TriggerBleedOut()
+		If McmConfig.PlayerEssential && LastHitAggressor && CheckAggressor(LastHitAggressor) && (LastHitAggressor.GetDistance(Player) < FarMaxDist) && DefeatTriggerActive(LastHitAggressor)
+			Player.RestoreActorValue("Health", ((Player.GetActorValuePercentage("Health") * 100) - 80))
+			Wait(1.0)
+			DefeatTrigger(LastHitAggressor)
+		Else
+			RessConfig.PlayerEssential.Clear()
+			Player.Kill()
+		Endif
+	EndFunction
 	Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
 		return
-		
 		if !OnHitBusy
 			ProcessOnHit(akAggressor, akSrc, akProjectile, abPowerAttack, abSneakAttack, abBashAttack, abHitBlocked)
 		else
@@ -901,7 +900,7 @@ EndFunction
 Bool Function KDWay(Actor Aggressor, Bool PowerAttack, Form HitSource, Bool Blocked)
 ;	DefeatConfig.log("KDWay - Blocked - "+Blocked+" / McmConfig.KDHealthBlock - "+McmConfig.KDHealthBlock+" / McmConfig.KDStaminaBlock - "+McmConfig.KDStaminaBlock+" / McmConfig.KDPowerABlock - "+McmConfig.KDPowerABlock)
 	If KDAllowed(Aggressor)
-		If (Aggressor.GetDistance(Player) < FarMaxDist)
+		If (Aggressor.GetDistance(Player) < FarMaxDist) && !DynDefIgnoredWeaponList.HasForm(HitSource)
 			If McmConfig.KDWayThreshold ; Wound
 				If Blocked && McmConfig.KDHealthBlock
 					Return False
@@ -3162,7 +3161,7 @@ Keyword SOS_Underwear
 Keyword SOS_Genitals
 Keyword zbfWornDevice
 Keyword ToysToy
-
+Keyword Property fsm_Slave Auto
 
 Event OnPlayerLoadGame()
 	if (BeltInventory != None || PlugVagInventory != None || PlugAnalInventory != None || GagInventory != None || HeavyBondageInventory != None || HarnessInventory != None || SuitInventory != None)
@@ -3173,9 +3172,10 @@ Event OnPlayerLoadGame()
 			debug.trace("zad_libs_ForceSilent - Cleared")
 		endif
 	endif
-	if RessConfig.DefeatPatchVersion != 1.6
-		DefeatLog("[Defeat] - OnPlayerLoadGame - DefeatPatchVersion: " + RessConfig.DefeatPatchVersion + " - Updating")
-		RessConfig.DefeatPatchVersion = 1.6
+	if RessConfig.DefeatPatchVersion != 1.62
+		Debug.trace("[Defeat] - OnPlayerLoadGame - DefeatPatchVersion: " + RessConfig.DefeatPatchVersion + " - Updating")
+		McmConfig.AdditionalMCMPageUpdate()
+		RessConfig.DefeatPatchVersion = 1.62
 		RessConfig.CheckForMods()
 	endif
 	if DefVulnScr == None
@@ -3192,6 +3192,7 @@ Event OnPlayerLoadGame()
 	SOS_Genitals = KeyWord.GetKeyword("SOS_Genitals")
 	zbfWornDevice = KeyWord.GetKeyword("zbfWornDevice")
 	ToysToy = KeyWord.GetKeyword("ToysToy")
+	fsm_Slave = KeyWord.GetKeyword("fsm_Slave")
 
 EndEvent
 

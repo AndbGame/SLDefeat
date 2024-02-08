@@ -276,17 +276,19 @@ Function TPFollowers(ObjectReference TheRef)
 	Int i = 0
 	While (i < 5)
 		If Followers[i]
-			If (i == 0)
-				Followers[i].MoveTo(TheRef, 3)
-			Elseif (i == 1)
-				Followers[i].MoveTo(TheRef, 3, 3)
-			Elseif (i == 2)
-				Followers[i].MoveTo(TheRef, 0, 3)
-			Elseif (i == 3)
-				Followers[i].MoveTo(TheRef, -3)
-			Elseif (i == 4)
-				Followers[i].MoveTo(TheRef, -3, -3)
-			Endif
+			if !Followers[i].HasKeyword(PostAssaultscr.PlayerScr.fsm_Slave) && Followers[i].GetSitState() == 0 && Followers[i].GetActorValue("WaitingForPlayer") == 0
+				If (i == 0)
+					Followers[i].MoveTo(TheRef, 3)
+				Elseif (i == 1)
+					Followers[i].MoveTo(TheRef, 3, 3)
+				Elseif (i == 2)
+					Followers[i].MoveTo(TheRef, 0, 3)
+				Elseif (i == 3)
+					Followers[i].MoveTo(TheRef, -3)
+				Elseif (i == 4)
+					Followers[i].MoveTo(TheRef, -3, -3)
+				Endif
+			endif
 		Endif
 		i += 1
 	EndWhile
