@@ -43,16 +43,22 @@ sslBaseAnimation[] Function getAnimations(Actor[] Positions, sslBaseAnimation[] 
 		Float[] Scales = New Float[5]
 	
 		int k = 0
+		int k_actors = 0
 		float maxScale = 0
 		while k < ActorCount
-			;If Positions[k].HasKeyWordString("ActorTypeNPC")
+			If Positions[k].HasKeyWordString("ActorTypeNPC")
+				k_actors += 1
 				Scales[k] = getScale(Positions[k])
 				if Scales[k] > maxScale
 					maxScale = Scales[k]
 				endif
-			;EndIf
+			EndIf
 			k += 1
 		endWhile
+
+		If k_actors <= 1
+			maxScale = 1
+		EndIf
 	
 		k = 0
 		int numF = 0

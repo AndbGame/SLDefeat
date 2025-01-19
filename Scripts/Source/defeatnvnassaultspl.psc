@@ -416,7 +416,7 @@ Function TheRape()
 ;		Endif
 ;	Endif
 	sslBaseAnimation[] Anims
-	sslThreadModel TheRape
+	sslThreadModel TheRape = None
 	If !TheAdd
 		If Aggressor.HasKeyWordString("ActorTypeNPC")
 			String AnimationSet
@@ -439,14 +439,22 @@ Function TheRape()
 			Endif
 			TheRape = RessConfig.SexLabScene(Victim, Aggressor, CustomAnimations = Anims, Tags = McmConfig.RapeTagNVN, SupressTags = McmConfig.RapeSupressTagNVN, TagsRequireAll = McmConfig.RapeRequireAllTagNVN, FemaleFirst = AnimationSet)
 		Else
-			TheRape = RessConfig.SexLabScene(Victim, Aggressor, CustomAnimations = Anims, Tags = McmConfig.CreatureTagNVN, SupressTags = McmConfig.CreatureSupressTagNVN, TagsRequireAll = McmConfig.CreatureRequireAllTagNVN)
+			If (Aggressor.GetFlyingState() < 1)
+				TheRape = RessConfig.SexLabScene(Victim, Aggressor, CustomAnimations = Anims, Tags = McmConfig.CreatureTagNVN, SupressTags = McmConfig.CreatureSupressTagNVN, TagsRequireAll = McmConfig.CreatureRequireAllTagNVN)
+			EndIf
 		Endif
 	Else
 		If Aggressor.HasKeyWordString("ActorTypeNPC")
 			TheRape = RessConfig.SexLabScene(Victim, Aggressor, TheAdd, CustomAnimations = Anims, Tags = McmConfig.MultipleTagNVN, SupressTags = McmConfig.MultipleSupressTagNVN, TagsRequireAll = McmConfig.MultipleRequireAllTagNVN, FemaleFirst = "MultNVN")
 		Else
-			TheRape = RessConfig.SexLabScene(Victim, Aggressor, TheAdd, CustomAnimations = Anims, Tags = McmConfig.CreatureTagNVN, SupressTags = McmConfig.CreatureSupressTagNVN, TagsRequireAll = McmConfig.CreatureRequireAllTagNVN, FemaleFirst = "MultCreaNVN")
+			If (Aggressor.GetFlyingState() < 1 && TheAdd.GetFlyingState() < 1)
+				TheRape = RessConfig.SexLabScene(Victim, Aggressor, TheAdd, CustomAnimations = Anims, Tags = McmConfig.CreatureTagNVN, SupressTags = McmConfig.CreatureSupressTagNVN, TagsRequireAll = McmConfig.CreatureRequireAllTagNVN, FemaleFirst = "MultCreaNVN")
+			EndIf
 		Endif
+	Endif
+	If !TheRape
+		DefeatConfig.Log("Error: NPC vs NPC, Animation did not start, something went wrong with the actors")
+		Restored()
 	Endif
 	TheRape.DisableRagdollEnd(Victim)
 	String HookName = "NVNR" + (Victim.GetFormID() as String)

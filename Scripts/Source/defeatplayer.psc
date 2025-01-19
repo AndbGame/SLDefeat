@@ -368,7 +368,7 @@ Function Surrender()
 		Actor Guard = IsThereGuard()
 		If Guard
 			RessConfig.DefeatMoan(Player, TheNext, "Flee", AllowPlayerCommentary)
-			Player.SheatheWeapon()
+			defeat_skse_api.SheatheWeapon(Player)
 			Restored()
 			if DynamicWydgetOn
 				StartDynamicWidget(False)
@@ -395,7 +395,7 @@ Function Surrender()
 			RessConfig.LastSceneAccomplices = Accomplices
 			RessConfig.LastSceneFollowers = Followers
 			NumAgg = RessConfig.HowMany("Aggressors")
-			Player.SheatheWeapon()
+			defeat_skse_api.SheatheWeapon(Player)
 			Float i = 4.0
 			While (Player.IsWeaponDrawn() && (i > 0.0))
 				Wait(0.5)
@@ -425,7 +425,7 @@ Function Surrender()
 			RessConfig.LastSceneAccomplices = Accomplices
 			RessConfig.LastSceneFollowers = Followers
 			NumAgg = RessConfig.HowMany("Aggressors")
-			Player.SheatheWeapon()
+			defeat_skse_api.SheatheWeapon(Player)
 			float i = 4.0
 			While (Player.IsWeaponDrawn() && (i > 0.0))
 				Wait(0.5)

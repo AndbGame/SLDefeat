@@ -21,6 +21,10 @@ Function setActorState(actor Actorref, string _state) global native
 bool Function tryExchangeActorState(actor Actorref, string oldState, string newState) global native
 String Function getActorState(actor Actorref) global native
 
+; Actor
+Function DrawWeapon(actor Actorref) global native
+Function SheatheWeapon(actor Actorref) global native
+
 ; Get Last Hit Agrressor for Actorref
 Actor Function getLastHitAggressor(actor Actorref) global native
 Actor Function queryNvNScene(ActiveMagicEffect Effectref, actor Actorref) global native
