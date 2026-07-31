@@ -16,6 +16,7 @@ Actor Victim
 Actor TheAdd = None
 Actor Property Player Auto
 Package[] Property NVNAgressorPck Auto
+Package Property NVNKillAgressorPck Auto
 Bool IsFollower
 Bool AggIsFollower
 Bool IsHuman
@@ -305,14 +306,17 @@ Function RobEvent()
 	SendAnimationEvent(Victim, GetStringValue(Victim, "DefeatStateAnim"))
 EndFunction
 Function KillEvent()
+	ActorUtil.RemovePackageOverride(Aggressor, NVNAgressorPck[NVNSlot])
+	ActorUtil.AddPackageOverride(Aggressor, NVNKillAgressorPck, 100, 1)
+	Aggressor.EvaluatePackage()
+	Wait(1.0)
 ;	If !Aggressor.IsWeaponDrawn()
 ;		Aggressor.DrawWeapon()
-;		Float i = 3.0
-;		While (!Aggressor.IsWeaponDrawn() && (i > 0.0))
-;			Wait(0.5)
-;			i -= 0.5
-;		EndWhile
-;		Wait(1.0)
+		Float i = 3.0
+		While (!Aggressor.IsWeaponDrawn() && (i > 0.0))
+			Wait(0.5)
+			i -= 0.5
+		EndWhile
 ;	Endif
 	Int Attempts
 	Bool Succes = False
@@ -326,7 +330,7 @@ Function KillEvent()
 		TheKillmove = RessConfig.Killmoves[10] 	; Combo 3 punches
 	Endif
 	While (!Succes && (Attempts < 5))
-		If Aggressor.PlayIdleWithTarget(TheKillmove, Victim) ; Bleedout kill
+		If Aggressor.IsWeaponDrawn() && Aggressor.PlayIdleWithTarget(TheKillmove, Victim) ; Bleedout kill
 			Succes = True
 		Endif
 		Attempts += 1
@@ -343,6 +347,9 @@ Function KillEvent()
 			Attempts += 1
 		EndWhile
 	Endif
+	ActorUtil.RemovePackageOverride(Aggressor, NVNKillAgressorPck)
+	ActorUtil.AddPackageOverride(Aggressor, NVNAgressorPck[NVNSlot], 100, 1)
+	Aggressor.EvaluatePackage()
 EndFunction
 Actor Function FindAdd()
 	Actor Found

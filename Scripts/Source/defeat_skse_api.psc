@@ -20,6 +20,7 @@ Import StorageUtil
 Function setActorState(actor Actorref, string _state) global native
 bool Function tryExchangeActorState(actor Actorref, string oldState, string newState) global native
 String Function getActorState(actor Actorref) global native
+bool Function isActorTied(actor Actorref) global native
 
 ; Actor
 Function DrawWeapon(actor Actorref) global native
@@ -73,6 +74,33 @@ EndFunction
 Function npcKnockDownEvent(actor Victim, actor Aggressor, string eventName, bool bleedout, bool Assault) global
     Debug.Trace("defeat_skse_api.npcKnockDownEvent " + Victim + " by " + Aggressor + ": " + eventName)
     DefeatConfig RessConfig = Quest.GetQuest("DefeatRessourcesQst") as DefeatConfig
+
+    Def_NPCDefeated NPCDefeatedQuest = Quest.GetQuest("Def_NPCDefeated_1") as Def_NPCDefeated
+    
+    if (!NPCDefeatedQuest.IsStopped())
+        NPCDefeatedQuest.Stop()
+        int timeout = 10
+        while timeout > 0 && !NPCDefeatedQuest.IsStopped()
+            timeout -= 1
+            Debug.Trace("Wait untill Stop Def_NPCDefeated quest")
+            Utility.Wait(0.5)
+        endwhile
+    endIf
+
+    if (NPCDefeatedQuest.IsStopped())
+        NPCDefeatedQuest.Start()
+        int timeout = 10
+        while timeout > 0 && !NPCDefeatedQuest.IsRunning()
+            timeout -= 1
+            Debug.Trace("Wait untill IsRunning Def_NPCDefeated quest")
+            Utility.Wait(0.5)
+        endwhile
+    endIf
+    if (!NPCDefeatedQuest.IsRunning())
+        Debug.Trace("Fail Running Def_NPCDefeated quest")
+    else
+        NPCDefeatedQuest.StartKnockdown(Victim, Aggressor)
+    endif
 
     If RessConfig.IsFollower(Victim)
         If Aggressor

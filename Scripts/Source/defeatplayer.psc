@@ -207,6 +207,7 @@ Function SceneSettings( String ForceScenario = "",	String ForceEvent = "",		Int 
 	Else
 		AllowPlayerCommentary = ForcePlayerCommentary
 	Endif
+	NoTrans = False
 EndFunction
 Function SetKnockOut(Bool OnOff = True)
 	IsKnockout = OnOff
@@ -268,54 +269,54 @@ State Running
 			Player.Kill()
 		Endif
 	EndFunction
-	Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
-		return
-		if !OnHitBusy
-			ProcessOnHit(akAggressor, akSrc, akProjectile, abPowerAttack, abSneakAttack, abBashAttack, abHitBlocked)
-		else
-			DefeatLog("[Defeat] - DefeatPlayer - Running - OnHit - Busy")
-		endif
-	EndEvent
+;	Event OnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
+;		return
+;		if !OnHitBusy
+;			ProcessOnHit(akAggressor, akSrc, akProjectile, abPowerAttack, abSneakAttack, abBashAttack, abHitBlocked)
+;		else
+;			DefeatLog("[Defeat] - DefeatPlayer - Running - OnHit - Busy")
+;		endif
+;	EndEvent
 	
-	Function ProcessOnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
-		DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Start")
-		OnHitBusy = True
-		Actor Aggressor = (akAggressor As Actor)
-		If Aggressor
-			LastHitAggressor = Aggressor
-			If !SpamGuard
-				SpamGuard = True
-				If (IsAggressorValid(Aggressor) && IsPlayerValid())
-					If CheckAggressor(Aggressor)
-						If KDWay(Aggressor, abPowerAttack, akSrc, abHitBlocked)
-							Detect.Start()
-							If IsKnockout
-								SceneSettings(ForceStayDown = 1, ForceResist = 0, ForceRelation = 1, ForceWitness = 0)
-								TheKnockDown(Aggressor)
-							Elseif (StandingStruggle && !IsCreature && (Aggressor.GetDistance(Player) < 500.0) && RessConfig.SexInterest(Aggressor, True, False))
-								SceneSettings(ForceResist = 0, ForceRelation = 0)
-								KnockDownQTE(Aggressor)
-							Else
-								SceneSettings()
-								TheKnockDown(Aggressor)
-							Endif
-							Detect.Stop()
-							OnHitBusy = False
-							DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Finish")
-							Return
-						Endif
-					Endif
-				Endif
-			 
-				SpamGuard = False
-			Endif
-		Endif
-		if akProjectile
-			Utility.Wait(2)
-		endif
-		DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Finish")
-		OnHitBusy = False
-	EndFunction
+;	Function ProcessOnHit(ObjectReference akAggressor, Form akSrc, Projectile akProjectile, Bool abPowerAttack, Bool abSneakAttack, Bool abBashAttack, Bool abHitBlocked)
+;		DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Start")
+;		OnHitBusy = True
+;		Actor Aggressor = (akAggressor As Actor)
+;		If Aggressor
+;			LastHitAggressor = Aggressor
+;			If !SpamGuard
+;				SpamGuard = True
+;				If (IsAggressorValid(Aggressor) && IsPlayerValid())
+;					If CheckAggressor(Aggressor)
+;						If KDWay(Aggressor, abPowerAttack, akSrc, abHitBlocked)
+;							Detect.Start()
+;							If IsKnockout
+;								SceneSettings(ForceStayDown = 1, ForceResist = 0, ForceRelation = 1, ForceWitness = 0)
+;								TheKnockDown(Aggressor)
+;							Elseif (StandingStruggle && !IsCreature && (Aggressor.GetDistance(Player) < 500.0) && RessConfig.SexInterest(Aggressor, True, False))
+;								SceneSettings(ForceResist = 0, ForceRelation = 0)
+;								KnockDownQTE(Aggressor)
+;							Else
+;								SceneSettings()
+;								TheKnockDown(Aggressor)
+;							Endif
+;							Detect.Stop()
+;							OnHitBusy = False
+;							DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Finish")
+;							Return
+;						Endif
+;					Endif
+;				Endif
+;			 
+;				SpamGuard = False
+;			Endif
+;		Endif
+;		if akProjectile
+;			Utility.Wait(2)
+;		endif
+;		DefeatLog("[Defeat] - DefeatPlayer - Running - ProcessOnHit - Finish")
+;		OnHitBusy = False
+;	EndFunction
 	
 	Event OnKeyDown(Int KeyCode)
 		If (KeyCode == RessConfig.HotKeyInts[3]) ; Surrender key
@@ -370,9 +371,9 @@ Function Surrender()
 			RessConfig.DefeatMoan(Player, TheNext, "Flee", AllowPlayerCommentary)
 			defeat_skse_api.SheatheWeapon(Player)
 			Restored()
-			if DynamicWydgetOn
-				StartDynamicWidget(False)
-			endif
+;			if DynamicWydgetOn
+;				StartDynamicWidget(False) ; TODO
+;			endif
 			Return
 		Endif
 		RessConfig.WasAnEnemy = (TheNext.GetFactionReaction(Player) == 1) ; 0: Neutral / 1: Enemy / 2: Ally / 3: Friend
@@ -404,9 +405,9 @@ Function Surrender()
 			RessConfig.DefeatPlayAnimation(Player, "Surrender")
 			GoToState("Downed")
 			EnablePlayerControls(1, 0, 0, 0, 0, 0, 0, 0) ; To display the hud
-			if DynamicWydgetOn
-				StartDynamicWidget(False)
-			endif
+;			if DynamicWydgetOn
+;				StartDynamicWidget(False) ; TODO
+;			endif
 			Detect.Stop()
 			Return
 		Elseif (IsCreature && RessConfig.SexCombination(TheNext, Player, True))
@@ -440,9 +441,9 @@ Function Surrender()
 				GoToState("Downed")
 			Endif
 			EnablePlayerControls(1, 0, 0, 0, 0, 0, 0, 0) ; To display the hud
-			if DynamicWydgetOn
-				StartDynamicWidget(False)
-			endif
+;			if DynamicWydgetOn
+;				StartDynamicWidget(False) ; TODO
+;			endif
 			Detect.Stop()
 			Return
 		Else
@@ -540,7 +541,8 @@ Function TheKnockDown(Actor Aggressor = None)
 	PlayerIsFemale = (SexLab.GetGender(Player) == 1)
 	IsSurrender = False
 	IsQTEKD = False
-	If (Scenario == "$No Transition")
+	;If (Scenario == "$No Transition")
+	If (RandomInt(1, 100) <= 25) ; Testing !!!!
 		Wait(0.5)
 		NoTrans = True
 		TheNext = Aggressor
@@ -896,122 +898,122 @@ EndFunction
  ;	endif
 ;EndEvent
 
-Bool Function KDAllowed(Actor Aggressor)
-	Return (!Player.IsInKillMove() && !RessConfig.IsImmune(Player) && !Player.HasKeywordString("FavorBrawlEvent") && !RessConfig.MiscQuests[6].IsRunning()) ; DGIntimidateQuest
-EndFunction
-Bool Function KDWay(Actor Aggressor, Bool PowerAttack, Form HitSource, Bool Blocked)
+;Bool Function KDAllowed(Actor Aggressor)
+;	Return (!Player.IsInKillMove() && !RessConfig.IsImmune(Player) && !Player.HasKeywordString("FavorBrawlEvent") && !RessConfig.MiscQuests[6].IsRunning()) ; DGIntimidateQuest
+;EndFunction
+;Bool Function KDWay(Actor Aggressor, Bool PowerAttack, Form HitSource, Bool Blocked)
 ;	DefeatConfig.log("KDWay - Blocked - "+Blocked+" / McmConfig.KDHealthBlock - "+McmConfig.KDHealthBlock+" / McmConfig.KDStaminaBlock - "+McmConfig.KDStaminaBlock+" / McmConfig.KDPowerABlock - "+McmConfig.KDPowerABlock)
-	If KDAllowed(Aggressor)
-		If (Aggressor.GetDistance(Player) < FarMaxDist) && !DynDefIgnoredWeaponList.HasForm(HitSource)
-			If McmConfig.KDWayThreshold ; Wound
-				If Blocked && McmConfig.KDHealthBlock
-					Return False
-				Endif
-				Float PlayerHealth = (Player.GetActorValuePercentage("Health") * 100)  
-				If ((RandomInt(1, 100) <= McmConfig.ChanceOnHitPvic) && (PlayerHealth <= McmConfig.ThresholdPvic) && (PlayerHealth >= McmConfig.ThresholdPvicMin)) ; !Player.IsWeaponDrawn()
-					IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutHPvic) && !RessConfig.Tied(Player)
-					If !IsKnockout
-						StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleHealthPvic)
-					Endif
-					Return True
-				Endif
-			Endif
-			If McmConfig.KDWayStamina ; Exhaustion
-				If Blocked && McmConfig.KDStaminaBlock
-					Return False
-				Endif
-				Float PlayerStamina = (Player.GetActorValuePercentage("Stamina") * 100)
-				If OnlyBack(McmConfig.KDWayStaminaOB, Aggressor)
-					If ((RandomInt(1, 100) <= McmConfig.ChanceOnHitPvicS) && (PlayerStamina <= McmConfig.ExhaustionPvic))
-						IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutSPvic) && !RessConfig.Tied(Player)
-						If !IsKnockout
-							StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleExhaustionPvic)
-						Endif
-						Return True
-					Endif
-				Endif
-			Endif
-			If McmConfig.KDWayVulnerability ; Vulnerability
-				If Blocked && McmConfig.KDVulnerabilityBlock
-					Return False
-				Endif
-				float PlayerVulnerability
-				if RessConfig.DeviousFrameworkON && McmConfig.KDWayVulnerabilityUseDFW
-					PlayerVulnerability = DefeatUtil2.DFW_GetVulnerability(Player)
-				else
-					PlayerVulnerability = DefVulnScr.Vulnerability_Total
-				endif
-				If OnlyBack(McmConfig.KDWayVulnerabilityOB, Aggressor)
-					If ((RandomInt(1, 100) <= McmConfig.ChanceOnHitPvicVulnerability) && (PlayerVulnerability >= McmConfig.VulnerabilityPvic))
-						IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutVulnerabilityPvic) && !RessConfig.Tied(Player)
-						if HitSource.GetType() == 41
-							if Aggressor.IsEquipped(HitSource)
-								If !IsKnockout
-									StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleVulnerabilityPvic)
-								Endif
-								Return True
-							endif
-						elseif HitSource.GetType() == 22
-							if Aggressor.IsEquipped(HitSource)
-								If !IsKnockout
-									StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleVulnerabilityPvic)
-								Endif
-								Return True
-							endif
-						endif
-					Endif
-				Endif
-			Endif
-			If McmConfig.KDWayDynamic ; Dynamic
-				Float DefeatAmount = CalculateWidget(PowerAttack, Aggressor, HitSource, Blocked)
-				if !DynamicWydgetOn
-					StartDynamicWidget(True)
-					UpdateDynamicWidget(DefeatAmount)
-				else
-					UpdateDynamicWidget(DefeatAmount)
-				endif
-				if StruggleBar.Percent >= 1.0
-;					debug.messagebox("Done")
-					StartDynamicWidget(False)
-					IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutDynamicPvic) && !RessConfig.Tied(Player)
-					If !IsKnockout
-						StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleDynamicPvic)
-					endif
-					return True
-				endif
-			endif
-			If PowerAttack
-				If McmConfig.KDWayPowerAtk ; Stun
-					If Blocked && McmConfig.KDPowerABlock
-						Return False
-					Endif
-					Weapon TheSource = (HitSource as weapon)
-					If TheSource
-						If ((RandomInt(1, 100) <= McmConfig.KDWayPowerAtkCOH) && ((TheSource.GetStagger() * 100) >= McmConfig.PowerAtkStagger))
-							IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutPPvic) && !RessConfig.Tied(Player)
-							If !IsKnockout
-								StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStrugglePowerPvic)
-							Endif
-							Return True
-						Endif
-					Endif
-				Endif
-			Endif
-		Endif
-	Endif
-	Return False
-EndFunction
-Bool Function OnlyBack(Bool TheOption, Actor Aggressor)
-	If TheOption
-		Float Fangle = (Player.GetHeadingAngle(Aggressor))
-		If ((Fangle < 110) && (Fangle > -110)) ; Returns FALSE for a hit in the back
-			Return False
-		Else
-			Return True
-		Endif
-	Endif
-	Return True
-EndFunction
+;	If KDAllowed(Aggressor)
+;		If (Aggressor.GetDistance(Player) < FarMaxDist) && !DynDefIgnoredWeaponList.HasForm(HitSource)
+;			If McmConfig.KDWayThreshold ; Wound
+;				If Blocked && McmConfig.KDHealthBlock
+;					Return False
+;				Endif
+;				Float PlayerHealth = (Player.GetActorValuePercentage("Health") * 100)  
+;				If ((RandomInt(1, 100) <= McmConfig.ChanceOnHitPvic) && (PlayerHealth <= McmConfig.ThresholdPvic) && (PlayerHealth >= McmConfig.ThresholdPvicMin)) ; !Player.IsWeaponDrawn()
+;					IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutHPvic) && !RessConfig.Tied(Player)
+;					If !IsKnockout
+;						StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleHealthPvic)
+;					Endif
+;					Return True
+;				Endif
+;			Endif
+;			If McmConfig.KDWayStamina ; Exhaustion
+;				If Blocked && McmConfig.KDStaminaBlock
+;					Return False
+;				Endif
+;				Float PlayerStamina = (Player.GetActorValuePercentage("Stamina") * 100)
+;				If OnlyBack(McmConfig.KDWayStaminaOB, Aggressor)
+;					If ((RandomInt(1, 100) <= McmConfig.ChanceOnHitPvicS) && (PlayerStamina <= McmConfig.ExhaustionPvic))
+;						IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutSPvic) && !RessConfig.Tied(Player)
+;						If !IsKnockout
+;							StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleExhaustionPvic)
+;						Endif
+;						Return True
+;					Endif
+;				Endif
+;			Endif
+;			If McmConfig.KDWayVulnerability ; Vulnerability
+;				If Blocked && McmConfig.KDVulnerabilityBlock
+;					Return False
+;				Endif
+;				float PlayerVulnerability
+;				if RessConfig.DeviousFrameworkON && McmConfig.KDWayVulnerabilityUseDFW
+;					PlayerVulnerability = DefeatUtil2.DFW_GetVulnerability(Player)
+;				else
+;					PlayerVulnerability = DefVulnScr.Vulnerability_Total
+;				endif
+;				If OnlyBack(McmConfig.KDWayVulnerabilityOB, Aggressor)
+;					If ((RandomInt(1, 100) <= McmConfig.ChanceOnHitPvicVulnerability) && (PlayerVulnerability >= McmConfig.VulnerabilityPvic))
+;						IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutVulnerabilityPvic) && !RessConfig.Tied(Player)
+;						if HitSource.GetType() == 41
+;							if Aggressor.IsEquipped(HitSource)
+;								If !IsKnockout
+;									StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleVulnerabilityPvic)
+;								Endif
+;								Return True
+;							endif
+;						elseif HitSource.GetType() == 22
+;							if Aggressor.IsEquipped(HitSource)
+;								If !IsKnockout
+;									StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleVulnerabilityPvic)
+;								Endif
+;								Return True
+;							endif
+;						endif
+;					Endif
+;				Endif
+;			Endif
+;			If McmConfig.KDWayDynamic ; Dynamic
+;				Float DefeatAmount = CalculateWidget(PowerAttack, Aggressor, HitSource, Blocked)
+;				if !DynamicWydgetOn
+;					StartDynamicWidget(True)
+;					UpdateDynamicWidget(DefeatAmount)
+;				else
+;					UpdateDynamicWidget(DefeatAmount)
+;				endif
+;				if StruggleBar.Percent >= 1.0
+;;					debug.messagebox("Done")
+;					StartDynamicWidget(False)
+;					IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutDynamicPvic) && !RessConfig.Tied(Player)
+;					If !IsKnockout
+;						StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStruggleDynamicPvic)
+;					endif
+;					return True
+;				endif
+;			endif
+;			If PowerAttack
+;				If McmConfig.KDWayPowerAtk ; Stun
+;					If Blocked && McmConfig.KDPowerABlock
+;						Return False
+;					Endif
+;					Weapon TheSource = (HitSource as weapon)
+;					If TheSource
+;						If ((RandomInt(1, 100) <= McmConfig.KDWayPowerAtkCOH) && ((TheSource.GetStagger() * 100) >= McmConfig.PowerAtkStagger))
+;							IsKnockout = (RandomInt(1, 100) <= McmConfig.KnockOutPPvic) && !RessConfig.Tied(Player)
+;							If !IsKnockout
+;								StandingStruggle = McmConfig.bResistQTE && (RandomInt(1, 100) <= McmConfig.SStrugglePowerPvic)
+;							Endif
+;							Return True
+;						Endif
+;					Endif
+;				Endif
+;			Endif
+;		Endif
+;	Endif
+;	Return False
+;EndFunction
+;Bool Function OnlyBack(Bool TheOption, Actor Aggressor)
+;	If TheOption
+;		Float Fangle = (Player.GetHeadingAngle(Aggressor))
+;		If ((Fangle < 110) && (Fangle > -110)) ; Returns FALSE for a hit in the back
+;			Return False
+;		Else
+;			Return True
+;		Endif
+;	Endif
+;	Return True
+;EndFunction
 Bool Function CheckActor(Actor Target = None)
 	If (Target && (Target.IsDead() || Target.IsCommandedActor() || !Target.Is3DLoaded()))
 		Int i = Aggressors.Find(Target)
@@ -3183,9 +3185,9 @@ Event OnPlayerLoadGame()
 		RessConfig.DefeatPatchVersion = 1.62
 		RessConfig.CheckForMods()
 	endif
-	if DefVulnScr == None
-		DefVulnScr = Quest.GetQuest("DefeatVulnerability").GetAlias(0) as DefeatPlayer_Vulnerability
-	endif
+;	if DefVulnScr == None
+;		DefVulnScr = Quest.GetQuest("DefeatVulnerability").GetAlias(0) as DefeatPlayer_Vulnerability
+;	endif
 	
 	McmConfig.BuildDDSettingLists()
 	
@@ -3995,100 +3997,100 @@ EndFunction
 Bool Property DynamicWydgetOn = False Auto
 Float SpellTimeout
 
-Function StartDynamicWidget(bool Display)
-	If Display
-		StruggleBar.Alpha = 100.0
-		DynamicWydgetOn = True
-		SendModEvent("DefeatStartDynamicWidget")
-	Else
-		if DynamicWydgetOn
-			DefeatLog("[Defeat] - DefeatPlayer - StartDynamicWidget")
-			StruggleBar.Alpha = 0.0
-			StruggleBar.Percent = 0.0
-			DynamicWydgetOn = False
-		endif
-	EndIf
-EndFunction
+;Function StartDynamicWidget(bool Display)
+;	If Display
+;		StruggleBar.Alpha = 100.0
+;		DynamicWydgetOn = True
+;		SendModEvent("DefeatStartDynamicWidget")
+;	Else
+;		if DynamicWydgetOn
+;			DefeatLog("[Defeat] - DefeatPlayer - StartDynamicWidget")
+;			StruggleBar.Alpha = 0.0
+;			StruggleBar.Percent = 0.0
+;			DynamicWydgetOn = False
+;		endif
+;	EndIf
+;EndFunction
 
-Function UpdateDynamicWidget(float Amount)
-	StruggleBar.Percent += Amount
-EndFunction
+;Function UpdateDynamicWidget(float Amount)
+;	StruggleBar.Percent += Amount
+;EndFunction
 
 DefeatPlayer_Vulnerability Property DefVulnScr Auto
 
-Float Function CalculateWidget(bool PowerAttack, Actor Aggressor, Form Source, Bool Blocked)
-	Float DefeatAmount = 0
-	Float DefeatBaseDamage = McmConfig.DynamicDefeatOnHitBase / 100
-	Float DefeatVulnerabilityMult = 0
-	Float DefeatPowerAttackMult = 0
-	Float DefeatLowStaminaMult = 0
-	Float DefeatLowHeathMult = 0
-	Float DefeatBackHit = 0
-	Float DefeatBlockReduction = 1.0
-	Int TempInt = Source.GetType()
-	if TempInt == 41
-		Int TempInt2 = (Source as weapon).GetWeaponType()
-		if TempInt2 <= 4 && TempInt2 != 0
-			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitOneHand / 100
-			DefeatLog("[Defeat] - CalculateWidget - WeaponType: One-Handed")
-		elseif TempInt2 == 5 || TempInt2 == 6
-			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitTwoHand / 100
-			DefeatLog("[Defeat] - CalculateWidget - WeaponType: Two-Handed")
-		elseif TempInt2 == 7
-			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitBow / 100
-			DefeatLog("[Defeat] - CalculateWidget - WeaponType: Bow")
-		endif
-	elseif TempInt == 22
-		DefeatBaseDamage = McmConfig.DynamicDefeatOnHitSpell / 100
-		DefeatLog("[Defeat] - CalculateWidget - WeaponType: Spell")
-	endif
-	If RessConfig.DeviousFrameworkON && McmConfig.DynamicDefeatUseDFWVulnerability
-		DefeatLog("[Defeat] - CalculateWidget - DeviousFrameworkON")
-		if McmConfig.DynamicDefeatVulnerabilityMult > 1.0
-			float PlayerVulnerability = DefeatUtil2.DFW_GetVulnerability(Player)
-			if PlayerVulnerability > 0
-				DefeatVulnerabilityMult = (PlayerVulnerability / 100) * (McmConfig.DynamicDefeatVulnerabilityMult - 1)
-			endif
-		endif
-	else
-		DefeatLog("[Defeat] - CalculateWidget - Vulnerability")
-		if McmConfig.DynamicDefeatVulnerabilityMult > 1.0
-			float PlayerVulnerability = DefVulnScr.Vulnerability_Total
-			if PlayerVulnerability > 100.0
-				PlayerVulnerability = 100.0
-			endif
-			DefeatVulnerabilityMult = (PlayerVulnerability / 100) * (McmConfig.DynamicDefeatVulnerabilityMult - 1)
-		endif
-	endif
-	if PowerAttack
-		DefeatPowerAttackMult = McmConfig.DynamicDefeatPowerAttackMult - 1
-	endif
-	if McmConfig.DynamicDefeatLowStaminaMult > 1.0
-		Float PlayerStamina = (Player.GetActorValuePercentage("Stamina") * 100)
-		if PlayerStamina <= McmConfig.DynamicDefeatLowStaminaThreshold
-			DefeatLowStaminaMult = McmConfig.DynamicDefeatLowStaminaMult - 1
-		endif
-	endif
-	if McmConfig.DynamicDefeatLowHealthMult > 1.0
-		Float PlayerHealth = (Player.GetActorValuePercentage("Health") * 100)
-		if PlayerHealth <= McmConfig.DynamicDefeatLowHealthThreshold
-			DefeatLowHeathMult = McmConfig.DynamicDefeatLowHealthMult - 1
-		endif
-	endif
-	if McmConfig.DynamicDefeatBackHitMult > 1.0
-		if OnlyBack(True, Aggressor)
-			DefeatBackHit = McmConfig.DynamicDefeatBackHitMult - 1
-		endif
-	endif
-	if McmConfig.DynamicDefeatBlockReduction > 0.0
-		if Blocked
-			DefeatBlockReduction = (1 - McmConfig.DynamicDefeatBlockReduction / 100)
-		endif
-	endif
-	DefeatAmount = DefeatBaseDamage * (1 + DefeatVulnerabilityMult + DefeatPowerAttackMult + DefeatLowStaminaMult + DefeatLowHeathMult + DefeatBackHit) * DefeatBlockReduction
-	DefeatLog("[Defeat] - CalculateWidget - DefeatAmount: " + DefeatAmount * 100 + " BaseDamage: " + DefeatBaseDamage * 100 + " Vuln: " + DefeatVulnerabilityMult + " PowerAtt: " + DefeatPowerAttackMult + " LowHeathMult: " + DefeatLowHeathMult + " LowStamMult: " + DefeatLowStaminaMult + " DefeatBackHit: " + DefeatBackHit + " DefeatBlockReduction: " + (DefeatBlockReduction) + "%")
-	return DefeatAmount
-EndFunction
+;Float Function CalculateWidget(bool PowerAttack, Actor Aggressor, Form Source, Bool Blocked)
+;	Float DefeatAmount = 0
+;	Float DefeatBaseDamage = McmConfig.DynamicDefeatOnHitBase / 100
+;	Float DefeatVulnerabilityMult = 0
+;	Float DefeatPowerAttackMult = 0
+;	Float DefeatLowStaminaMult = 0
+;	Float DefeatLowHeathMult = 0
+;	Float DefeatBackHit = 0
+;	Float DefeatBlockReduction = 1.0
+;	Int TempInt = Source.GetType()
+;	if TempInt == 41
+;		Int TempInt2 = (Source as weapon).GetWeaponType()
+;		if TempInt2 <= 4 && TempInt2 != 0
+;			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitOneHand / 100
+;			DefeatLog("[Defeat] - CalculateWidget - WeaponType: One-Handed")
+;		elseif TempInt2 == 5 || TempInt2 == 6
+;			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitTwoHand / 100
+;			DefeatLog("[Defeat] - CalculateWidget - WeaponType: Two-Handed")
+;		elseif TempInt2 == 7
+;			DefeatBaseDamage = McmConfig.DynamicDefeatOnHitBow / 100
+;			DefeatLog("[Defeat] - CalculateWidget - WeaponType: Bow")
+;		endif
+;	elseif TempInt == 22
+;		DefeatBaseDamage = McmConfig.DynamicDefeatOnHitSpell / 100
+;		DefeatLog("[Defeat] - CalculateWidget - WeaponType: Spell")
+;	endif
+;	If RessConfig.DeviousFrameworkON && McmConfig.DynamicDefeatUseDFWVulnerability
+;		DefeatLog("[Defeat] - CalculateWidget - DeviousFrameworkON")
+;		if McmConfig.DynamicDefeatVulnerabilityMult > 1.0
+;			float PlayerVulnerability = DefeatUtil2.DFW_GetVulnerability(Player)
+;			if PlayerVulnerability > 0
+;				DefeatVulnerabilityMult = (PlayerVulnerability / 100) * (McmConfig.DynamicDefeatVulnerabilityMult - 1)
+;			endif
+;		endif
+;	else
+;		DefeatLog("[Defeat] - CalculateWidget - Vulnerability")
+;		if McmConfig.DynamicDefeatVulnerabilityMult > 1.0
+;			float PlayerVulnerability = DefVulnScr.Vulnerability_Total
+;			if PlayerVulnerability > 100.0
+;				PlayerVulnerability = 100.0
+;			endif
+;			DefeatVulnerabilityMult = (PlayerVulnerability / 100) * (McmConfig.DynamicDefeatVulnerabilityMult - 1)
+;		endif
+;	endif
+;	if PowerAttack
+;		DefeatPowerAttackMult = McmConfig.DynamicDefeatPowerAttackMult - 1
+;	endif
+;	if McmConfig.DynamicDefeatLowStaminaMult > 1.0
+;		Float PlayerStamina = (Player.GetActorValuePercentage("Stamina") * 100)
+;		if PlayerStamina <= McmConfig.DynamicDefeatLowStaminaThreshold
+;			DefeatLowStaminaMult = McmConfig.DynamicDefeatLowStaminaMult - 1
+;		endif
+;	endif
+;	if McmConfig.DynamicDefeatLowHealthMult > 1.0
+;		Float PlayerHealth = (Player.GetActorValuePercentage("Health") * 100)
+;		if PlayerHealth <= McmConfig.DynamicDefeatLowHealthThreshold
+;			DefeatLowHeathMult = McmConfig.DynamicDefeatLowHealthMult - 1
+;		endif
+;	endif
+;	if McmConfig.DynamicDefeatBackHitMult > 1.0
+;		if OnlyBack(True, Aggressor)
+;			DefeatBackHit = McmConfig.DynamicDefeatBackHitMult - 1
+;		endif
+;	endif
+;	if McmConfig.DynamicDefeatBlockReduction > 0.0
+;		if Blocked
+;			DefeatBlockReduction = (1 - McmConfig.DynamicDefeatBlockReduction / 100)
+;		endif
+;	endif
+;	DefeatAmount = DefeatBaseDamage * (1 + DefeatVulnerabilityMult + DefeatPowerAttackMult + DefeatLowStaminaMult + DefeatLowHeathMult + DefeatBackHit) * DefeatBlockReduction
+;	DefeatLog("[Defeat] - CalculateWidget - DefeatAmount: " + DefeatAmount * 100 + " BaseDamage: " + DefeatBaseDamage * 100 + " Vuln: " + DefeatVulnerabilityMult + " PowerAtt: " + DefeatPowerAttackMult + " LowHeathMult: " + DefeatLowHeathMult + " LowStamMult: " + DefeatLowStaminaMult + " DefeatBackHit: " + DefeatBackHit + " DefeatBlockReduction: " + (DefeatBlockReduction) + "%")
+;	return DefeatAmount
+;EndFunction
 
 Function DefeatLog(string TargetString)
 	if McmConfig.EnableLog

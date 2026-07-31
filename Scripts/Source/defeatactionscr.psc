@@ -1450,7 +1450,6 @@ Function OptionKill(Actor Victim, Actor Aggressor, Bool IsPlayer, Bool TheState)
 			Return
 		Endif
 	Endif
-	Draw(Aggressor)
 	Float zOffset = Aggressor.GetHeadingAngle(Victim)
 	Aggressor.SetAngle(0.0, 0.0, Aggressor.GetAngleZ() + zOffset)
 	ActorBase VicActorBase = Victim.GetLeveledActorBase()
@@ -1461,6 +1460,17 @@ Function OptionKill(Actor Victim, Actor Aggressor, Bool IsPlayer, Bool TheState)
 		VicActorBase.SetProtected(False)
 	Endif
 	If (!VicActorBase.IsEssential() && !VicActorBase.IsProtected())
+		FollowerApproach.SetValue(3)
+		Aggressor.EvaluatePackage()
+	;	If !Aggressor.IsWeaponDrawn()
+	;		Aggressor.DrawWeapon()
+			Float i = 3.0
+			While (!Aggressor.IsWeaponDrawn() && (i > 0.0))
+				Wait(0.5)
+				i -= 0.5
+			EndWhile
+	;	Endif
+		;Draw(Aggressor)
 		Int Attempts
 		Bool Succes = False
 		If ((TheState == "Knockdown") || (TheState == "Trauma") || (TheState == "Exhausted"))
@@ -1474,7 +1484,7 @@ Function OptionKill(Actor Victim, Actor Aggressor, Bool IsPlayer, Bool TheState)
 				TheKillmove = RessConfig.Killmoves[10] 	; Combo 3 punches
 			Endif
 			While (!Succes && (Attempts < 5))
-				If Aggressor.PlayIdleWithTarget(TheKillmove, Victim) ; Bleedout kill
+				If Aggressor.IsWeaponDrawn() && Aggressor.PlayIdleWithTarget(TheKillmove, Victim) ; Bleedout kill
 					Succes = True
 				Endif
 				Attempts += 1
@@ -1491,7 +1501,7 @@ Function OptionKill(Actor Victim, Actor Aggressor, Bool IsPlayer, Bool TheState)
 				RangeTwo = 11
 			Endif
 			While (!Succes && (Attempts < 5))
-				If Aggressor.PlayIdleWithTarget(RessConfig.Killmoves[RandomInt(RangeOne, RangeTwo)], Victim)
+				If Aggressor.IsWeaponDrawn() && Aggressor.PlayIdleWithTarget(RessConfig.Killmoves[RandomInt(RangeOne, RangeTwo)], Victim)
 					Succes = True
 				Endif
 				Attempts += 1
@@ -1507,6 +1517,8 @@ Function OptionKill(Actor Victim, Actor Aggressor, Bool IsPlayer, Bool TheState)
 				Wait(0.5)
 			EndWhile
 		Endif
+		FollowerApproach.SetValue(0)
+		Aggressor.EvaluatePackage()
 	Else
 		Notification("$This NPC can't be killed.")
 	Endif
